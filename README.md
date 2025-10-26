@@ -59,13 +59,11 @@ This is a fan-made fork of YARG made to run on Xbox One / Series consoles using 
 
 1. Make sure your Xbox console is in the Developer sandbox environment with an internet connection and an available account. If you haven't used Dev Mode before, there are many guides by the homebrew community such as the [Dev Mode Wiki](https://wiki.sternserv.xyz/).<br>(Note, The YARG Xbox project is not affiliated with the wiki.)
 
-2. Download all .appx files from the latest release in the [Releases tab](https://github.com/gingerphoenix10/YARG-Xbox/Releases/Latest)
+2. Download the YARG .appx file from the latest release in the [Releases tab](https://github.com/gingerphoenix10/YARG-Xbox/Releases/Latest)
 
 3. Log into your Xbox Device Portal by accessing the IP address shown in the Dev Home (commonly <a>h</a>ttps://192.168.x.xxx:11443). This may require you to set up a login in the Remote Access Settings on your console.
 
-4. Under the "My games & apps" section of the device portal, click the Add button to install an app. Browse to the main YARG appx file downloaded from the [releases](https://github.com/gingerphoenix10/YARG-Xbox/Releases/Latest) page, select it in the "Deplay or Install Application" popup, and click Next.
-
-5. When prompted for any necessary dependencies, add any other appx files downloaded along side the YARG app package. Then click the "Start" button to begin installing the game.
+4. Under the "My games & apps" section of the device portal, click the Add button to install an app. Browse to the YARG appx file downloaded from the [releases](https://github.com/gingerphoenix10/YARG-Xbox/Releases/Latest) page, select it in the "Deplay or Install Application" popup, and click Next then Start.
 
 6. Once the installation is complete, the game should be launchable via the "Games and apps" section in the dev home, or via the regular "My games & apps" menu.
 
@@ -110,6 +108,7 @@ This is a fan-made fork of YARG made to run on Xbox One / Series consoles using 
    3. In Unity Hub, hit the arrow next to Add and select `Add project from disk`, then select the folder you cloned YARG to.
    4. Click on the added entry for YARG. It will warn you about a missing editor version, select 2021.3.36f1 and install it.
       - Unselect Visual Studio in the list of modules if you wish to use another editor or already have it installed.
+      - Make sure you have "Universal Windows Platform Build Support" selected for building for Xbox
 5. Install the [.NET SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks). This is required to develop and build the submodules.
    - You will need the SDK specifically, not the runtime!
 6. Open the project in Unity. When prompted about Safe Mode, click "Ignore".
@@ -119,7 +118,8 @@ This is a fan-made fork of YARG made to run on Xbox One / Series consoles using 
 
 7. Click on `NuGet` on the top menu bar, then click on `Restore Packages`.
    - This should be performed automatically when Unity starts up, but it can be performend manually if needed.
-8. You're ready to go!
+8. Under "Build Settings", select Universal Windows Platform, then Change Platform.
+9. You're ready to go!
 
 ### Linux
 

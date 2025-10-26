@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7f827b52fb76e3a4993b22734cbdb00c
+guid: c3e4ee0446906ab4c943b49e8e8baee1
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -18,10 +18,9 @@ PluginImporter:
       settings:
         Exclude Editor: 0
         Exclude Linux64: 0
-        Exclude OSXUniversal: 0
-        Exclude Win: 1
+        Exclude OSXUniversal: 1
+        Exclude Win: 0
         Exclude Win64: 0
-        Exclude WindowsStoreApps: 0
   - first:
       Any: 
     second:
@@ -34,7 +33,7 @@ PluginImporter:
       settings:
         CPU: AnyCPU
         DefaultValueInitialized: true
-        OS: Windows
+        OS: Linux
   - first:
       Standalone: Linux64
     second:
@@ -44,13 +43,13 @@ PluginImporter:
   - first:
       Standalone: OSXUniversal
     second:
-      enabled: 1
+      enabled: 0
       settings:
         CPU: AnyCPU
   - first:
       Standalone: Win
     second:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
   - first:
@@ -59,16 +58,6 @@ PluginImporter:
       enabled: 1
       settings:
         CPU: AnyCPU
-  - first:
-      Windows Store Apps: WindowsStoreApps
-    second:
-      enabled: 1
-      settings:
-        CPU: X64
-        DontProcess: false
-        PlaceholderPath: 
-        SDK: AnySDK
-        ScriptingBackend: AnyScriptingBackend
   userData: 
   assetBundleName: 
   assetBundleVariant: 

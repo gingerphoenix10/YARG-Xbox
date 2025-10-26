@@ -4,16 +4,39 @@ using YARG.Core.Logging;
 
 using System.Diagnostics;
 
+#if ENABLE_WINMD_SUPPORT && UNITY_WSA
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using Windows.Foundation;
+using System.Threading.Tasks;
+#endif
+
 using UnityEngine;
 using YARG.Menu.Persistent;
 using System.IO;
+using System.Threading.Tasks;
+using UnityEngine.WSA;
 
 namespace YARG.Helpers
 {
     public static class FileExplorerHelper
     {
-        public static void OpenChooseFolder(string startingDir, Action<string> callback)
+        public static async Task OpenChooseFolder(string startingDir, Action<string> callback)
         {
+            #if ENABLE_WINMD_SUPPORT && UNITY_WSA
+                var picker = new FolderPicker();
+                StorageFolder path = await picker.PickSingleFolderAsync();
+                if (path == null)
+                    return;
+                try
+                {
+                    callback(path.Path);
+                }
+                catch (Exception ex)
+                {
+                    YargLogger.LogException(ex, $"Error when handling folder {path.Path}!");
+                }
+            #else
             StandaloneFileBrowser.OpenFolderPanelAsync("Choose Folder", startingDir, false, (files) =>
             {
                 if (files is not { Length: > 0 })
@@ -29,6 +52,7 @@ namespace YARG.Helpers
                     YargLogger.LogException(ex, $"Error when handling folder {path}!");
                 }
             });
+            #endif
         }
 
         public static void OpenChooseFile(string startingDir, string extension, Action<string> callback)

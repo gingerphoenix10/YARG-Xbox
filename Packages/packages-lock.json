@@ -42,15 +42,6 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
-    "com.thenathannator.hidrogen": {
-      "version": "0.4.3",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.inputsystem": "1.4.4"
-      },
-      "url": "https://package.openupm.com"
-    },
     "com.thenathannator.plasticband": {
       "version": "0.9.0",
       "depth": 0,
@@ -90,11 +81,12 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.8.11",
-      "depth": 1,
+      "version": "1.8.25",
+      "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.mathematics": "1.2.1"
+        "com.unity.mathematics": "1.2.1",
+        "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -163,6 +155,15 @@
         "com.unity.modules.imgui": "1.0.0",
         "com.unity.modules.physics": "1.0.0",
         "com.unity.settings-manager": "1.0.3"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.recorder": {
+      "version": "3.0.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.timeline": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -310,29 +311,6 @@
       "source": "git",
       "dependencies": {},
       "hash": "71879e71aa72465a79bdf009d7d71f9f7ab83066"
-    },
-    "in.yarg.core": {
-      "version": "file:../YARG.Core/YARG.Core",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
-    "jp.keijiro.minis": {
-      "version": "https://github.com/TheNathannator/Minis.git?path=/Packages/jp.keijiro.minis#yarg",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "jp.keijiro.rtmidi": "1.0.4",
-        "com.unity.inputsystem": "1.0.1"
-      },
-      "hash": "29dee9f786d99cfae145d1972a39fb79117c1b8f"
-    },
-    "jp.keijiro.rtmidi": {
-      "version": "1.0.4",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://registry.npmjs.com"
     },
     "unity-dependencies-hunter": {
       "version": "https://github.com/AlexeyPerov/Unity-Dependencies-Hunter.git#upm",

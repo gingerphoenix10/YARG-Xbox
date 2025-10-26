@@ -1,8 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using AOT;
 using ManagedBass;
 using ManagedBass.Mix;
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using YARG.Core.Audio;
 using YARG.Core.Logging;
 using YARG.Core.Song;
@@ -18,22 +20,33 @@ namespace YARG.Audio.BASS
         private int _songEndHandle;
         private float _speed;
 
+        private IntPtr _songEndUser; // Store GCHandle pointer
+        private static readonly SyncProcedure SongEndSyncProc = ILBassStreamProcedures.SongEndSyncCallback; // Keep static delegate alive
+
         public override event Action SongEnd
         {
             add
             {
                 if (_songEndHandle == 0)
                 {
-                    void sync(int _, int __, int ___, IntPtr _____)
+                    // Create a GCHandle to this instance and pass it to the callback
+                    var handle = GCHandle.Alloc(this);
+                    _songEndUser = GCHandle.ToIntPtr(handle);
+
+                    _songEndHandle = BassMix.ChannelSetSync(
+                        _mainHandle.Stream,
+                        SyncFlags.End,
+                        0,
+                        SongEndSyncProc,   // static callback
+                        _songEndUser       // instance pointer
+                    );
+
+                    if (_songEndHandle == 0)
                     {
-                        // Prevent potential race conditions by caching the value as a local
-                        var end = _songEnd;
-                        if (end != null)
-                        {
-                            UnityMainThreadCallback.QueueEvent(end.Invoke);
-                        }
+                        YargLogger.LogFormatError("Failed to set SongEnd sync: {0}",Bass.LastError);
+                        handle.Free();
+                        _songEndUser = IntPtr.Zero;
                     }
-                    _songEndHandle = BassMix.ChannelSetSync(_mainHandle.Stream, SyncFlags.End, 0, sync);
                 }
 
                 _songEnd += value;

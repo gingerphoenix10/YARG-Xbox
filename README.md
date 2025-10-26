@@ -1,11 +1,11 @@
 <p align="center">
   <picture>
-    <img alt="YARG Gameplay" src="./Images/Banner.png" width="100%">
+    <img alt="YARG Gameplay" src="./Images/this_looks_so_bad_but_im_tired.png" width="100%">
   </picture>
 </p>
 
 <p align="center">
-    <i>YARG (a.k.a. Yet Another Rhythm Game)</i>
+    <i>YARG XBOX (a.k.a. Yet Another Rhythm Game... but on Xbox)</i>
 </p>
 
 <p align="center">
@@ -24,6 +24,14 @@
 
 YARG (a.k.a. Yet Another Rhythm Game) is a free, open-source, plastic guitar game that is still in development. It supports guitar (five fret), drums (plastic or e-kit), vocals, pro-guitar, and more! YARG is still in active development, so there may be bugs and missing features.
 
+This is a fan-made fork of YARG made to run on Xbox One / Series consoles using the official Xbox Dev Mode application, with planned support for all compatible plastic instruments.
+
+> [!WARNING]
+>
+> Keep in mind, this fork is NOT complete yet, and may not be developed very well. I am not a professional programmer or game developer, so do not expect a perfect result.
+>
+> If you *do* encounter any bugs or have any suggestions however, feel free to report them to help out the project! (See [[✍️ Contributing and Credits](#️-contributing-and-credits)] below)
+
 ## 👉 Disclaimer
 
 > [!IMPORTANT]
@@ -38,8 +46,6 @@ YARG (a.k.a. Yet Another Rhythm Game) is a free, open-source, plastic guitar gam
 - [👉 Disclaimer](#-disclaimer)
 - [📃 Table of Contents](#-table-of-contents)
 - [📥 Downloading and Playing](#-downloading-and-playing)
-  - [YARC Launcher (All Platforms)](#yarc-launcher-all-platforms)
-  - [Linux](#linux)
 - [🔨 Building/Contributing](#-buildingcontributing)
   - [Setup Instructions](#setup-instructions)
   - [Unity YAML Merge Tool](#unity-yaml-merge-tool)
@@ -51,39 +57,23 @@ YARG (a.k.a. Yet Another Rhythm Game) is a free, open-source, plastic guitar gam
 
 ## 📥 Downloading and Playing
 
-**It is recommended you download YARG via the [YARC Launcher](https://github.com/YARC-Official/YARC-Launcher/releases/).** Downloading the portable option is not recommended as some features may not work.
+1. Make sure your Xbox console is in the Developer sandbox environment with an internet connection and an available account. If you haven't used Dev Mode before, there are many guides by the homebrew community such as the [Dev Mode Wiki](https://wiki.sternserv.xyz/).<br>(Note, The YARG Xbox project is not affiliated with the wiki.)
 
-### YARC Launcher (All Platforms)
+2. Download all .appx files from the latest release in the [Releases tab](https://github.com/gingerphoenix10/YARG-Xbox/Releases/Latest)
+
+3. Log into your Xbox Device Portal by accessing the IP address shown in the Dev Home (commonly <a>h</a>ttps://192.168.x.xxx:11443). This may require you to set up a login in the Remote Access Settings on your console.
+
+4. Under the "My games & apps" section of the device portal, click the Add button to install an app. Browse to the main YARG appx file downloaded from the [releases](https://github.com/gingerphoenix10/YARG-Xbox/Releases/Latest) page, select it in the "Deplay or Install Application" popup, and click Next.
+
+5. When prompted for any necessary dependencies, add any other appx files downloaded along side the YARG app package. Then click the "Start" button to begin installing the game.
+
+6. Once the installation is complete, the game should be launchable via the "Games and apps" section in the dev home, or via the regular "My games & apps" menu.
 
 > [!IMPORTANT]
-> If you are on Linux, there are some additional things you need to do in order for controllers to work. See the Linux section for more info.
-
-1. Go to the YARC Launcher releases page, [here](https://github.com/YARC-Official/YARC-Launcher/releases/).
-2. Click on the download option for your operating system.
-3. You may get a "this application is not safe" warning depending on your operating system. This is a false positive. [Click here](https://github.com/YARC-Official/YARC-Launcher#-antivirus-warnings) to learn more.
-4. Once in the launcher, click on "YARG" on the left hand side.
-5. Then, click on green "Update Stable" button.
-6. You will be prompted to choose an install folder. If you don't know what folder to choose, just click "Okay". Please ensure that the folder you select is empty.
-7. Wait for it to finish installing...
-8. Finally, press "Play Stable"!
-9. Additionally, if you want some songs, install "YARG Setlist" which is also on the left in the YARC Launcher.
-
-### Linux
-
-There are some dependencies that will be needed in order for HID devices (such as PS3 and Wii instruments) to work.
-
-1. Install `hidapi` and `libudev`:
-   - (Package names may differ depending on package repositories.)
-   - On apt-based distros (such as Ubuntu or Debian), use `sudo apt install libhidapi-hidraw0 libudev1`.
-   - On pacman-based distros (such as Arch Linux), use `pacman -S hidapi systemd-libs`.
-   - On Fedora, use `dnf install hidapi systemd-libs`.
-2. Finally, create a new udev rules file called `69-hid.rules` inside of `/etc/udev/rules.d/` or `/usr/lib/udev/rules.d/`, with the following contents:
-  ```
-  KERNEL=="hidraw*", TAG+="uaccess"
-  ```
-  - Without this file, YARG will not be able to access HID devices without special permissions such as being run with `sudo`, which is not recommended.
-  - The file name may differ if desired, but it must come before `73-seat-late.rules`!
-3. Reboot your system to apply the new udev rule, then you should be all good to go!
+>
+> If you have issues launching the game, or the game shows up under "Apps", highlight YARG in the Dev Home, press Select on your controller, Choose "View details", and make sure the App type is set to "Game".
+>
+> If you continue to have issues launching (common after updating), try uninstalling the game, restarting your console, and reinstalling via the Device Portal.
 
 ## 🔨 Building/Contributing
 
@@ -185,7 +175,9 @@ Resolving conflicts:
 
 ## ✍️ Contributing and Credits
 
-If you want to contribute, please feel free! It's recommended you join [our Discord](https://discord.gg/sqpu4R552r) so we can provide feedback quickly.
+If you would like to contribute to YARG Xbox specifically, feel free to leave any suggestions / bug reports in the [Issues](https://github.com/gingerphoenix10/YARG-Xbox/Issues). If you have the skills, also feel free to leave a pull request! This is a fully fan-driven project, and any form of contribution is welcome.
+
+If you want to contribute to YARG as a whole, please feel free! It's recommended you join [the YARG Official Discord](https://discord.gg/sqpu4R552r) so the devs can provide feedback quickly.
 
 In order to get your name added to the YARG credits, you need to first contribute to any of the following:
 * YARG
@@ -194,7 +186,7 @@ In order to get your name added to the YARG credits, you need to first contribut
 * OpenSource
 * The community (community moderator, socials manager, etc).
 
-After that, you must create a pull request on [this repo](https://github.com/YARC-Official/Contributors) to get your name added. If you need help with this, feel free to ask in our Discord!
+After that, you must create a pull request on [this repo](https://github.com/YARC-Official/Contributors) to get your name added. If you need help with this, feel free to ask in their Discord!
 
 ## 🛡️ License
 

@@ -2365,10 +2365,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4748893067795282372, guid: c59fc90e5321ae644b1baecfad526036,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 307d620787a3ecc4ca81fd131e53c592, type: 2}
     - target: {fileID: 4748893068835228428, guid: c59fc90e5321ae644b1baecfad526036,
         type: 3}
       propertyPath: m_Name
       value: MenuBackground
+      objectReference: {fileID: 0}
+    - target: {fileID: 4748893068835228428, guid: c59fc90e5321ae644b1baecfad526036,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4748893068835228431, guid: c59fc90e5321ae644b1baecfad526036,
         type: 3}

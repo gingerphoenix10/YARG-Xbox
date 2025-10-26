@@ -138,8 +138,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 0.1.0
-  preloadedAssets:
-  - {fileID: 11400000, guid: 8efbce013f4e1c34895851b7038c76e9, type: 2}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -846,16 +845,26 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: com.unity.template-starter-kit
-  metroPackageVersion: 
-  metroCertificatePath: 
+  metroPackageName: com.yarc.yarg
+  metroPackageVersion: 1.0.0.0
+  metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: com.unity.template-starter-kit
-  wsaImages: {}
-  metroTileShortName: 
+  metroCertificateSubject: YARC
+  metroCertificateIssuer: YARC
+  metroCertificateNotAfter: 80ea7ff2b65add01
+  metroApplicationDescription: com.yarc.yarg
+  wsaImages:
+    65936: Assets/Art/UI/UWP_Assets/Icon_Stable_200.png
+    2031872: Assets/Art/UI/UWP_Assets/Icon_Stable_256.png
+    2097552: Assets/Art/UI/UWP_Assets/Icon_Stable_284.png
+    2162888: Assets/Art/UI/UWP_Assets/Icon_Stable_300.png
+    2163088: 
+    2228349: Assets/Art/UI/UWP_Assets/Icon_Stable_388.png
+    2228374: 
+    2228624: 
+    2293910: Assets/Art/UI/UWP_Assets/Splash.png
+    2293960: 
+  metroTileShortName: YARG
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
@@ -869,7 +878,9 @@ PlayerSettings:
     a: 1}
   metroSplashScreenUseBackgroundColor: 0
   platformCapabilities: {}
-  metroTargetDeviceFamilies: {}
+  metroTargetDeviceFamilies:
+    Desktop: True
+    Xbox: True
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 

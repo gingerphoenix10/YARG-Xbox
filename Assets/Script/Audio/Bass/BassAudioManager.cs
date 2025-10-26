@@ -92,7 +92,7 @@ namespace YARG.Audio.BASS
             ".ogg", ".mogg", ".wav", ".mp3", ".aiff", ".opus",
         };
 
-        protected override ReadOnlySpan<string> SupportedFormats => FORMATS;
+        protected internal override ReadOnlySpan<string> SupportedFormats => FORMATS;
 
         private readonly int _opusHandle = 0;
 
@@ -100,10 +100,14 @@ namespace YARG.Audio.BASS
         {
             YargLogger.LogInfo("Initializing BASS...");
             string bassPath = GetBassDirectory();
+            YargLogger.LogFormatInfo("Bass directory: {0}", bassPath);
             string opusLibDirectory = Path.Combine(bassPath, "bassopus");
+#if UNITY_WSA
+            opusLibDirectory = "bassopus";
+#endif
 
             _opusHandle = Bass.PluginLoad(opusLibDirectory);
-            if (_opusHandle == 0) YargLogger.LogFormatError("Failed to load .opus plugin: {0}!", Bass.LastError);
+            if (_opusHandle == 0) YargLogger.LogFormatError("Failed to load .opus plugin at path {0}: {1}!", opusLibDirectory, Bass.LastError);
 
             Bass.Configure(Configuration.IncludeDefaultDevice, true);
 
@@ -146,8 +150,8 @@ namespace YARG.Audio.BASS
                 return;
             }
 
-            LoadSfx();
-            LoadDrumSfx(); // TODO: move drum sfx loading/disposal to song start/end respectively IF there are any drum players
+            //LoadSfx();
+            //LoadDrumSfx(); // TODO: move drum sfx loading/disposal to song start/end respectively IF there are any drum players
 
             var info = Bass.Info;
             PlaybackLatency = info.Latency + Bass.DeviceBufferLength + devPeriod;
@@ -162,7 +166,7 @@ namespace YARG.Audio.BASS
         }
 
 #nullable enable
-        protected override StemMixer? CreateMixer(string name, float speed, double mixerVolume, bool clampStemVolume)
+        protected internal override StemMixer? CreateMixer(string name, float speed, double mixerVolume, bool clampStemVolume)
         {
             if (GlobalAudioHandler.LogMixerStatus)
             {
@@ -176,7 +180,7 @@ namespace YARG.Audio.BASS
             return new BassStemMixer(name, this, speed, mixerVolume, handle, 0, clampStemVolume);
         }
 
-        protected override StemMixer? CreateMixer(string name, Stream stream, float speed, double mixerVolume, bool clampStemVolume)
+        protected internal override StemMixer? CreateMixer(string name, Stream stream, float speed, double mixerVolume, bool clampStemVolume)
         {
             if (GlobalAudioHandler.LogMixerStatus)
             {
@@ -195,7 +199,7 @@ namespace YARG.Audio.BASS
             return new BassStemMixer(name, this, speed, mixerVolume, handle, sourceStream, clampStemVolume);
         }
 
-        protected override MicDevice? GetInputDevice(string name)
+        protected internal override MicDevice? GetInputDevice(string name)
         {
             for (int deviceIndex = 0; Bass.RecordGetDeviceInfo(deviceIndex, out var info); deviceIndex++)
             {
@@ -216,7 +220,7 @@ namespace YARG.Audio.BASS
         }
 #nullable disable
 
-        protected override List<(int id, string name)> GetAllInputDevices()
+        protected internal override List<(int id, string name)> GetAllInputDevices()
         {
             var mics = new List<(int id, string name)>();
 
@@ -252,7 +256,7 @@ namespace YARG.Audio.BASS
         }
 
 #nullable enable
-        protected override MicDevice? CreateDevice(int deviceId, string name)
+        protected internal override MicDevice? CreateDevice(int deviceId, string name)
 #nullable disable
         {
             var device = BassMicDevice.Create(deviceId, name);
@@ -317,7 +321,7 @@ namespace YARG.Audio.BASS
             YargLogger.LogInfo("Finished loading Drum SFX");
         }
 
-        protected override void SetMasterVolume(double volume)
+        protected internal override void SetMasterVolume(double volume)
         {
 #if UNITY_EDITOR
             if (EditorUtility.audioMasterMute)
@@ -356,6 +360,11 @@ namespace YARG.Audio.BASS
 #else
 			pluginDirectory = Path.Combine(pluginDirectory, "x86");
 #endif
+#endif
+
+            // UWP weirdness
+#if !UNITY_EDITOR && UNITY_WSA
+			pluginDirectory =  Directory.GetParent(Application.dataPath).ToString();
 #endif
 
             // Unity Editor directory, Assets/Plugins/Bass/
@@ -401,7 +410,12 @@ namespace YARG.Audio.BASS
             // https://www.un4seen.com/forum/?topic=20148.msg140872#msg140872
             const BassFlags streamFlags = BassFlags.Prescan | BassFlags.Decode | BassFlags.AsyncFile | (BassFlags) 64;
 
+#if UNITY_WSA
+            IntPtr user = ILBassStreamProcedures.CreateUserData(stream);
+            streamHandle = Bass.CreateStream(StreamSystem.NoBuffer, streamFlags, ILBassStreamProcedures.Callbacks, user);
+#else
             streamHandle = Bass.CreateStream(StreamSystem.NoBuffer, streamFlags, new BassStreamProcedures(stream));
+#endif
             if (streamHandle == 0)
             {
                 YargLogger.LogFormatError("Failed to create source stream: {0}!", Bass.LastError);

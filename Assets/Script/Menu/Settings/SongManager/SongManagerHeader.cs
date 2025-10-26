@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using YARG.Core.Song.Cache;
 using YARG.Helpers;
@@ -23,6 +24,17 @@ namespace YARG.Menu.Settings
             SettingsMenu.Instance.RefreshAndKeepPosition();
         }
 
+        public async void Start()
+        {
+            if (SettingsManager.Settings.SongFolders.Count == 0)
+            {
+                SettingsManager.Settings.SongFolders.Add(Path.Combine(PathHelper.PersistentDataPath, "Songs"));
+                SettingsMenu.Instance.RefreshAndKeepPosition();
+                await Task.Delay(2000);
+                RefreshSongs();
+            }
+        }
+
         public async void RefreshSongs()
         {
             using var context = new LoadingContext();
@@ -33,7 +45,7 @@ namespace YARG.Menu.Settings
         private void CheckBadSongsFile()
         {
             _badSongsButton.gameObject.SetActive(File.Exists(PathHelper.BadSongsPath));
-            
+
             var numErrors = CacheHandler.Progress.BadSongCount;
 
             if (numErrors > 0)

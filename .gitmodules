@@ -1,3 +1,6 @@
 [submodule "Assets/Plugins/YARG.Core"]
-	path = YARG.Core
-	url = https://github.com/YARC-Official/YARG.Core
+	path = Assets/YARG.Core
+	url = https://github.com/gingerphoenix10/YARG.Core.XB
+[submodule "Assets/ManagedBass"]
+	path = Assets/ManagedBass
+	url = https://github.com/gingerphoenix10/ManagedBass

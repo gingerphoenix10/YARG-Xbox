@@ -3785,7 +3785,7 @@ MonoBehaviour:
   m_CursorMode: 0
   m_CursorGraphic: {fileID: 708321224}
   m_CursorTransform: {fileID: 708321223}
-  m_CursorSpeed: 400
+  m_CursorSpeed: 1000
   m_ScrollSpeed: 45
   m_StickAction:
     m_UseReference: 0
@@ -3821,6 +3821,14 @@ MonoBehaviour:
       - m_Name: 
         m_Id: 91f7b898-eb9e-4082-ab03-613ab93edd73
         m_Path: <Gamepad>/rightShoulder
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Left Button
+        m_Flags: 0
+      - m_Name: 
+        m_Id: e44da522-de2a-4ee4-b489-60025bf22e4b
+        m_Path: <Gamepad>/rightStickPress
         m_Interactions: 
         m_Processors: 
         m_Groups: 

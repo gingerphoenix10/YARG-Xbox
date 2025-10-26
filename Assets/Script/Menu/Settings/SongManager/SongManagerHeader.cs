@@ -24,17 +24,6 @@ namespace YARG.Menu.Settings
             SettingsMenu.Instance.RefreshAndKeepPosition();
         }
 
-        public async void Start()
-        {
-            if (SettingsManager.Settings.SongFolders.Count == 0)
-            {
-                SettingsManager.Settings.SongFolders.Add(Path.Combine(PathHelper.PersistentDataPath, "Songs"));
-                SettingsMenu.Instance.RefreshAndKeepPosition();
-                await Task.Delay(2000);
-                RefreshSongs();
-            }
-        }
-
         public async void RefreshSongs()
         {
             using var context = new LoadingContext();

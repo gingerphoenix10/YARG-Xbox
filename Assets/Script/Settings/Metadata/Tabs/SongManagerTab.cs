@@ -29,9 +29,6 @@ namespace YARG.Settings.Metadata
             {
                 var go = Object.Instantiate(_songManagerDirectory, settingContainer);
                 go.GetComponent<SettingsDirectory>().SetIndex(i);
-
-                //if (i == 0)
-                //    go.GetComponent<SettingsDirectory>().Browse();
             }
 
             // Build the rest of the metadata

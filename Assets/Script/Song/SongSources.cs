@@ -206,7 +206,7 @@ namespace YARG.Song
             {
                 // Retrieve sources file
                 #if ENABLE_WINMD_SUPPORT && UNITY_WSA
-                /*using var httpClient = new HttpClient [i cba]
+                using var httpClient = new HttpClient
                 {
                     Timeout = TimeSpan.FromMilliseconds(2500)
                 };
@@ -219,7 +219,7 @@ namespace YARG.Song
                 // Read the JSON
                 var jsonText = await response.Content.ReadAsStringAsync();
                 var json = JArray.Parse(jsonText);
-                newestVersion = json[0]["sha"]!.ToString();*/
+                newestVersion = json[0]["sha"]!.ToString();
                 #else
                 var request = (HttpWebRequest) WebRequest.Create(SOURCE_COMMIT_URL);
                 request.UserAgent = "YARG";
@@ -251,12 +251,14 @@ namespace YARG.Song
             {
                 return;
             }
-
+#if UNITY_WSA && !UNITY_EDITOR
+            return;
+#endif
             // Otherwise, update!
             try
             {
                 // Download
-                #if ENABLE_WINMD_SUPPORT && UNITY_WSA
+#if ENABLE_WINMD_SUPPORT && UNITY_WSA
                 context.SetSubText("Downloading new version...");
                 string zipFileName = "update.zip";
 
@@ -310,7 +312,7 @@ namespace YARG.Song
 
                 // Delete the zip
                 await zipFile.DeleteAsync();
-                #else
+#else
                 context.SetSubText("Downloading new version...");
                 string zipPath = Path.Combine(SourcesFolder, "update.zip");
                 using (var client = new WebClient())
@@ -352,7 +354,7 @@ namespace YARG.Song
 
                 // Delete the zip
                 File.Delete(zipPath);
-                #endif
+#endif
             }
             catch (Exception e)
             {

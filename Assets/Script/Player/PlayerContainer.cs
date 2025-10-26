@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XInput;
+using YARG.Core;
 using YARG.Core.Game;
 using YARG.Core.Logging;
 using YARG.Helpers;
@@ -202,6 +204,45 @@ namespace YARG.Player
             foreach (var player in _players)
             {
                 player.Bindings.OnDeviceAdded(device);
+            }
+
+            if (device is Keyboard || device is Mouse)
+                return;
+
+            if (PlayerContainer.IsDeviceTaken(device))
+                return;
+
+            YargProfile Profile = new YargProfile
+            {
+                Name = device.displayName,
+                NoteSpeed = 5,
+                HighwayLength = 1,
+                GameMode = GameMode.FiveFretGuitar
+            };
+
+            PlayerContainer.AddProfile(Profile);
+
+            if (PlayerContainer.IsProfileTaken(Profile))
+            {
+                YargLogger.LogFormatError("Attempted to connect already-taken profile {0}!", Profile.Name);
+                return;
+            }
+
+            // Create player from profile
+            var newPlayer = PlayerContainer.CreatePlayerFromProfile(Profile, false);
+            if (newPlayer is null)
+            {
+                YargLogger.LogFormatError("Failed to connect profile {0}!", Profile.Name);
+                return;
+            }
+
+            if (!Profile.IsBot && newPlayer.Bindings.Empty)
+            {
+                newPlayer.Bindings.AddDevice(device);
+                if (device is XInputController)
+                    newPlayer.Bindings.SetDefaultBinds(device as Gamepad, GamepadBindingMode.CrkdGuitar_Mode1);
+                else
+                    newPlayer.Bindings.SetDefaultBinds(device);
             }
         }
 

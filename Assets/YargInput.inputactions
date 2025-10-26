@@ -123,6 +123,17 @@
                 },
                 {
                     "name": "",
+                    "id": "9a4eefac-5a37-4d25-b12a-d548e4720921",
+                    "path": "<VirtualMouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a570a09b-4c79-4af2-baff-3118ed83e7bd",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -161,6 +172,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f8050731-7558-4dbc-a983-c4735b8bb440",
+                    "path": "<VirtualMouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false

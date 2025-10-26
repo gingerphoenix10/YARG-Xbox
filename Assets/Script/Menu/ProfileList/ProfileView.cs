@@ -102,7 +102,7 @@ namespace YARG.Menu.ProfileList
             bool remove = false;
 
             // Confirm that the user wants to delete the profile first, UNLESS it's a bot
-            if (!Profile.IsBot)
+            if (false && !Profile.IsBot)
             {
                 var dialog = DialogManager.Instance.ShowConfirmDeleteDialog(
                     "Deleting this profile is permanent and you will lose all stats and binds. Play history will " +

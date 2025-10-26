@@ -102,7 +102,7 @@ namespace YARG.Audio.BASS
             string bassPath = GetBassDirectory();
             YargLogger.LogFormatInfo("Bass directory: {0}", bassPath);
             string opusLibDirectory = Path.Combine(bassPath, "bassopus");
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_EDITOR
             opusLibDirectory = "bassopus";
 #endif
 
@@ -150,8 +150,8 @@ namespace YARG.Audio.BASS
                 return;
             }
 
-            //LoadSfx();
-            //LoadDrumSfx(); // TODO: move drum sfx loading/disposal to song start/end respectively IF there are any drum players
+            LoadSfx();
+            LoadDrumSfx(); // TODO: move drum sfx loading/disposal to song start/end respectively IF there are any drum players
 
             var info = Bass.Info;
             PlaybackLatency = info.Latency + Bass.DeviceBufferLength + devPeriod;

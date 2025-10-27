@@ -91,6 +91,10 @@ namespace YARG.Helpers
             PersistentDataPath = SanitizePath(Path.Combine(Application.persistentDataPath, "release"));
 #endif
 
+#if UNITY_WSA
+        
+#endif
+
             // Persistent Data Path override passed in from CLI
             if (!string.IsNullOrWhiteSpace(CommandLineArgs.PersistentDataPath))
             {
@@ -101,8 +105,12 @@ namespace YARG.Helpers
             // Get other paths that are only allowed on the main thread
             ApplicationDataPath = SanitizePath(Application.dataPath);
             ExecutablePath = Directory.GetParent(ApplicationDataPath)?.FullName;
+#if UNITY_WSA
+            StreamingAssetsPath = Path.Combine(PersistentDataPath, "StreamingAssets");
             StreamingAssetsPath = SanitizePath(Application.streamingAssetsPath);
-
+#else
+            StreamingAssetsPath = SanitizePath(Application.streamingAssetsPath);
+#endif
             // Get song scanning paths
             SongCachePath = Path.Combine(PersistentDataPath, "songcache.bin");
             BadSongsPath = Path.Combine(PersistentDataPath, "badsongs.txt");

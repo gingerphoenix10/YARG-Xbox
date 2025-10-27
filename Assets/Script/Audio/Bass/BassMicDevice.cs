@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Runtime.InteropServices;
+﻿using AOT;
 using ManagedBass;
 using ManagedBass.Fx;
+using System;
+using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using YARG.Audio.PitchDetection;
-using YARG.Core.Logging;
 using YARG.Core.Audio;
 using YARG.Core.IO;
+using YARG.Core.Logging;
 using YARG.Input;
 using YARG.Settings;
 
@@ -75,6 +76,7 @@ namespace YARG.Audio.BASS
             _applyGain = applyGain;
         }
 
+        [MonoPInvokeCallback(typeof(SyncProcedure))]
         private static void ApplyGain(int handle, int channel, IntPtr buffer, int length, IntPtr user)
         {
             BassHelpers.ApplyGain(1.3f, buffer, length);

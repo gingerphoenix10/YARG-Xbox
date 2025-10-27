@@ -184,12 +184,12 @@ namespace YARG.Menu.ProfileList
             }
 
             // Add available microphones
-            foreach (var microphone in GlobalAudioHandler.GetAllInputDevices())
+            foreach (var microphone in await GlobalAudioHandler.GetAllInputDevices())
             {
                 devicesAvailable = true;
-                dialog.AddListButton(microphone.name, () =>
+                dialog.AddListButton(microphone.name, async () =>
                 {
-                    var device = GlobalAudioHandler.CreateDevice(microphone.id, microphone.name);
+                    var device = await GlobalAudioHandler.CreateDevice(microphone.id, microphone.name);
                     player.Bindings.AddMicrophone(device);
                     selectedDevice = true;
                 });

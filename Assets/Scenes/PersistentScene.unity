@@ -3779,7 +3779,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1632812038}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 424b6720ff5999446843ba414e58a907, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d22a2698e9abe9489998186d4e0a346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_CursorMode: 0
@@ -3793,12 +3793,12 @@ MonoBehaviour:
       m_Name: Stick
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: c02b0eeb-632a-4a43-b35c-c713a97eadbc
+      m_Id: 7bf90fb5-6bf9-42da-a3c0-60c68ec219d6
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 13ae8cfc-4199-4af4-ac47-8dd5b4fe6a5e
+        m_Id: 84d30660-b1a0-49a1-b0f6-f767d35a5609
         m_Path: <Gamepad>/rightStick
         m_Interactions: 
         m_Processors: 
@@ -3806,44 +3806,34 @@ MonoBehaviour:
         m_Action: Stick
         m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: -4651980066812231454, guid: 920d3cc346329384bbd7ee4a4d15e12e,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_LeftButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Left Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 6635406a-a287-4d7e-9dde-67d9947e0a38
+      m_Id: 3f7e9573-88c4-4670-b7c3-0c0b0644b82b
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 91f7b898-eb9e-4082-ab03-613ab93edd73
+        m_Id: bed63ec0-9cb0-4f5e-9a2a-a9202fd70064
         m_Path: <Gamepad>/rightShoulder
         m_Interactions: 
         m_Processors: 
         m_Groups: 
         m_Action: Left Button
         m_Flags: 0
-      - m_Name: 
-        m_Id: e44da522-de2a-4ee4-b489-60025bf22e4b
-        m_Path: <Gamepad>/rightStickPress
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Left Button
-        m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: 1148466414144882205, guid: 920d3cc346329384bbd7ee4a4d15e12e,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_MiddleButtonAction:
     m_UseReference: 1
     m_Action:
       m_Name: Middle Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 54168bb7-1e97-4701-9856-41461d315fd4
+      m_Id: c3c9661a-f520-4b37-a64a-cc62ef3bea7f
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -3856,7 +3846,7 @@ MonoBehaviour:
       m_Name: Right Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 17641d3b-ed08-4693-a31e-bea820b6f502
+      m_Id: 267ad948-0ff0-4aa5-b9ec-5c6cb4106ece
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -3869,7 +3859,7 @@ MonoBehaviour:
       m_Name: Forward Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: dd6e0ab8-5554-4e75-8c3c-54e684598032
+      m_Id: 9148568c-d00f-4b8d-bdd8-00bddc67ab76
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -3882,7 +3872,7 @@ MonoBehaviour:
       m_Name: Back Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 90ee8daa-03df-4194-8541-b56a4bf73312
+      m_Id: 3eca7514-ac8f-4b5e-b427-cac6f9b8dc48
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -3895,7 +3885,7 @@ MonoBehaviour:
       m_Name: Scroll Wheel
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: f46acf0f-64d7-402e-baa5-e176d050f87c
+      m_Id: 24156981-808e-4d22-91b7-437170498555
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []

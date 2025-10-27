@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
@@ -18,6 +17,9 @@ using YARG.Helpers.Extensions;
 using YARG.Settings.Customization;
 #if ENABLE_WINMD_SUPPORT && UNITY_WSA
 using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.Web.Http;
+using Windows.Web.Http.Filters;
 #endif
 
 namespace YARG.Song
@@ -120,10 +122,12 @@ namespace YARG.Song
         }
 
         public const string SOURCE_REPO_FOLDER = "OpenSource-master";
-#if UNITY_EDITOR || true
+#if UNITY_EDITOR && false
         // The editor does not track the contents of folders that end in ~,
         // so use this to prevent Unity from stalling due to importing freshly-downloaded sources
         public static readonly string SourcesFolder = Path.Combine(PathHelper.StreamingAssetsPath, "sources~");
+#elif UNITY_WSA
+        public static readonly string SourcesFolder = Path.Combine(PathHelper.PersistentDataPath, "sources");
 #else
         public static readonly string SourcesFolder = Path.Combine(PathHelper.StreamingAssetsPath, "sources");
 #endif
@@ -205,22 +209,18 @@ namespace YARG.Song
             try
             {
                 // Retrieve sources file
-                #if ENABLE_WINMD_SUPPORT && UNITY_WSA
-                using var httpClient = new HttpClient
-                {
-                    Timeout = TimeSpan.FromMilliseconds(2500)
-                };
-                httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("YARG");
+#if ENABLE_WINMD_SUPPORT && UNITY_WSA
+                var filter = new HttpBaseProtocolFilter();
+                using var httpClient = new HttpClient(filter);
+                httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("YARG");
 
-                // Send the request and get the response
-                var response = await httpClient.GetAsync(SOURCE_COMMIT_URL);
+                var response = await httpClient.GetAsync(new Uri(SOURCE_COMMIT_URL));
                 response.EnsureSuccessStatusCode();
 
-                // Read the JSON
                 var jsonText = await response.Content.ReadAsStringAsync();
                 var json = JArray.Parse(jsonText);
                 newestVersion = json[0]["sha"]!.ToString();
-                #else
+#else
                 var request = (HttpWebRequest) WebRequest.Create(SOURCE_COMMIT_URL);
                 request.UserAgent = "YARG";
                 request.Timeout = 2500;
@@ -245,36 +245,37 @@ namespace YARG.Song
                 return;
             }
 
+            YargLogger.LogFormatInfo("Sources latest version: {0}", newestVersion);
+
             // If up to date, finish
             var repoDir = Path.Combine(SourcesFolder, SOURCE_REPO_FOLDER);
             if (newestVersion == currentVersion && Directory.Exists(repoDir))
             {
                 return;
             }
-#if UNITY_WSA && !UNITY_EDITOR
-            return;
-#endif
             // Otherwise, update!
             try
             {
                 // Download
-#if ENABLE_WINMD_SUPPORT && UNITY_WSA
+#if UNITY_WSA && !UNITY_EDITOR
                 context.SetSubText("Downloading new version...");
                 string zipFileName = "update.zip";
 
-                // Save to local folder (UWP-safe path)
+                // Get folder to save the downloaded zip
                 StorageFolder sourcesFolder = await StorageFolder.GetFolderFromPathAsync(SourcesFolder);
                 StorageFile zipFile = await sourcesFolder.CreateFileAsync(zipFileName, CreationCollisionOption.ReplaceExisting);
 
-                using (var httpClient = new HttpClient())
-                using (var response = await httpClient.GetAsync(SOURCE_ZIP_URL))
-                {
-                    response.EnsureSuccessStatusCode();
+                // Download using UWP HttpClient
+                var httpClient = new Windows.Web.Http.HttpClient();
+                httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("YARG");
 
-                    using (var fileStream = await zipFile.OpenStreamForWriteAsync())
-                    {
-                        await response.Content.CopyToAsync(fileStream);
-                    }
+                var response = await httpClient.GetAsync(new Uri(SOURCE_ZIP_URL));
+                response.EnsureSuccessStatusCode();
+
+                using (var stream = await response.Content.ReadAsInputStreamAsync())
+                using (var outputStream = await zipFile.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    await RandomAccessStream.CopyAndCloseAsync(stream, outputStream);
                 }
 
                 // Delete old folder if it exists
@@ -283,22 +284,22 @@ namespace YARG.Song
                     Directory.Delete(repoDir, true);
                 }
 
-                // Extract new version (UWP supports this via System.IO.Compression if referenced)
+                // Extract new version
                 context.SetSubText("Extracting new version...");
-                ZipFile.ExtractToDirectory(zipFile.Path, SourcesFolder, overwriteFiles: true);
 
-                // Delete unwanted folders
-                string ignoreFolder = Path.Combine(repoDir, "ignore");
-                if (Directory.Exists(ignoreFolder))
+                // Use .NET ZipArchive API to extract
+                using (var fileStream = await zipFile.OpenStreamForReadAsync())
+                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                 {
-                    Directory.Delete(ignoreFolder, true);
+                    archive.ExtractToDirectory(SourcesFolder, overwriteFiles: true);
                 }
+
+                // Clean unwanted folders
+                string ignoreFolder = Path.Combine(repoDir, "ignore");
+                if (Directory.Exists(ignoreFolder)) Directory.Delete(ignoreFolder, true);
 
                 string githubFolder = Path.Combine(repoDir, ".github");
-                if (Directory.Exists(githubFolder))
-                {
-                    Directory.Delete(githubFolder, true);
-                }
+                if (Directory.Exists(githubFolder)) Directory.Delete(githubFolder, true);
 
                 // Delete random files in repoDir
                 foreach (string file in Directory.EnumerateFiles(repoDir))
@@ -310,7 +311,7 @@ namespace YARG.Song
                 string versionFilePath = Path.Combine(SourcesFolder, "version.txt");
                 await File.WriteAllTextAsync(versionFilePath, newestVersion);
 
-                // Delete the zip
+                // Delete zip
                 await zipFile.DeleteAsync();
 #else
                 context.SetSubText("Downloading new version...");

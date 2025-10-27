@@ -8,6 +8,13 @@ using UnityEngine;
 using YARG.Core.Audio;
 using YARG.Core.Logging;
 using YARG.Settings;
+using YARG.Helpers;
+#if UNITY_WSA && !UNITY_EDITOR
+using Windows.Media.Devices;
+using Windows.Devices.Enumeration;
+#endif
+using System.Threading.Tasks;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -199,7 +206,7 @@ namespace YARG.Audio.BASS
             return new BassStemMixer(name, this, speed, mixerVolume, handle, sourceStream, clampStemVolume);
         }
 
-        protected internal override MicDevice? GetInputDevice(string name)
+        protected internal override Task<MicDevice?> GetInputDevice(string name)
         {
             for (int deviceIndex = 0; Bass.RecordGetDeviceInfo(deviceIndex, out var info); deviceIndex++)
             {
@@ -220,10 +227,24 @@ namespace YARG.Audio.BASS
         }
 #nullable disable
 
-        protected internal override List<(int id, string name)> GetAllInputDevices()
+        protected internal override async Task<List<(int id, string name)>> GetAllInputDevices()
         {
             var mics = new List<(int id, string name)>();
 
+#if UNITY_WSA && !UNITY_EDITOR && false
+            // Get selector string for audio capture devices
+            var selector = MediaDevice.GetAudioCaptureSelector();
+            var devices = await DeviceInformation.FindAllAsync(selector);
+
+            int index = 0;
+            foreach (var device in devices)
+            {
+                // Exclude default if desired
+                if (device.IsDefault) continue;
+
+                mics.Add((index++, device.Name));
+            }
+#else
             // Ignored for now since it causes issues on Linux, BASS must not report device info correctly there
             // TODO: allow configuring this at runtime?
             // Also put into a static variable instead of instantiating every time
@@ -251,15 +272,19 @@ namespace YARG.Audio.BASS
 
                 mics.Add((deviceIndex, info.Name));
             }
-
+#endif
             return mics;
         }
 
 #nullable enable
-        protected internal override MicDevice? CreateDevice(int deviceId, string name)
+        protected internal override async Task<MicDevice?> CreateDevice(int deviceId, string name)
 #nullable disable
         {
+#if UNITY_WSA && !UNITY_EDITOR && false
+            var device = await YARG.Audio.UWP.UWPMicDevice.CreateAsync(name);
+#else
             var device = BassMicDevice.Create(deviceId, name);
+#endif
             device?.SetMonitoringLevel(SettingsManager.Settings.VocalMonitoring.Value);
             return device;
         }
@@ -268,7 +293,7 @@ namespace YARG.Audio.BASS
         {
             YargLogger.LogInfo("Loading SFX");
 
-            string sfxFolder = Path.Combine(Application.streamingAssetsPath, "sfx");
+            string sfxFolder = Path.Combine(PathHelper.StreamingAssetsPath, "sfx");
 
             foreach (string sfxFile in AudioHelpers.SfxPaths)
             {
@@ -297,7 +322,7 @@ namespace YARG.Audio.BASS
         {
             YargLogger.LogInfo("Loading Drum SFX");
 
-            string sfxFolder = Path.Combine(Application.streamingAssetsPath, "drumSfx");
+            string sfxFolder = Path.Combine(PathHelper.StreamingAssetsPath, "drumSfx");
 
             foreach (string sfxFile in AudioHelpers.DrumSfxPaths)
             {

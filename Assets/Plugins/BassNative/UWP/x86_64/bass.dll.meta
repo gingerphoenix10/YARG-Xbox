@@ -1,5 +1,14 @@
+<<<<<<< HEAD
 ﻿fileFormatVersion: 2
 guid: 4c12dc5f6a16479439f8abb2fe429631
+=======
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/bassasio.dll.meta
+guid: 6f0b93d0be054adaaaeb106a5c482bff
+========
+guid: 4c12dc5f6a16479439f8abb2fe429631
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass.dll.meta
+>>>>>>> 6d39e40b (Ported all xbox code over to dev branch)
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -17,13 +26,28 @@ PluginImporter:
       enabled: 0
       settings:
         Exclude Editor: 1
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/bassasio.dll.meta
+        Exclude Linux64: 0
+        Exclude OSXUniversal: 0
+        Exclude Win: 0
+        Exclude Win64: 1
+========
+>>>>>>> 6d39e40b (Ported all xbox code over to dev branch)
         Exclude Linux64: 1
         Exclude OSXUniversal: 1
         Exclude Win: 1
         Exclude Win64: 1
         Exclude WindowsStoreApps: 0
+<<<<<<< HEAD
   - first:
       Any:
+=======
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass.dll.meta
+  - first:
+      Any: 
+>>>>>>> 6d39e40b (Ported all xbox code over to dev branch)
     second:
       enabled: 0
       settings: {}
@@ -34,6 +58,7 @@ PluginImporter:
       settings:
         CPU: AnyCPU
         DefaultValueInitialized: true
+<<<<<<< HEAD
         OS: AnyOS
   - first:
       Standalone: Linux64
@@ -45,6 +70,23 @@ PluginImporter:
       Standalone: OSXUniversal
     second:
       enabled: 0
+=======
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/bassasio.dll.meta
+        OS: Windows
+========
+        OS: AnyOS
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass.dll.meta
+  - first:
+      Standalone: Linux64
+    second:
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+  - first:
+      Standalone: OSXUniversal
+    second:
+      enabled: 1
+>>>>>>> 6d39e40b (Ported all xbox code over to dev branch)
       settings:
         CPU: None
   - first:
@@ -66,9 +108,18 @@ PluginImporter:
       settings:
         CPU: X64
         DontProcess: false
+<<<<<<< HEAD
         PlaceholderPath:
         SDK: UWP
         ScriptingBackend: AnyScriptingBackend
   userData:
   assetBundleName:
   assetBundleVariant:
+=======
+        PlaceholderPath: 
+        SDK: UWP
+        ScriptingBackend: AnyScriptingBackend
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+>>>>>>> 6d39e40b (Ported all xbox code over to dev branch)

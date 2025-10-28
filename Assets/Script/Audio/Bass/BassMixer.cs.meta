@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Script/Audio/Bass/BassMixer.cs.meta
 guid: ba61e5bad22e48c5a53b1773bc9ddfa9
+========
+guid: f60935fa89d8f6f43ac23d37ecdf91bb
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Script/Input/Devices/VirtualCursor.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

@@ -148,6 +148,8 @@ namespace YARG.Song
 
         public static string internalSongsPath;
 
+        public readonly static string internalSongsPath = Path.Combine(PathHelper.PersistentDataPath, "Songs");
+
 #nullable enable
         public static async UniTask RunRefresh(bool quick, LoadingContext? context = null)
 #nullable disable

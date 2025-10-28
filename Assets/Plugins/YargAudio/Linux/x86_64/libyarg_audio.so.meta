@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/YargAudio/Linux/x86_64/libyarg_audio.so.meta
 guid: 23ebf295555749309b883b83686ac360
+========
+guid: c1702eefcf9996f4bbca9389006ed6d9
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bassmix.dll.meta
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -13,6 +17,7 @@ PluginImporter:
   platformData:
   - first:
       : Any
+<<<<<<<< HEAD:Assets/Plugins/YargAudio/Linux/x86_64/libyarg_audio.so.meta
     second:
       enabled: 0
       settings:
@@ -25,21 +30,40 @@ PluginImporter:
       Any:
     second:
       enabled: 0
+========
+    second:
+      enabled: 0
+      settings:
+        Exclude Editor: 1
+        Exclude Linux64: 1
+        Exclude OSXUniversal: 1
+        Exclude Win: 1
+        Exclude Win64: 1
+        Exclude WindowsStoreApps: 0
+  - first:
+      Any: 
+    second:
+      enabled: 0
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bassmix.dll.meta
       settings: {}
   - first:
       Editor: Editor
     second:
       enabled: 1
       settings:
-        CPU: x86_64
+        CPU: AnyCPU
         DefaultValueInitialized: true
+<<<<<<<< HEAD:Assets/Plugins/YargAudio/Linux/x86_64/libyarg_audio.so.meta
         OS: Linux
+========
+        OS: AnyOS
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bassmix.dll.meta
   - first:
       Standalone: Linux64
     second:
-      enabled: 1
+      enabled: 0
       settings:
-        CPU: x86_64
+        CPU: None
   - first:
       Standalone: OSXUniversal
     second:
@@ -56,8 +80,26 @@ PluginImporter:
       Standalone: Win64
     second:
       enabled: 0
+<<<<<<<< HEAD:Assets/Plugins/YargAudio/Linux/x86_64/libyarg_audio.so.meta
       settings:
         CPU: None
   userData:
   assetBundleName:
   assetBundleVariant:
+========
+      settings:
+        CPU: None
+  - first:
+      Windows Store Apps: WindowsStoreApps
+    second:
+      enabled: 1
+      settings:
+        CPU: X64
+        DontProcess: false
+        PlaceholderPath: 
+        SDK: UWP
+        ScriptingBackend: AnyScriptingBackend
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bassmix.dll.meta

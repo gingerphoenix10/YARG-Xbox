@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Script/Audio/Bass/BassAudioRouter.cs.meta
 guid: 5ebf60976d3a4a13b04274148de29f25
+========
+guid: 23110b8fac69cae4c9d2d674c0e945de
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Script/Audio/Bass/ILBassStreamProcedures.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

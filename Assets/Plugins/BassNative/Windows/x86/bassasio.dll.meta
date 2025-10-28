@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/bassasio.dll.meta
 guid: 6f0b93d0be054adaaaeb106a5c482bff
+========
+guid: 4c12dc5f6a16479439f8abb2fe429631
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass.dll.meta
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -17,14 +21,22 @@ PluginImporter:
       enabled: 0
       settings:
         Exclude Editor: 1
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/bassasio.dll.meta
         Exclude Linux64: 0
         Exclude OSXUniversal: 0
         Exclude Win: 0
         Exclude Win64: 1
+========
+        Exclude Linux64: 1
+        Exclude OSXUniversal: 1
+        Exclude Win: 1
+        Exclude Win64: 1
+        Exclude WindowsStoreApps: 0
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass.dll.meta
   - first:
       Any: 
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
   - first:
       Editor: Editor
@@ -33,7 +45,11 @@ PluginImporter:
       settings:
         CPU: AnyCPU
         DefaultValueInitialized: true
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/bassasio.dll.meta
         OS: Windows
+========
+        OS: AnyOS
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass.dll.meta
   - first:
       Standalone: Linux64
     second:
@@ -49,15 +65,25 @@ PluginImporter:
   - first:
       Standalone: Win
     second:
-      enabled: 1
+      enabled: 0
       settings:
-        CPU: x86
+        CPU: None
   - first:
       Standalone: Win64
     second:
       enabled: 0
       settings:
         CPU: None
+  - first:
+      Windows Store Apps: WindowsStoreApps
+    second:
+      enabled: 1
+      settings:
+        CPU: X64
+        DontProcess: false
+        PlaceholderPath: 
+        SDK: UWP
+        ScriptingBackend: AnyScriptingBackend
   userData: 
   assetBundleName: 
   assetBundleVariant: 

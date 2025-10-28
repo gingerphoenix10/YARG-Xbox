@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/basswasapi.dll.meta
 guid: 1f4095a122e84d419c8f5fa41893c52a
+========
+guid: 6bc295d28d5e91c429f626898cf98e8b
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass_fx.dll.meta
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -17,14 +21,22 @@ PluginImporter:
       enabled: 0
       settings:
         Exclude Editor: 1
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/basswasapi.dll.meta
         Exclude Linux64: 0
         Exclude OSXUniversal: 0
         Exclude Win: 0
         Exclude Win64: 1
+========
+        Exclude Linux64: 1
+        Exclude OSXUniversal: 1
+        Exclude Win: 1
+        Exclude Win64: 1
+        Exclude WindowsStoreApps: 0
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass_fx.dll.meta
   - first:
       Any: 
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
   - first:
       Editor: Editor
@@ -33,17 +45,25 @@ PluginImporter:
       settings:
         CPU: AnyCPU
         DefaultValueInitialized: true
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/basswasapi.dll.meta
         OS: Windows
+========
+        OS: AnyOS
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass_fx.dll.meta
   - first:
       Standalone: Linux64
     second:
-      enabled: 1
+      enabled: 0
       settings:
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/basswasapi.dll.meta
         CPU: AnyCPU
+========
+        CPU: None
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass_fx.dll.meta
   - first:
       Standalone: OSXUniversal
     second:
-      enabled: 1
+      enabled: 0
       settings:
         CPU: None
   - first:
@@ -58,6 +78,25 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: None
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86/basswasapi.dll.meta
+========
+  - first:
+      Standalone: Win64
+    second:
+      enabled: 0
+      settings:
+        CPU: None
+  - first:
+      Windows Store Apps: WindowsStoreApps
+    second:
+      enabled: 1
+      settings:
+        CPU: X64
+        DontProcess: false
+        PlaceholderPath: 
+        SDK: UWP
+        ScriptingBackend: AnyScriptingBackend
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bass_fx.dll.meta
   userData: 
   assetBundleName: 
   assetBundleVariant: 

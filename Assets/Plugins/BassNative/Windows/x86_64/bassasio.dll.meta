@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86_64/bassasio.dll.meta
 guid: b19d97fc784b47548fdbc6e44f3ea6e7
+========
+guid: 4b6ab1a4d18beaf48b8219500dfbc09a
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bassopus.dll.meta
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -16,34 +20,51 @@ PluginImporter:
     second:
       enabled: 0
       settings:
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86_64/bassasio.dll.meta
         Exclude Editor: 0
         Exclude Linux64: 0
         Exclude OSXUniversal: 0
         Exclude Win: 1
         Exclude Win64: 0
+========
+        Exclude Editor: 1
+        Exclude Linux64: 1
+        Exclude OSXUniversal: 1
+        Exclude Win: 1
+        Exclude Win64: 1
+        Exclude WindowsStoreApps: 0
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bassopus.dll.meta
   - first:
       Any: 
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
   - first:
       Editor: Editor
     second:
       enabled: 1
       settings:
-        CPU: x86_64
+        CPU: AnyCPU
         DefaultValueInitialized: true
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86_64/bassasio.dll.meta
         OS: Windows
+========
+        OS: AnyOS
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bassopus.dll.meta
   - first:
       Standalone: Linux64
     second:
-      enabled: 1
+      enabled: 0
       settings:
+<<<<<<<< HEAD:Assets/Plugins/BassNative/Windows/x86_64/bassasio.dll.meta
         CPU: AnyCPU
+========
+        CPU: None
+>>>>>>>> 6d39e40b (Ported all xbox code over to dev branch):Assets/Plugins/BassNative/UWP/x86_64/bassopus.dll.meta
   - first:
       Standalone: OSXUniversal
     second:
-      enabled: 1
+      enabled: 0
       settings:
         CPU: None
   - first:
@@ -55,9 +76,19 @@ PluginImporter:
   - first:
       Standalone: Win64
     second:
+      enabled: 0
+      settings:
+        CPU: None
+  - first:
+      Windows Store Apps: WindowsStoreApps
+    second:
       enabled: 1
       settings:
-        CPU: x86_64
+        CPU: X64
+        DontProcess: false
+        PlaceholderPath: 
+        SDK: UWP
+        ScriptingBackend: AnyScriptingBackend
   userData: 
   assetBundleName: 
   assetBundleVariant: 

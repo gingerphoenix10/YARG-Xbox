@@ -202,6 +202,7 @@ namespace YARG.Song
             {
                 var json = JArray.Parse(await HttpHelper.GetURL(SOURCE_COMMIT_URL));
                 newestVersion = json[0]["sha"]!.ToString();
+#endif
             }
             catch (Exception e)
             {

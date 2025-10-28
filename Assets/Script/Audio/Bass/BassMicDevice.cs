@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Runtime.InteropServices;
+﻿using AOT;
 using ManagedBass;
 using ManagedBass.Fx;
+using System;
+using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using YARG.Audio.PitchDetection;
-using YARG.Core.Logging;
 using YARG.Core.Audio;
 using YARG.Core.IO;
+using YARG.Core.Logging;
 using YARG.Input;
 using YARG.Settings;
 
@@ -75,6 +76,7 @@ namespace YARG.Audio.BASS
             _applyGain = applyGain;
         }
 
+        [MonoPInvokeCallback(typeof(SyncProcedure))]
         private static void ApplyGain(int handle, int channel, IntPtr buffer, int length, IntPtr user)
         {
             BassHelpers.ApplyGain(1.3f, buffer, length);
@@ -105,15 +107,26 @@ namespace YARG.Audio.BASS
     internal class RecordingHandle : IDisposable
     {
 #nullable enable
-        public static RecordingHandle? CreateRecordingHandle(RecordProcedure procedure)
-#nullable disable
+        public static RecordingHandle? CreateRecordingHandle(BassMicDevice device)
         {
             var devPeriod = Bass.GetConfig(Configuration.DevicePeriod);
 
-            int handle = Bass.RecordStart(44100, 1, BassFlags.Default, devPeriod, procedure, IntPtr.Zero);
+            // Keep a GCHandle so IL2CPP can track the instance
+            var gcHandle = GCHandle.Alloc(device);
+
+            int handle = Bass.RecordStart(
+                44100,
+                1,
+                BassFlags.Default,
+                devPeriod,
+                BassMicDevice.ProcessRecordDataStatic,
+                (IntPtr) gcHandle
+            );
+
             if (handle == 0)
             {
                 YargLogger.LogFormatError("Failed to start clean recording: {0}!", Bass.LastError);
+                gcHandle.Free();
                 return null;
             }
 
@@ -121,10 +134,12 @@ namespace YARG.Audio.BASS
             if (processedHandle == 0)
             {
                 YargLogger.LogFormatError("Failed to create processed recording stream: {0}!", Bass.LastError);
+                Bass.StreamFree(handle);
+                gcHandle.Free();
                 return null;
             }
 
-            return new RecordingHandle(handle, processedHandle, devPeriod);
+            return new RecordingHandle(handle, processedHandle, devPeriod, gcHandle);
         }
 
         public readonly int Handle;
@@ -132,19 +147,23 @@ namespace YARG.Audio.BASS
 
         public readonly int RecordPeriod;
 
+        public readonly GCHandle GcHandle;
+
         private bool _disposed;
 
-        private RecordingHandle(int handle, int processedHandle, int period)
+        private RecordingHandle(int handle, int processedHandle, int period, GCHandle gcHandle)
         {
             Handle = handle;
             ProcessedHandle = processedHandle;
             RecordPeriod = period;
+            GcHandle = gcHandle;
         }
 
         private void Dispose(bool disposing)
         {
             if (!_disposed)
             {
+                if (GcHandle.IsAllocated) GcHandle.Free();
                 Bass.ChannelStop(Handle);
                 Bass.StreamFree(Handle);
 
@@ -192,7 +211,7 @@ namespace YARG.Audio.BASS
             }
 
             var device = new BassMicDevice(deviceId, name, monitorPlayback);
-            device._recordHandle = RecordingHandle.CreateRecordingHandle(device.ProcessRecordData);
+            device._recordHandle = RecordingHandle.CreateRecordingHandle(device);
             if (device._recordHandle == null)
             {
                 // Not device.Dispose() as to not free resources that we may want to keep around
@@ -321,7 +340,16 @@ namespace YARG.Audio.BASS
             _monitorHandle = monitorHandle;
         }
 
-        private bool ProcessRecordData(int handle, IntPtr buffer, int length, IntPtr user)
+        [MonoPInvokeCallback(typeof(RecordProcedure))]
+        public static bool ProcessRecordDataStatic(int handle, IntPtr buffer, int length, IntPtr user)
+        {
+            if (user == IntPtr.Zero) return true; // safety
+            var gcHandle = GCHandle.FromIntPtr(user);
+            var device = (BassMicDevice) gcHandle.Target;
+            return device.ProcessRecordDataInstance(handle, buffer, length);
+        }
+
+        private bool ProcessRecordDataInstance(int handle, IntPtr buffer, int length)
         {
             // Copies the data from the recording buffer to the monitor playback buffer.
             if (Bass.StreamPutData(_monitorHandle.Handle, buffer, length) == -1)

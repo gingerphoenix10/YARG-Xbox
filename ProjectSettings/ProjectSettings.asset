@@ -855,15 +855,44 @@ PlayerSettings:
   metroCertificateNotAfter: 009c87cda066dd01
   metroApplicationDescription: com.yarc.yarg
   wsaImages:
-    131172: Assets/Art/UI/UWP_Assets/Splash.png
-    131272: Assets/Art/UI/UWP_Assets/Splash_200.png
-    131472: Assets/Art/UI/UWP_Assets/Splash_400.png
-    2031872: Assets/Art/UI/UWP_Assets/Icon_Stable_256.png
-    2097552: Assets/Art/UI/UWP_Assets/Icon_Stable_284.png
-    2162888: Assets/Art/UI/UWP_Assets/Icon_Stable_300.png
-    2228349: Assets/Art/UI/UWP_Assets/Icon_Stable_388.png
-    2293910: Assets/Art/UI/UWP_Assets/Wide.png
-    2293960: 
+    65636: Assets/Art/UI/UWP_Assets/StoreLogo.scale-100.png
+    65661: Assets/Art/UI/UWP_Assets/StoreLogo.scale-125.png
+    65686: Assets/Art/UI/UWP_Assets/StoreLogo.scale-150.png
+    65736: Assets/Art/UI/UWP_Assets/StoreLogo.scale-200.png
+    65936: Assets/Art/UI/UWP_Assets/StoreLogo.scale-400.png
+    131172: Assets/Art/UI/UWP_Assets/SplashScreen.scale-100.png
+    131197: Assets/Art/UI/UWP_Assets/SplashScreen.scale-125.png
+    131222: Assets/Art/UI/UWP_Assets/SplashScreen.scale-150.png
+    131272: Assets/Art/UI/UWP_Assets/SplashScreen.scale-200.png
+    131472: Assets/Art/UI/UWP_Assets/SplashScreen.scale-400.png
+    2031632: Assets/Art/UI/UWP_Assets/Square44x44Logo.altform-lightunplated_targetsize-16.png
+    2031640: Assets/Art/UI/UWP_Assets/Square44x44Logo.altform-lightunplated_targetsize-24.png
+    2031648: Assets/Art/UI/UWP_Assets/Square44x44Logo.altform-lightunplated_targetsize-32.png
+    2031664: Assets/Art/UI/UWP_Assets/Square44x44Logo.altform-lightunplated_targetsize-48.png
+    2031716: Assets/Art/UI/UWP_Assets/Square44x44Logo.scale-100.png
+    2031741: Assets/Art/UI/UWP_Assets/Square44x44Logo.scale-125.png
+    2031766: Assets/Art/UI/UWP_Assets/Square44x44Logo.scale-150.png
+    2031816: Assets/Art/UI/UWP_Assets/Square44x44Logo.scale-200.png
+    2031872: Assets/Art/UI/UWP_Assets/Square44x44Logo.altform-lightunplated_targetsize-256.png
+    2032016: Assets/Art/UI/UWP_Assets/Square44x44Logo.scale-400.png
+    2097252: Assets/Art/UI/UWP_Assets/Square71x71Logo.scale-100.png
+    2097277: Assets/Art/UI/UWP_Assets/Square71x71Logo.scale-125.png
+    2097302: Assets/Art/UI/UWP_Assets/Square71x71Logo.scale-150.png
+    2097352: Assets/Art/UI/UWP_Assets/Square71x71Logo.scale-200.png
+    2097552: Assets/Art/UI/UWP_Assets/Square71x71Logo.scale-400.png
+    2162788: Assets/Art/UI/UWP_Assets/Square150x150Logo.scale-100.png
+    2162813: Assets/Art/UI/UWP_Assets/Square150x150Logo.scale-125.png
+    2162838: Assets/Art/UI/UWP_Assets/Square150x150Logo.scale-150.png
+    2162888: Assets/Art/UI/UWP_Assets/Square150x150Logo.scale-200.png
+    2163088: 
+    2228324: Assets/Art/UI/UWP_Assets/Square310x310Logo.scale-100.png
+    2228349: Assets/Art/UI/UWP_Assets/Square310x310Logo.scale-125.png
+    2228374: 
+    2293860: Assets/Art/UI/UWP_Assets/Wide310x150Logo.scale-100.png
+    2293885: Assets/Art/UI/UWP_Assets/Wide310x150Logo.scale-125.png
+    2293910: Assets/Art/UI/UWP_Assets/Wide310x150Logo.scale-150.png
+    2293960: Assets/Art/UI/UWP_Assets/Wide310x150Logo.scale-200.png
+    2294160: Assets/Art/UI/UWP_Assets/Wide310x150Logo.scale-400.png
   metroTileShortName: YARG
   metroTileShowName: 0
   metroMediumTileShowName: 0
@@ -874,9 +903,8 @@ PlayerSettings:
   metroDefaultTileSize: 1
   metroTileForegroundText: 2
   metroTileBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21568628, a: 0}
-  metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628,
-    a: 1}
-  metroSplashScreenUseBackgroundColor: 0
+  metroSplashScreenBackgroundColor: {r: 0, g: 0.023529412, b: 0.07450981, a: 0}
+  metroSplashScreenUseBackgroundColor: 1
   syncCapabilities: 0
   platformCapabilities:
     WindowsStoreApps:

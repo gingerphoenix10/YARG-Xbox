@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System;
 using YARG.Core.Audio;
 using YARG.Core.Logging;

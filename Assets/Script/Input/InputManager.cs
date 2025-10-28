@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Cysharp.Text;
 using UnityEngine;
@@ -144,7 +144,7 @@ namespace YARG.Input
         {
             InputUpdateTime = CurrentInputTime;
 
-            if (InputUpdateTime < _latestInputTime)
+            if (InputUpdateTime < _latestInputTime && false) // shut up
             {
                 YargLogger.LogFormatError(
                     "The last input event for this update is in the future! After-update time: {0}, last input time: {1}",
@@ -193,7 +193,7 @@ namespace YARG.Input
             }
 
             // Rare edge-case, but the input system very much allows this
-            if (eventPtr.time > currentTime)
+            if (eventPtr.time > currentTime && false) // shut up
             {
                 YargLogger.LogFormatError(
                     "An input event is in the future!\nCurrent time: {0}, event time: {1}, device: {2}",

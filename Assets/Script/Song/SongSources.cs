@@ -15,6 +15,12 @@ using YARG.Core.Song;
 using YARG.Helpers;
 using YARG.Helpers.Extensions;
 using YARG.Settings.Customization;
+#if UNITY_WSA && !UNITY_EDITOR
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.Web.Http;
+using Windows.Web.Http.Filters;
+#endif
 
 namespace YARG.Song
 {
@@ -116,10 +122,12 @@ namespace YARG.Song
         }
 
         public const string SOURCE_REPO_FOLDER = "OpenSource-master";
-#if UNITY_EDITOR
+#if UNITY_EDITOR && false
         // The editor does not track the contents of folders that end in ~,
         // so use this to prevent Unity from stalling due to importing freshly-downloaded sources
         public static readonly string SourcesFolder = Path.Combine(PathHelper.StreamingAssetsPath, "sources~");
+#elif UNITY_WSA
+        public static readonly string SourcesFolder = Path.Combine(PathHelper.PersistentDataPath, "sources");
 #else
         public static readonly string SourcesFolder = Path.Combine(PathHelper.StreamingAssetsPath, "sources");
 #endif
@@ -201,6 +209,18 @@ namespace YARG.Song
             try
             {
                 // Retrieve sources file
+#if UNITY_WSA && !UNITY_EDITOR
+                var filter = new HttpBaseProtocolFilter();
+                using var httpClient = new HttpClient(filter);
+                httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("YARG");
+
+                var response = await httpClient.GetAsync(new Uri(SOURCE_COMMIT_URL));
+                response.EnsureSuccessStatusCode();
+
+                var jsonText = await response.Content.ReadAsStringAsync();
+                var json = JArray.Parse(jsonText);
+                newestVersion = json[0]["sha"]!.ToString();
+#else
                 var request = (HttpWebRequest) WebRequest.Create(SOURCE_COMMIT_URL);
                 request.UserAgent = "YARG";
                 request.Timeout = 2500;
@@ -212,6 +232,7 @@ namespace YARG.Song
                 // Read the JSON
                 var json = JArray.Parse(await reader.ReadToEndAsync());
                 newestVersion = json[0]["sha"]!.ToString();
+#endif
             }
             catch (Exception e)
             {
@@ -224,17 +245,75 @@ namespace YARG.Song
                 return;
             }
 
+            YargLogger.LogFormatInfo("Sources latest version: {0}", newestVersion);
+
             // If up to date, finish
             var repoDir = Path.Combine(SourcesFolder, SOURCE_REPO_FOLDER);
             if (newestVersion == currentVersion && Directory.Exists(repoDir))
             {
                 return;
             }
-
             // Otherwise, update!
             try
             {
                 // Download
+#if UNITY_WSA && !UNITY_EDITOR
+                context.SetSubText("Downloading new version...");
+                string zipFileName = "update.zip";
+
+                // Get folder to save the downloaded zip
+                StorageFolder sourcesFolder = await StorageFolder.GetFolderFromPathAsync(SourcesFolder);
+                StorageFile zipFile = await sourcesFolder.CreateFileAsync(zipFileName, CreationCollisionOption.ReplaceExisting);
+
+                // Download using UWP HttpClient
+                var httpClient = new Windows.Web.Http.HttpClient();
+                httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("YARG");
+
+                var response = await httpClient.GetAsync(new Uri(SOURCE_ZIP_URL));
+                response.EnsureSuccessStatusCode();
+
+                using (var stream = await response.Content.ReadAsInputStreamAsync())
+                using (var outputStream = await zipFile.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    await RandomAccessStream.CopyAndCloseAsync(stream, outputStream);
+                }
+
+                // Delete old folder if it exists
+                if (Directory.Exists(repoDir))
+                {
+                    Directory.Delete(repoDir, true);
+                }
+
+                // Extract new version
+                context.SetSubText("Extracting new version...");
+
+                // Use .NET ZipArchive API to extract
+                using (var fileStream = await zipFile.OpenStreamForReadAsync())
+                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
+                {
+                    archive.ExtractToDirectory(SourcesFolder, overwriteFiles: true);
+                }
+
+                // Clean unwanted folders
+                string ignoreFolder = Path.Combine(repoDir, "ignore");
+                if (Directory.Exists(ignoreFolder)) Directory.Delete(ignoreFolder, true);
+
+                string githubFolder = Path.Combine(repoDir, ".github");
+                if (Directory.Exists(githubFolder)) Directory.Delete(githubFolder, true);
+
+                // Delete random files in repoDir
+                foreach (string file in Directory.EnumerateFiles(repoDir))
+                {
+                    File.Delete(file);
+                }
+
+                // Write version file
+                string versionFilePath = Path.Combine(SourcesFolder, "version.txt");
+                await File.WriteAllTextAsync(versionFilePath, newestVersion);
+
+                // Delete zip
+                await zipFile.DeleteAsync();
+#else
                 context.SetSubText("Downloading new version...");
                 string zipPath = Path.Combine(SourcesFolder, "update.zip");
                 using (var client = new WebClient())
@@ -276,6 +355,7 @@ namespace YARG.Song
 
                 // Delete the zip
                 File.Delete(zipPath);
+#endif
             }
             catch (Exception e)
             {
@@ -354,11 +434,11 @@ namespace YARG.Song
             {
                 var parsed = new ParsedSource(source.icon, source.names, source.type switch
                 {
-                    "game"    => SourceType.Game,
+                    "game" => SourceType.Game,
                     "charter" => SourceType.Charter,
-                    "rb"      => SourceType.RB,
-                    "gh"      => SourceType.GH,
-                    _         => SourceType.Custom
+                    "rb" => SourceType.RB,
+                    "gh" => SourceType.GH,
+                    _ => SourceType.Custom
                 });
 
                 foreach (string id in source.ids)

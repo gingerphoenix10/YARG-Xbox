@@ -45,16 +45,6 @@ namespace YARG
                 Quit();
             }
 
-            // Load Discord right after (this requires localization)
-            try
-            {
-                DiscordController.Instance.Initialize();
-            }
-            catch (Exception e)
-            {
-                YargLogger.LogException(e);
-            }
-
             // Load song sources and icons
             try
             {

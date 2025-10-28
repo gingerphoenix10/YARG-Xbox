@@ -18,6 +18,7 @@ namespace YARG.Menu.Settings
         private TextMeshProUGUI _songCountText;
 
         private int _index;
+        private bool refreshWhenAvailable;
 
         public void SetIndex(int index)
         {
@@ -71,8 +72,14 @@ namespace YARG.Menu.Settings
             FileExplorerHelper.OpenChooseFolder(startingDir, folder =>
             {
                 SongFolders[_index] = folder;
-                RefreshText();
+                refreshWhenAvailable = true;
             });
+        }
+        public void Update()
+        {
+            if (refreshWhenAvailable)
+                RefreshText();
+            refreshWhenAvailable = false;
         }
     }
 }

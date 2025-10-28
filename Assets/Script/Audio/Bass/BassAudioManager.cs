@@ -92,7 +92,7 @@ namespace YARG.Audio.BASS
             ".ogg", ".mogg", ".wav", ".mp3", ".aiff", ".opus",
         };
 
-        protected override ReadOnlySpan<string> SupportedFormats => FORMATS;
+        protected internal override ReadOnlySpan<string> SupportedFormats => FORMATS;
 
         private readonly int _opusHandle = 0;
 
@@ -101,6 +101,9 @@ namespace YARG.Audio.BASS
             YargLogger.LogInfo("Initializing BASS...");
             string bassPath = GetBassDirectory();
             string opusLibDirectory = Path.Combine(bassPath, "bassopus");
+#if UNITY_WSA && !UNITY_EDITOR
+            opusLibDirectory = "bassopus";
+#endif
 
             _opusHandle = Bass.PluginLoad(opusLibDirectory);
             if (_opusHandle == 0) YargLogger.LogFormatError("Failed to load .opus plugin: {0}!", Bass.LastError);
@@ -172,7 +175,7 @@ namespace YARG.Audio.BASS
         }
 
 #nullable enable
-        protected override StemMixer? CreateMixer(string name, float speed, double mixerVolume, bool clampStemVolume)
+        protected internal override StemMixer? CreateMixer(string name, float speed, double mixerVolume, bool clampStemVolume)
         {
             if (GlobalAudioHandler.LogMixerStatus)
             {
@@ -186,7 +189,7 @@ namespace YARG.Audio.BASS
             return new BassStemMixer(name, this, speed, mixerVolume, handle, clampStemVolume);
         }
 
-        protected override MicDevice? GetInputDevice(string name)
+        protected internal override MicDevice? GetInputDevice(string name)
         {
             for (int deviceIndex = 0; Bass.RecordGetDeviceInfo(deviceIndex, out var info); deviceIndex++)
             {
@@ -207,7 +210,7 @@ namespace YARG.Audio.BASS
         }
 #nullable disable
 
-        protected override List<(int id, string name)> GetAllInputDevices()
+        protected internal override List<(int id, string name)> GetAllInputDevices()
         {
             var mics = new List<(int id, string name)>();
 
@@ -243,7 +246,7 @@ namespace YARG.Audio.BASS
         }
 
 #nullable enable
-        protected override MicDevice? CreateDevice(int deviceId, string name)
+        protected internal override MicDevice? CreateDevice(int deviceId, string name)
 #nullable disable
         {
             var device = BassMicDevice.Create(deviceId, name);
@@ -338,7 +341,7 @@ namespace YARG.Audio.BASS
             YargLogger.LogInfo("Finished loading VOX");
         }
 
-        protected override void SetMasterVolume(double volume)
+        protected internal override void SetMasterVolume(double volume)
         {
 #if UNITY_EDITOR
             if (EditorUtility.audioMasterMute)
@@ -377,6 +380,11 @@ namespace YARG.Audio.BASS
 #else
 			pluginDirectory = Path.Combine(pluginDirectory, "x86");
 #endif
+#endif
+
+            // UWP weirdness
+#if UNITY_WSA && !UNITY_EDITOR
+            pluginDirectory = Path.Combine(Application.dataPath).ToString();
 #endif
 
             // Unity Editor directory, Assets/Plugins/Bass/
@@ -422,7 +430,12 @@ namespace YARG.Audio.BASS
             // https://www.un4seen.com/forum/?topic=20148.msg140872#msg140872
             const BassFlags streamFlags = BassFlags.Prescan | BassFlags.Decode | BassFlags.AsyncFile | (BassFlags) 64;
 
+#if UNITY_WSA
+            IntPtr user = ILBassStreamProcedures.CreateUserData(stream);;
+            streamHandle = Bass.CreateStream(StreamSystem.NoBuffer, streamFlags, ILBassStreamProcedures.Callbacks, user);
+#else
             streamHandle = Bass.CreateStream(StreamSystem.NoBuffer, streamFlags, new BassStreamProcedures(stream));
+#endif
             if (streamHandle == 0)
             {
                 YargLogger.LogFormatError("Failed to create source stream: {0}!", Bass.LastError);

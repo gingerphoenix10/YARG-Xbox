@@ -846,16 +846,25 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: com.unity.template-starter-kit
-  metroPackageVersion: 
-  metroCertificatePath: 
+  metroPackageName: com.yarc.yarg
+  metroPackageVersion: 1.0.0.0
+  metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: com.unity.template-starter-kit
-  wsaImages: {}
-  metroTileShortName: 
+  metroCertificateSubject: YARC
+  metroCertificateIssuer: YARC
+  metroCertificateNotAfter: 009c87cda066dd01
+  metroApplicationDescription: com.yarc.yarg
+  wsaImages:
+    131172: Assets/Art/UI/UWP_Assets/Splash.png
+    131272: Assets/Art/UI/UWP_Assets/Splash_200.png
+    131472: Assets/Art/UI/UWP_Assets/Splash_400.png
+    2031872: Assets/Art/UI/UWP_Assets/Icon_Stable_256.png
+    2097552: Assets/Art/UI/UWP_Assets/Icon_Stable_284.png
+    2162888: Assets/Art/UI/UWP_Assets/Icon_Stable_300.png
+    2228349: Assets/Art/UI/UWP_Assets/Icon_Stable_388.png
+    2293910: Assets/Art/UI/UWP_Assets/Wide.png
+    2293960: 
+  metroTileShortName: YARG
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
@@ -869,8 +878,13 @@ PlayerSettings:
     a: 1}
   metroSplashScreenUseBackgroundColor: 0
   syncCapabilities: 0
-  platformCapabilities: {}
-  metroTargetDeviceFamilies: {}
+  platformCapabilities:
+    WindowsStoreApps:
+      InternetClient: True
+      Microphone: True
+  metroTargetDeviceFamilies:
+    Desktop: True
+    Xbox: True
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 

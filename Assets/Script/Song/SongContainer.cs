@@ -15,6 +15,7 @@ using YARG.Localization;
 using YARG.Scores;
 using YARG.Core.Utility;
 using YARG.Core.Game;
+using System.IO;
 
 namespace YARG.Song
 {
@@ -119,10 +120,21 @@ namespace YARG.Song
         public static IReadOnlyDictionary<HashWrapper, List<SongEntry>> SongsByHash => _songCache.Entries;
         public static SongEntry[] Songs => _songs;
 
+        public readonly static string internalSongsPath = Path.Combine(PathHelper.PersistentDataPath, "Songs");
+
 #nullable enable
         public static async UniTask RunRefresh(bool quick, LoadingContext? context = null)
 #nullable disable
         {
+
+            if (!SettingsManager.Settings.SongFolders.Contains(internalSongsPath))
+            {
+                SettingsManager.Settings.SongFolders.Add(internalSongsPath);
+                if (!Directory.Exists(internalSongsPath))
+                    Directory.CreateDirectory(internalSongsPath);
+
+            }
+
             var directories = new List<string>(SettingsManager.Settings.SongFolders);
             string setlistPath = PathHelper.SetlistPath;
             if (!string.IsNullOrEmpty(setlistPath) && !directories.Contains(setlistPath))

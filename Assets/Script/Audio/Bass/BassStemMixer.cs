@@ -1,8 +1,9 @@
+﻿using ManagedBass;
+using ManagedBass.Mix;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using ManagedBass;
-using ManagedBass.Mix;
 using UnityEngine;
 using YARG.Core.Audio;
 using YARG.Core.Logging;
@@ -24,22 +25,32 @@ namespace YARG.Audio.BASS
         private float        _speed;
         private Timer        _whammySyncTimer;
 
+        private IntPtr       _songEndUser;
+        private static readonly SyncProcedure SongEndSyncProc = ILBassStreamProcedures.SongEndSyncCallback; // Idk why this isn't doing a UNITY_WSA check, but I'm just copying master idrk
+
         public override event Action SongEnd
         {
             add
             {
                 if (_songEndHandle == 0)
                 {
-                    void sync(int _, int __, int ___, IntPtr _____)
+                    var handle = GCHandle.Alloc(this);
+                    _songEndUser = GCHandle.ToIntPtr(handle);
+
+                    _songEndHandle = BassMix.ChannelSetSync(
+                        _mainHandle.Stream,
+                        SyncFlags.End,
+                        0,
+                        SongEndSyncProc,
+                        _songEndUser
+                    );
+
+                    if (_songEndHandle == 0)
                     {
-                        // Prevent potential race conditions by caching the value as a local
-                        var end = _songEnd;
-                        if (end != null)
-                        {
-                            UnityMainThreadCallback.QueueEvent(end.Invoke);
-                        }
+                        YargLogger.LogFormatError("Failed to set SongEnd sync: {0}", Bass.LastError);
+                        handle.Free();
+                        _songEndUser = IntPtr.Zero;
                     }
-                    _songEndHandle = BassMix.ChannelSetSync(_mainHandle.Stream, SyncFlags.End, 0, sync);
                 }
 
                 _songEnd += value;

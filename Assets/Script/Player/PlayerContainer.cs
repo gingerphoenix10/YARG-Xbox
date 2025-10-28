@@ -241,11 +241,6 @@ namespace YARG.Player
                 player.Bindings.OnDeviceAdded(device);
             }
 
-            if (!SettingsManager.Settings.AutoCreateProfiles.Value)
-            {
-                return;
-            }
-
             _ = TryCreateProfile(device);
         }
 
@@ -466,7 +461,7 @@ namespace YARG.Player
                 return false;
             }
 
-            if (device is not (FiveFretGuitar or FourLaneDrumkit or FiveLaneDrumkit or ProKeyboard))
+            if (device is (Keyboard or Mouse))
             {
                 // Add a check for the default Keyboard/Mouse/whatever devices here so we can enable the toast
                 // ToastManager.ToastWarning("Automatic profile creation is not supported for this device!");
@@ -474,7 +469,7 @@ namespace YARG.Player
             }
 
             GameMode gameMode = default;
-            string profileName = String.Empty;
+            string profileName = device.displayName;
 
             if (device is FiveFretGuitar)
             {

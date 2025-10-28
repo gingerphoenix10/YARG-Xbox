@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using YARG.Core.Logging;
 using YARG.Menu.Settings;
@@ -28,7 +28,7 @@ namespace YARG.Helpers
                 {
                     _lastScreenResolution = screenResolution;
 
-                    YargLogger.LogFormatDebug("Updating default screen resolution to {0}", screenResolution);
+                    //YargLogger.LogFormatDebug("Updating default screen resolution to {0}", screenResolution);
 
                     // Automatically update resolution if set to default and we're in fullscreen
                     if (SettingsManager.Settings.Resolution.Value == null &&
@@ -53,12 +53,11 @@ namespace YARG.Helpers
         /// </summary>
         public static Resolution GetScreenResolution()
         {
-            var screenInfo = Screen.mainWindowDisplayInfo;
             return new Resolution()
             {
-                width = screenInfo.width,
-                height = screenInfo.height,
-                refreshRate = (int) Math.Round(screenInfo.refreshRate.value),
+                width = Screen.width,
+                height = Screen.height,
+                refreshRate = Screen.currentResolution.refreshRate,
             };
         }
 
@@ -67,7 +66,7 @@ namespace YARG.Helpers
         /// </summary>
         public static void SetResolution(Resolution resolution)
         {
-            YargLogger.LogFormatDebug("Changing screen resolution to {0}", resolution);
+            //YargLogger.LogFormatDebug("Changing screen resolution to {0}", resolution);
             var fullscreenMode = SettingsManager.Settings?.FullscreenMode.Value ?? FullScreenMode.FullScreenWindow;
             Screen.SetResolution(resolution.width, resolution.height, fullscreenMode, resolution.refreshRate);
         }

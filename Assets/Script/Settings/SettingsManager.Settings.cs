@@ -102,14 +102,6 @@ namespace YARG.Settings
 
             public ToggleSetting WrapAroundNavigation { get; } = new(true);
 
-            public DropdownSetting<DiscordRichPresenceMode> DiscordRichPresence { get; }
-                = new(DiscordRichPresenceMode.Show, DiscordRichPresenceCallback)
-                {
-                    DiscordRichPresenceMode.Show,
-                    DiscordRichPresenceMode.Limited,
-                    DiscordRichPresenceMode.Hide
-                };
-
             public ToggleSetting AmIAwesome { get; } = new(false);
 
             #endregion
@@ -490,19 +482,6 @@ namespace YARG.Settings
                 YargLogger.MinimumLogLevel = level;
             }
 
-            private static void DiscordRichPresenceCallback(DiscordRichPresenceMode mode)
-            {
-                // Dispose Discord instance if rich presence is turned off, otherwise try initializing it again
-                if (mode == DiscordRichPresenceMode.Hide)
-                {
-                    DiscordController.Instance.TryDispose();
-                }
-                else
-                {
-                    DiscordController.Instance.CreateInstance();
-                }
-            }
-
             private static void ShowBatteryCallback(bool value)
             {
                 // Only show if battery status is reported and has a valid value
@@ -543,7 +522,7 @@ namespace YARG.Settings
                 {
                     return;
                 }
-                DataStreamController.Instance.HandleEnabledChanged(value);
+                //DataStreamController.Instance.HandleEnabledChanged(value);
             }
             private static void RB3EEnabledCallback(bool value)
             {

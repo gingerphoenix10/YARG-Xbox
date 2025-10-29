@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using YARG.Core.Input;
 using YARG.Menu.MusicLibrary;
@@ -105,6 +105,11 @@ namespace YARG.Menu.Main
         public void Settings()
         {
             SettingsMenu.Instance.gameObject.SetActive(true);
+        }
+
+        public void Marketplace()
+        {
+            MenuManager.Instance.PushMenu(MenuManager.Menu.Marketplace);
         }
 
         public void Exit()

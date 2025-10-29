@@ -18,6 +18,7 @@ namespace YARG.Menu
             ProfileInfo,
             History,
             Content,
+            // Marketplace, // TODO: move Marketplace into Content
         }
 
         /// <summary>

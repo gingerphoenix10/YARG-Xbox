@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using YARG.Assets.Script.Helpers;
 using YARG.Core.IO;
 using YARG.Core.Logging;
 using YARG.Helpers;
@@ -16,8 +17,6 @@ using YARG.Settings.Customization;
 #if UNITY_WSA && !UNITY_EDITOR
 using Windows.Storage;
 using Windows.Storage.Streams;
-using Windows.Web.Http;
-using Windows.Web.Http.Filters;
 #endif
 
 namespace YARG.Song
@@ -201,32 +200,8 @@ namespace YARG.Song
             string newestVersion = null;
             try
             {
-                // Retrieve sources file
-#if UNITY_WSA && !UNITY_EDITOR
-                var filter = new HttpBaseProtocolFilter();
-                using var httpClient = new HttpClient(filter);
-                httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("YARG");
-
-                var response = await httpClient.GetAsync(new Uri(SOURCE_COMMIT_URL));
-                response.EnsureSuccessStatusCode();
-
-                var jsonText = await response.Content.ReadAsStringAsync();
-                var json = JArray.Parse(jsonText);
+                var json = JArray.Parse(await HttpHelper.GetURL(SOURCE_COMMIT_URL));
                 newestVersion = json[0]["sha"]!.ToString();
-#else
-                using var request = UnityWebRequest.Get(SOURCE_COMMIT_URL);
-                request.SetRequestHeader("User-Agent", "YARG");
-                request.timeout = 2;
-
-                // Send the request and wait for the response
-                await request.SendWebRequest();
-
-                if (request.result == UnityWebRequest.Result.Success)
-                {
-                    // Read the JSON
-                    var json = JArray.Parse(request.downloadHandler.text);
-                    newestVersion = json[0]["sha"]!.ToString();
-                }
             }
             catch (Exception e)
             {

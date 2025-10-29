@@ -17,6 +17,7 @@ namespace YARG.Menu
             ProfileList,
             ProfileInfo,
             History,
+            Marketplace,
         }
 
         /// <summary>

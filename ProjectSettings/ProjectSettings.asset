@@ -913,17 +913,10 @@ PlayerSettings:
     2162813: Assets/Art/UI/UWP_Assets/Square150x150Logo.scale-125.png
     2162838: Assets/Art/UI/UWP_Assets/Square150x150Logo.scale-150.png
     2162888: Assets/Art/UI/UWP_Assets/Square150x150Logo.scale-200.png
-<<<<<<< HEAD
     2163088:
     2228324: Assets/Art/UI/UWP_Assets/Square310x310Logo.scale-100.png
     2228349: Assets/Art/UI/UWP_Assets/Square310x310Logo.scale-125.png
     2228374:
-=======
-    2163088: 
-    2228324: Assets/Art/UI/UWP_Assets/Square310x310Logo.scale-100.png
-    2228349: Assets/Art/UI/UWP_Assets/Square310x310Logo.scale-125.png
-    2228374: 
->>>>>>> cba5bd20 (Vocals works)
     2293860: Assets/Art/UI/UWP_Assets/Wide310x150Logo.scale-100.png
     2293885: Assets/Art/UI/UWP_Assets/Wide310x150Logo.scale-125.png
     2293910: Assets/Art/UI/UWP_Assets/Wide310x150Logo.scale-150.png
@@ -939,13 +932,8 @@ PlayerSettings:
   metroDefaultTileSize: 1
   metroTileForegroundText: 2
   metroTileBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21568628, a: 0}
-<<<<<<< HEAD
   metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628, a: 1}
   metroSplashScreenUseBackgroundColor: 0
-=======
-  metroSplashScreenBackgroundColor: {r: 0, g: 0.023529412, b: 0.07450981, a: 0}
-  metroSplashScreenUseBackgroundColor: 1
->>>>>>> cba5bd20 (Vocals works)
   syncCapabilities: 0
   platformCapabilities:
     WindowsStoreApps:

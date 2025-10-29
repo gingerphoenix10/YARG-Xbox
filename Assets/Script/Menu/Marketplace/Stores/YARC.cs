@@ -8,9 +8,8 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using YARG.Assets.Script.Helpers;
 using YARG.Core.Logging;
-using YARG.Song;
 
-namespace YARG.Menu.Marketplace.Stores
+namespace YARG.Assets.Script.Menu.Marketplace.Stores
 {
     class YARC : MarketplaceStore
     {
@@ -47,8 +46,7 @@ namespace YARG.Menu.Marketplace.Stores
                     {
                         Name = profile["name"]!.ToString(),
                         Cover = DownloadHandlerTexture.GetContent(textureReq),
-                        Identifier = profile["uuid"]!.ToString(),
-                        Info = await GetInfo(profile["uuid"]!.ToString()),
+                        Identifier = profile["uuid"]!.ToString()
                     });
                 }
                 getCache = items;
@@ -61,12 +59,12 @@ namespace YARG.Menu.Marketplace.Stores
                 return null;
             }
         }
-        public override async Task<SetlistInfo> GetInfo(string id)
+        public override async Task<SetlistInfo> GetSongs(string id)
         {
             SetlistInfo info = new()
             {
                 Description = "",
-                Songs = new(),
+                Songs = new()
             };
 
             try
@@ -82,19 +80,6 @@ namespace YARG.Menu.Marketplace.Stores
                         Length = TimeSpan.FromMilliseconds(int.Parse(song["length"]!.ToString())),
                     });
                 }
-                foreach (JObject download in setlistInfo["version"]["version"]["content"])
-                {
-                    YargLogger.LogInfo("Checking download");
-                    JArray platforms = (JArray)download["platforms"];
-                    if (platforms.Contains("windows") || true)
-                    {
-                        info.SetlistURL = download["files"][0]["url"]!.ToString();
-                        YargLogger.LogFormatInfo("Set download to ", info.SetlistURL);
-                        break;
-                    }
-                    else
-                        YargLogger.LogError("DOESN'T HAVE A WINDOWS DL??");
-                }
                 return info;
             }
             catch (Exception e)
@@ -109,22 +94,8 @@ namespace YARG.Menu.Marketplace.Stores
             List<SetlistItem> matchedItems = new();
             foreach (SetlistItem setlist in getCache)
             {
-                if (OptimizedFuzzySharp.PartialRatio(setlist.Name.AsSpan(), term.AsSpan()) >= 0.25 || setlist.Name.ToLower().Contains(term.ToLower()))
-                {
+                if (SearchHelper.Similarity(setlist.Name, term) >= 0.25 || setlist.Name.ToLower().Contains(term.ToLower()))
                     matchedItems.Add(setlist);
-                    continue;
-                }
-                if (setlist.Info != null && setlist.Info.Songs.Count > 0)
-                {
-                    foreach (SetlistSong song in setlist.Info.Songs)
-                    {
-                        if (OptimizedFuzzySharp.PartialRatio(song.Name.AsSpan(), term.AsSpan()) >= 0.8 || song.Name.ToLower().Contains(term.ToLower()))
-                        {
-                            matchedItems.Add(setlist);
-                            break;
-                        }
-                    }
-                }
             }
             TaskCompletionSource<List<SetlistItem>> taskCompletion = new();
             taskCompletion.SetResult(matchedItems);

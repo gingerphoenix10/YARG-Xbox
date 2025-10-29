@@ -7,7 +7,6 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
-using UnityEngine.Networking;
 using YARG.Assets.Script.Helpers;
 using YARG.Core.IO;
 using YARG.Core.Logging;
@@ -202,7 +201,6 @@ namespace YARG.Song
             {
                 var json = JArray.Parse(await HttpHelper.GetURL(SOURCE_COMMIT_URL));
                 newestVersion = json[0]["sha"]!.ToString();
-#endif
             }
             catch (Exception e)
             {

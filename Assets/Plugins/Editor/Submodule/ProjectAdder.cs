@@ -28,7 +28,6 @@ namespace YARG.Editor.Submodules
                 string submoduleFullPath = SubmoduleHelper.SubmoduleRoot;
                 if (!Directory.Exists(submoduleFullPath))
                 {
-                    Debug.LogError("YARG.Core submodule does not exist!");
                     return contents;
                 }
 

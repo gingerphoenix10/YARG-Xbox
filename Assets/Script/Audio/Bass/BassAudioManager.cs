@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System;
 using System.Collections.Generic;
 using ManagedBass;
@@ -144,7 +144,7 @@ namespace YARG.Audio.BASS
 
         protected override int GetOutputChannelCount() => _output?.ChannelCount ?? BassHelpers.GetOutputChannelCount();
 
-        protected override void SetMasterVolume(double volume)
+        protected internal override void SetMasterVolume(double volume)
         {
 #if UNITY_EDITOR
             if (EditorUtility.audioMasterMute)

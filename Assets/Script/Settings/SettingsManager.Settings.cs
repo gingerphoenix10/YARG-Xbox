@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -237,14 +237,6 @@ namespace YARG.Settings
             public ToggleSetting MuteOnFocusLoss { get; } = new(false);
 
             public ToggleSetting WrapAroundNavigation { get; } = new(true);
-
-            public DropdownSetting<DiscordRichPresenceMode> DiscordRichPresence { get; }
-                = new(DiscordRichPresenceMode.Show, DiscordRichPresenceCallback)
-                {
-                    DiscordRichPresenceMode.Show,
-                    DiscordRichPresenceMode.Limited,
-                    DiscordRichPresenceMode.Hide
-                };
 
             public ToggleSetting AmIAwesome { get; } = new(false);
 
@@ -933,7 +925,7 @@ namespace YARG.Settings
                 {
                     return;
                 }
-                DataStreamController.Instance?.HandleEnabledChanged(value);
+                //DataStreamController.Instance?.HandleEnabledChanged(value);
             }
 
             private static void FontScalingCallback(float value)

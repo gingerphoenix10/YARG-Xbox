@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -271,11 +271,6 @@ namespace YARG.Player
             foreach (var player in _players)
             {
                 player.Bindings.OnDeviceAdded(device);
-            }
-
-            if (!SettingsManager.Settings.AutoCreateProfiles.Value)
-            {
-                return;
             }
 
             _ = TryCreateProfile(device);

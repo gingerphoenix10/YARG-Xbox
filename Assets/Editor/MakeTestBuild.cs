@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using UnityEditor;
 
@@ -21,8 +21,23 @@ namespace Editor
             MakeBuild(YARG_NIGHTLY_BUILD);
         }
 
-        public static void MakeBuild(string defineSymbol)
+        [MenuItem("File/Make & Run Nightly Build", false, 220)]
+        public static void MakeRunNightlyBuildClicked()
         {
+            MakeBuild(YARG_NIGHTLY_BUILD, BuildOptions.AutoRunPlayer);
+        }
+
+        [MenuItem("File/Make & Run Nightly Dev Build", false, 220)]
+        public static void MakeRunNightlyDevBuildClicked()
+        {
+            MakeBuild(YARG_NIGHTLY_BUILD, BuildOptions.AutoRunPlayer, BuildOptions.Development);
+        }
+
+        public static void MakeBuild(string defineSymbol, params BuildOptions[] options)
+        {
+            if (options == null)
+                options = new BuildOptions[0];
+
             // Get build settings
             var buildSettings = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(default);
 
@@ -40,6 +55,9 @@ namespace Editor
             }
 
             buildSettings.extraScriptingDefines = buildDefines;
+
+            foreach (BuildOptions option in options)
+                buildSettings.options |= option;
 
             // Build the player
             BuildPipeline.BuildPlayer(buildSettings);

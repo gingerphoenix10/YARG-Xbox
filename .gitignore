@@ -1,4 +1,4 @@
-# This .gitignore file should be placed at the root of your Unity project directory
+﻿# This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
@@ -148,3 +148,5 @@ qodana.yaml
 /vlc/vlc-unity/
 /vlc/LibVLCSharp/
 /vlc/sdk/
+# spooky secret private stuff that I'm not publically releasing
+Assets/Script/Menu/Marketplace/Stores/ChorusEncore*

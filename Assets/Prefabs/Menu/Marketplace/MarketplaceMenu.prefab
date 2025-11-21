@@ -791,7 +791,7 @@ GameObject:
   - component: {fileID: 5598294018132910397}
   - component: {fileID: 2116239974973485482}
   m_Layer: 5
-  m_Name: Settings
+  m_Name: Setlists
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1082,7 +1082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 425, y: -46.5}
+  m_AnchoredPosition: {x: 425, y: -31.5}
   m_SizeDelta: {x: 850, y: 33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &932939170995237711
@@ -1605,7 +1605,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 106961328765858148}
     - target: {fileID: 4722467204755374586, guid: 8f25b12de267d7544aa2ff7993247fcd,
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -1614,12 +1614,12 @@ PrefabInstance:
     - target: {fileID: 4722467204755374586, guid: 8f25b12de267d7544aa2ff7993247fcd,
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnSearchBarChanged
+      value: OnSearchBarFinish
       objectReference: {fileID: 0}
     - target: {fileID: 4722467204755374586, guid: 8f25b12de267d7544aa2ff7993247fcd,
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: YARG.Menu.Settings.SettingsMenu, Assembly-CSharp
+      value: YARG.Menu.Settings.MarketplaceMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4722467204755374586, guid: 8f25b12de267d7544aa2ff7993247fcd,
         type: 3}
@@ -1776,7 +1776,7 @@ PrefabInstance:
     - target: {fileID: 375337769934742335, guid: 81863a63e0d96cf459c263ee0ea6f98e,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 163
+      value: 148
       objectReference: {fileID: 0}
     - target: {fileID: 375337769934742335, guid: 81863a63e0d96cf459c263ee0ea6f98e,
         type: 3}
@@ -2006,7 +2006,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 30
+    m_Top: 15
     m_Bottom: 100
   m_ChildAlignment: 0
   m_Spacing: 0

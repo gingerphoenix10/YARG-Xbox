@@ -137,7 +137,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.1.0
+  bundleVersion: 0.0.0.4
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -870,13 +870,13 @@ PlayerSettings:
   additionalIl2CppArgs:
   scriptingRuntimeVersion: 1
   gcIncremental: 1
-  assemblyVersionValidation: 1
+  assemblyVersionValidation: 0
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: com.yarc.yarg
-  metroPackageVersion: 0.0.0.3
+  metroPackageVersion: 0.0.0.4
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword:
   metroCertificateSubject: YARC
@@ -937,6 +937,7 @@ PlayerSettings:
   syncCapabilities: 0
   platformCapabilities:
     WindowsStoreApps:
+      RemovableStorage: True
       InternetClient: True
       Microphone: True
   metroTargetDeviceFamilies:

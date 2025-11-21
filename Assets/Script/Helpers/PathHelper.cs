@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using YARG.Core.Logging;
+using YARG.Song;
 
 namespace YARG.Helpers
 {
@@ -104,6 +105,8 @@ namespace YARG.Helpers
 #else
             PersistentDataPath = SanitizePath(Path.Combine(Application.persistentDataPath, "release"));
 #endif
+
+            SongContainer.internalSongsPath = Path.Combine(PathHelper.PersistentDataPath, "Songs");
 
             // Persistent Data Path override passed in from CLI
             if (!string.IsNullOrWhiteSpace(CommandLineArgs.PersistentDataPath))

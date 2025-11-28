@@ -69,7 +69,7 @@ namespace YARG.Menu.Settings
         public void Browse()
         {
             var startingDir = SongFolders[_index];
-            FileExplorerHelper.OpenChooseFolder(startingDir, folder =>
+            _ = FileExplorerHelper.OpenChooseFolder(startingDir, folder =>
             {
                 SongFolders[_index] = folder;
                 refreshWhenAvailable = true;

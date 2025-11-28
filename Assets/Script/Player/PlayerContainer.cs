@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PlasticBand.Devices;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 using YARG.Core;
 using YARG.Core.Game;
 using YARG.Core.Logging;
@@ -269,9 +270,12 @@ namespace YARG.Player
         private static void OnDeviceAdded(InputDevice device)
         {
             foreach (var player in _players)
-            {
                 player.Bindings.OnDeviceAdded(device);
-            }
+
+#if UNITY_STANDALONE
+            if (!SettingsManager.Settings.AutoCreateProfiles.Value)
+                return;
+#endif
 
             _ = TryCreateProfile(device);
         }
@@ -905,6 +909,12 @@ namespace YARG.Player
         {
             if (IsDeviceTaken(device))
             {
+                return false;
+            }
+
+            if (device is (XRHMD))
+            {
+                // game sucks
                 return false;
             }
 

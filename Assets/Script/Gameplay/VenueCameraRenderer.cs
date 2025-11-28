@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.RenderGraphModule.Util;
@@ -235,12 +235,19 @@ namespace YARG.Gameplay
 
         private void Update()
         {
+            if (UnityEngine.XR.XRSettings.enabled)
+            {
+                Destroy(_renderCamera);
+                enabled = false;
+                return;
+            }
             if (ScreenSizeDetector.HasScreenSizeChanged || _venueTexture == null)
             {
                 RecreateTextures();
                 // Force a render this frame to avoid flickering when resizing
                 ResetRenderState();
             }
+            var stack = VolumeManager.instance.stack;
 
             // Update the global volume stack with venue effects so SlowFPS
             // (and any other effects read in Update()) can access them.

@@ -65,6 +65,9 @@ namespace YARG.Menu.Marketplace
 
         private async void Start()
         {
+#if !UNITY_STANDALONE
+            Destroy(gameObject);
+#endif
             _downloadButtonPrefab = Addressables
                 .LoadAssetAsync<GameObject>("MarketplaceTab/Setlist")
                 .WaitForCompletion();

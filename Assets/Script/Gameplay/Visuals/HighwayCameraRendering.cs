@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -318,6 +318,9 @@ namespace YARG.Gameplay.Visuals
         {
             if (_cameras.Count != 1)
             {
+                if (UnityEngine.XR.XRSettings.enabled)
+                    _highwaysOutput.enabled = false;
+                _renderCamera.targetTexture = GetHighwayOutputTexture();
                 return;
             }
 

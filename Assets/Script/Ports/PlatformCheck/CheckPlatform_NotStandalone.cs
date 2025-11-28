@@ -2,7 +2,7 @@
 
 namespace YARG
 {
-    public class CheckMarketPlatform : MonoBehaviour
+    public class CheckPlatform_NotStandalone : MonoBehaviour
     {
         private void Awake()
         {

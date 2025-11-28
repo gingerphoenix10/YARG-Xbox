@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -268,6 +268,12 @@ namespace YARG.Gameplay.Player
                 or Instrument.ProBass_22Fret;
 
             TrackView.ShowPlayerName(player);
+
+            if (UnityEngine.XR.XRSettings.enabled)
+            {
+                transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+                //transform.eulerAngles = new Vector3(-10, 0, 0);
+            }
 
             if (!player.IsReplay)
             {

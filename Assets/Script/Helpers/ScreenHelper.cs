@@ -53,13 +53,33 @@ namespace YARG.Helpers
         /// </summary>
         public static Resolution GetScreenResolution()
         {
+
             var screenInfo = Screen.currentResolution;
+#if UNITY_STANDALONE
+            // PC
             return new Resolution()
             {
                 width = screenInfo.width,
                 height = screenInfo.height,
                 refreshRateRatio = screenInfo.refreshRateRatio,
             };
+#elif !UNITY_STANDALONE && VR_BUILD
+            // Non-PCVR Headsets
+            return new Resolution()
+            {
+                width = 1920,
+                height = 1080,
+                refreshRateRatio = screenInfo.refreshRateRatio,
+            };
+#else
+            // Non-PC Flat builds
+            return new Resolution()
+            {
+                width = Screen.width,
+                height = Screen.height,
+                refreshRateRatio = screenInfo.refreshRateRatio,
+            };
+#endif
         }
 
         /// <summary>

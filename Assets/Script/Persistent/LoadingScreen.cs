@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -88,6 +89,8 @@ namespace YARG
 
             // Fast scan (cache read) on startup
             await SongContainer.RunRefresh(true, context);
+
+            GlobalVariables.Instance.LoadScene(SceneIndex.Menu);
         }
 
         private static async UniTask UpdateSourcesAndGenres(LoadingContext context)

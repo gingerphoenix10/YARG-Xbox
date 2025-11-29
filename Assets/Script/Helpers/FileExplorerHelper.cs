@@ -4,9 +4,21 @@ using YARG.Core.Logging;
 using YARG.Menu.Navigation;
 
 using System.Diagnostics;
-using System.IO;
+
+#if UNITY_WSA && !UNITY_EDITOR
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using Windows.Foundation;
+using System.Threading.Tasks;
+using Windows.UI.Core;
+using Windows.ApplicationModel.Core;
+using UnityEngine.WSA;
+#endif
+
 using UnityEngine;
-using Object = UnityEngine.Object;
+using YARG.Menu.Persistent;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace YARG.Helpers
 {

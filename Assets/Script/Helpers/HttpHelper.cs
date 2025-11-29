@@ -1,10 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Cysharp.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine.Networking;
+using YARG.Core.Logging;
 #if UNITY_WSA && !UNITY_EDITOR
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -68,5 +71,69 @@ namespace YARG.Assets.Script.Helpers
             return await reader.ReadToEndAsync();
 #endif
         }
+
+        public static async UniTask<byte[]> GetStreamingAsset(string path)
+        {
+            // On Android, must use UnityWebRequest because StreamingAssets is inside APK.
+            // Might just use this for non-android too, idk. We'll see
+            await UniTask.SwitchToMainThread();
+            using (UnityWebRequest www = UnityWebRequest.Get(path))
+            {
+                var request = www.SendWebRequest();
+
+                while (!request.isDone)
+                    await Task.Yield();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    YargLogger.LogError("Failed to load streamed asset: " + www.error);
+                    return null;
+                }
+
+                return www.downloadHandler.data;
+            }
+        }
+
+        public static async UniTask<string> GetStreamingAssetText(string path)
+        {
+            await UniTask.SwitchToMainThread();
+
+            using var www = UnityWebRequest.Get(path);
+            var op = www.SendWebRequest();
+
+            while (!op.isDone)
+                await UniTask.Yield();
+
+            if (www.result != UnityWebRequest.Result.Success)
+                return null;
+
+            byte[] data = www.downloadHandler.data;
+
+            // Detect BOM manually
+            if (data.Length >= 3 &&
+                data[0] == 0xEF && data[1] == 0xBB && data[2] == 0xBF)
+            {
+                // UTF-8 with BOM
+                return Encoding.UTF8.GetString(data, 3, data.Length - 3);
+            }
+            else if (data.Length >= 2 &&
+                     data[0] == 0xFF && data[1] == 0xFE)
+            {
+                // UTF-16 LE
+                return Encoding.Unicode.GetString(data, 2, data.Length - 2);
+            }
+            else if (data.Length >= 2 &&
+                     data[0] == 0xFE && data[1] == 0xFF)
+            {
+                // UTF-16 BE
+                return Encoding.BigEndianUnicode.GetString(data, 2, data.Length - 2);
+            }
+            else
+            {
+                // Assume UTF-8
+                return Encoding.UTF8.GetString(data);
+            }
+        }
+
     }
 }

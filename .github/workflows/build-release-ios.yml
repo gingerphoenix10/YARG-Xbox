@@ -1,0 +1,96 @@
+name: Builds - iOS Unsigned IPA
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (x.xx.x)"
+        required: true
+        type: string
+
+jobs:
+  iosBuilder:
+    name: Unsigned iOS IPA Build v${{ inputs.version }}
+    runs-on: macos-latest
+
+    steps:
+      ###########################
+      # Checkout
+      ###########################
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      ###########################
+      # Cache Library
+      ###########################
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: YARG-Library-iOS
+          restore-keys: |
+            YARG-Library-
+            YARG-
+
+      ###########################
+      # Restore NuGet Packages
+      ###########################
+      - run: dotnet tool install --global NuGetForUnity.Cli && nugetforunity restore
+
+      ###########################
+      # Unity Build (iOS)
+      ###########################
+      - uses: game-ci/unity-builder@v2.2.0
+        with:
+          buildName: YARG
+          unityVersion: 6000.2.12f1
+          targetPlatform: iOS
+          cacheUnityInstallationOnMac: true
+
+      ###########################
+      # Archive Xcode Project
+      ###########################
+      - name: "Archive Xcode Project (Unsigned)"
+        run: |
+          cd build/iOS
+          xcodebuild -project Unity-iPhone.xcodeproj \
+            -scheme Unity-iPhone \
+            -configuration Release \
+            -archivePath YARG.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM=""
+
+      ###########################
+      # Export Unsigned IPA
+      ###########################
+      - name: "Export Unsigned IPA"
+        run: |
+          cd build/iOS
+          cat <<EOF > ExportOptions.plist
+          {
+            "method": "development",
+            "signingStyle": "manual",
+            "compileBitcode": false,
+            "destination": "export",
+            "stripSwiftSymbols": true,
+            "thinning": "<none>"
+          }
+          EOF
+
+          xcodebuild -exportArchive \
+            -archivePath YARG.xcarchive \
+            -exportPath build/iOS/ipa \
+            -exportOptionsPlist ExportOptions.plist \
+            CODE_SIGN_IDENTITY="" \
+            PROVISIONING_PROFILE_SPECIFIER=""
+
+      ###########################
+      # Upload IPA
+      ###########################
+      - name: "Upload Unsigned IPA"
+        uses: actions/upload-artifact@v3
+        with:
+          name: YARG_v${{ inputs.version }}-iOS-Unsigned.ipa
+          path: build/iOS/ipa/*.ipa

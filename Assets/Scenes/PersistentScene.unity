@@ -643,7 +643,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 338704132}
-  - component: {fileID: 338704131}
   - component: {fileID: 338704130}
   m_Layer: 0
   m_Name: XR Controller Left

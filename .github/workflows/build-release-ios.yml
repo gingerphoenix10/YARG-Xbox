@@ -90,7 +90,7 @@ jobs:
       # Upload IPA
       ###########################
       - name: "Upload Unsigned IPA"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: YARG_v${{ inputs.version }}-iOS-Unsigned.ipa
           path: build/iOS/ipa/*.ipa

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PlasticBand.Haptics;
 using UnityEngine;
 using YARG.Core.Chart;
@@ -9,6 +9,7 @@ namespace YARG.Integration.Sacn
 {
     public class SacnInterpreter : MonoSingleton<SacnInterpreter>
     {
+#if UNITY_STANDALONE
         // This interpreter basically has two sub-interpreters.
         // First is the Stage Kit Interpreter part which sets the 'basic' DMX channels to whatever the Stage Kit is doing.
         // Second is 'advanced' channels. This is more for external programs such as LightJams, QLC+, etc. to know what
@@ -580,5 +581,6 @@ namespace YARG.Integration.Sacn
         {
             OnChannelSet?.Invoke(channel, value);
         }
+#endif
     }
 }

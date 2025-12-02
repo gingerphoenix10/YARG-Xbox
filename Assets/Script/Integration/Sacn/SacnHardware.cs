@@ -11,6 +11,7 @@ namespace YARG.Integration.Sacn
 {
     public class SacnHardware : MonoSingleton<SacnHardware>
     {
+#if UNITY_STANDALONE
         private float TIME_BETWEEN_CALLS => 1f / SettingsManager.Settings.DMXTargetFPS.Value;
         private float PulseDuration => SettingsManager.Settings.DMXPulseDuration.Value / 1000f;
 
@@ -167,5 +168,6 @@ namespace YARG.Integration.Sacn
                 _dataPacket[SettingsManager.Settings.DMXBeatlineChannel.Value - 1] = 0;
             }
         }
+#endif
     }
 }

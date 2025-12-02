@@ -20,7 +20,8 @@ MonoBehaviour:
     rid: 3068919024453157195
   m_OverrideGlobalSceneList: 0
   m_Scenes: []
-  m_ScriptingDefines: []
+  m_ScriptingDefines:
+  - __IOS__
   m_PlayerSettingsYaml:
     m_Settings: []
   references:
@@ -58,11 +59,11 @@ MonoBehaviour:
   m_Script: {fileID: 15012, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: BuildAutomationSettings
   m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.Build.Profile.BuildAutomationSettings
-  m_OperatingSystemValue: 
-  m_OperatingSystemFamily: 
-  m_XcodeVersion: 
-  m_AndroidSdkVersion: 
-  m_UnityArchitecture: 
-  m_MachineTypeId: 
+  m_OperatingSystemValue: sonomaSilicon
+  m_OperatingSystemFamily: mac
+  m_XcodeVersion: default
+  m_AndroidSdkVersion: android_sdk_35
+  m_UnityArchitecture: AppleIntel
+  m_MachineTypeId: orka_standard_v1
   m_CredentialsId: 
   m_BuildTarget: 9

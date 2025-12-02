@@ -105,11 +105,6 @@ namespace YARG.Menu.Marketplace
                         {
                             if (Progress != null)
                                 Progress(e.ProgressPercentage/100f);
-
-                            if (e.ProgressPercentage >= 5)
-                            {
-                                client.CancelAsync();
-                            }
                         };
 
                         client.DownloadFileCompleted += (s, e) =>

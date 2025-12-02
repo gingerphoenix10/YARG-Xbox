@@ -65,9 +65,6 @@ namespace YARG.Menu.Marketplace
 
         private async void Start()
         {
-#if !UNITY_STANDALONE
-            Destroy(gameObject);
-#endif
             _downloadButtonPrefab = Addressables
                 .LoadAssetAsync<GameObject>("MarketplaceTab/Setlist")
                 .WaitForCompletion();
@@ -342,6 +339,7 @@ namespace YARG.Menu.Marketplace
                         return;
                     if (button._uninstallButton != null)
                         button._uninstallButton.gameObject.SetActive(false);
+                    button._downloadButton.gameObject.SetActive(true);
                     button._downloadButton.gameObject.SetActive(true);
                     button._downloadButton.GetComponent<Button>().interactable = false;
                     button._downloadButton.GetComponentInChildren<TextMeshProUGUI>().text = "Installing...";

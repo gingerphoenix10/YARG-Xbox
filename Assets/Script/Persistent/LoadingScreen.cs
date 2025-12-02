@@ -29,6 +29,7 @@ namespace YARG
             using var context = new LoadingContext();
 
             // Load language
+            YargLogger.LogInfo("Load lang");
             try
             {
                 await LocalizationManager.LoadLanguage(context);
@@ -38,6 +39,7 @@ namespace YARG
                 YargLogger.LogException(e);
             }
 
+            YargLogger.LogInfo("Check for bad path");
             // Check for bad paths
             if (PathHelper.PathError)
             {
@@ -57,11 +59,13 @@ namespace YARG
                 YargLogger.LogException(e);
             }
 
+            // Load song sources and icons
             // Load sources and genre mappings concurrently
+            YargLogger.LogInfo("Load sources");
             await UpdateSourcesAndGenres(context);
 
             // Auto connect profiles, using the same order that they were previously connected.
-            if (SettingsManager.Settings.ReconnectProfiles.Value)
+            /*if (SettingsManager.Settings.ReconnectProfiles.Value)
             {
                 PlayerContainer.AutoConnectProfiles();
                 RetryUnresolvedMicrophones().Forget();
@@ -69,7 +73,7 @@ namespace YARG
             else
             {
                 PlayerContainer.ClearProfileOrder();
-            }
+            }*/
 
             // Initialize phoneme dictionary (must load on main thread, parse on thread pool)
             var cmudictAsset = Resources.Load<TextAsset>("cmudict");
@@ -87,9 +91,11 @@ namespace YARG
                 });
             }
 
+            YargLogger.LogInfo("Refresh");
             // Fast scan (cache read) on startup
             await SongContainer.RunRefresh(true, context);
 
+            YargLogger.LogInfo("Go");
             GlobalVariables.Instance.LoadScene(SceneIndex.Menu);
         }
 

@@ -98,12 +98,13 @@ namespace YARG.Helpers
             }
             // Save this data as Application.* is main thread only (why Unity)
             RealPersistentDataPath = SanitizePath(Application.persistentDataPath);
+
 #if UNITY_EDITOR || YARG_TEST_BUILD
-            PersistentDataPath = SanitizePath(Path.Combine(Application.persistentDataPath, "dev"));
+            PersistentDataPath = SanitizePath(Path.Combine(RealPersistentDataPath, "dev"));
 #elif YARG_NIGHTLY_BUILD
-            PersistentDataPath = SanitizePath(Path.Combine(Application.persistentDataPath, "nightly"));
+            PersistentDataPath = SanitizePath(Path.Combine(RealPersistentDataPath, "nightly"));
 #else
-            PersistentDataPath = SanitizePath(Path.Combine(Application.persistentDataPath, "release"));
+            PersistentDataPath = SanitizePath(Path.Combine(RealPersistentDataPath, "release"));
 #endif
 
             SongContainer.internalSongsPath = Path.Combine(PathHelper.PersistentDataPath, "Songs");

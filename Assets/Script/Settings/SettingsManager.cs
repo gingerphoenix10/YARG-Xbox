@@ -299,6 +299,7 @@ namespace YARG.Settings
                 nameof(Settings.OutputChannelMetronome),
                 nameof(Settings.OutputChannelSfx),
                 nameof(Settings.OutputChannelVox),
+                nameof(Settings.DataStreamIP),
             }
         };
 

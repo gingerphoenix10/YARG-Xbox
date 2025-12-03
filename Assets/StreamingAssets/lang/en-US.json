@@ -1810,6 +1810,10 @@
                 "Name": "Enable UDP data stream",
                 "Description": "Enables sending of UDP information packets over the network, for software such as YALCY."
             },
+            "DataStreamIP": {
+                "Name": "The IP to send the UDP data stream to",
+                "Description": "Changes the target of the data stream to remotely connect to software such as YALCY."
+            },
             "RB3EEnabled": {
                 "Name": "Enable RB3E Stage Kit data stream",
                 "Description": "Enables sending of RB3E style stage kit information packets over the network, for hardware such as StageKitPied."

@@ -752,6 +752,7 @@ namespace YARG.Settings
             #region Experimental
 
             public ToggleSetting DataStreamEnable { get; } = new(false, DataStreamEnableCallback );
+            public IPv4Setting DataStreamIP { get; } = new("255.255.255.255");
             public DropdownSetting<BandComboType> BandComboTypeSetting { get; } = new(BandComboType.Off)
             {
                 BandComboType.Off,
@@ -926,7 +927,7 @@ namespace YARG.Settings
                 {
                     return;
                 }
-                //DataStreamController.Instance?.HandleEnabledChanged(value);
+                DataStreamController.Instance?.HandleEnabledChanged(value);
             }
 
             private static void FontScalingCallback(float value)

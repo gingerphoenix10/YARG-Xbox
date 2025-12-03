@@ -1,4 +1,4 @@
-<p align="center">
+﻿<p align="center">
   <picture>
     <img alt="YARG Gameplay" src="./Images/Banner.png" width="100%">
   </picture>

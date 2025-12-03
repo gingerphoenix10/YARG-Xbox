@@ -1,10 +1,19 @@
 ﻿{
   "dependencies": {
+    "com.alexeyperov.unity-dependencies-hunter": {
+      "version": "https://github.com/AlexeyPerov/Unity-Dependencies-Hunter.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "cc3272a399da40486beb953d838cb2a1e0db5408"
+    },
     "com.coffee.softmask-for-ugui": {
-      "version": "1.0.2",
+      "version": "3.5.0",
       "depth": 0,
       "source": "registry",
-      "dependencies": {},
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
       "url": "https://package.openupm.com"
     },
     "com.cysharp.csprojmodifier": {
@@ -387,12 +396,27 @@
       "dependencies": {},
       "hash": "e24fa529103603043f6dad1b66192ff72954ef6e"
     },
-    "unity-dependencies-hunter": {
-      "version": "https://github.com/AlexeyPerov/Unity-Dependencies-Hunter.git#upm",
+    "io.github.gkngkc.unity-standalone-file-browser": {
+      "version": "https://github.com/wyrdough/UnityStandaloneFileBrowser.git?path=Packages/StandaloneFileBrowser#upm",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "f5f9b5d2f168c7ab0f0a65d99db97e3763501a85"
+      "hash": "9ee3c1276182c00758ff506e5e1d4be894b9749e"
+    },
+    "jp.keijiro.minis": {
+      "version": "https://github.com/TheNathannator/Minis.git?path=/Packages/jp.keijiro.minis#yarg",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.inputsystem": "1.0.1"
+      },
+      "hash": "eb3d689d5f44daad36132debdbd5755f344775b6"
+    },
+    "com.unity.modules.accessibility": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
     },
     "com.unity.modules.adaptiveperformance": {
       "version": "1.0.0",

@@ -191,7 +191,6 @@ namespace YARG.Integration
         public static CameraCutEvent.CameraCutSubject MLCCameraCutSubject;
 
         public static ushort MLCudpPort = 36107; //hardcoded for now.
-        public static string MLCudpIP = SettingsManager.Settings.DataStreamIP.Value; // "this" network's broadcast address
 
         public static LightingEvent CurrentLightingCue
         {
@@ -577,7 +576,6 @@ namespace YARG.Integration
 
         public void HandleEnabledChanged(bool isEnabled)
         {
-            YargLogger.LogInfo("Changed");
             if (isEnabled)
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN

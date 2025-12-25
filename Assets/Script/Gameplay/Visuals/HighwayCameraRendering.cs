@@ -285,6 +285,16 @@ namespace YARG.Gameplay.Visuals
                 var fadeParams = CalculateFadeParams(index, _highwayPositions[index], _zeroFadePositions[index], _fadeSize[index]);
                 _fadeParams[index * 2] = fadeParams.x;
                 _fadeParams[index * 2 + 1] = fadeParams.y;
+                foreach (Renderer renderer in _cameras[index].transform.parent.gameObject.GetComponentsInChildren<Renderer>())
+                {
+                    foreach (Material mat in renderer.sharedMaterials)
+                    {
+                        if (mat.shader.name.EndsWith("VR"))
+                        {
+                            mat.SetVector("FadeDistance", fadeParams);
+                        }
+                    }
+                }
             }
             Shader.SetGlobalFloatArray(YargFadeParamsID, _fadeParams);
         }
@@ -318,7 +328,7 @@ namespace YARG.Gameplay.Visuals
         {
             if (_cameras.Count != 1)
             {
-                if (UnityEngine.XR.XRSettings.enabled)
+                if (CrossPlatformXROrigin.VREnabled)
                     _highwaysOutput.enabled = false;
                 _renderCamera.targetTexture = GetHighwayOutputTexture();
                 return;

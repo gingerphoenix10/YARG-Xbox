@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &84092540121630785
 GameObject:
@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e524056b0d6c4f0da3d536efd3680ae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _mode: 0
   _fadeOutRate: 100
@@ -124,8 +124,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
@@ -187,8 +187,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -5099,8 +5099,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -10016,8 +10016,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: faddd484b7894e0788b12f145d49f469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &380414325741663588
 GameObject:
   m_ObjectHideFlags: 0
@@ -10068,7 +10068,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: 
+  m_WarningMessage:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -10117,8 +10117,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -15029,8 +15029,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -19941,8 +19941,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -24796,8 +24796,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -29708,8 +29708,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 1
@@ -34638,8 +34638,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -39555,8 +39555,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f46efdc257804dceb9be77f1f9b48614, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _coloredMaterials:
   - Mesh: {fileID: 1897114193844750814}
     MaterialIndex: 0
@@ -39615,8 +39615,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: faddd484b7894e0788b12f145d49f469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &2772134146674360899
 GameObject:
   m_ObjectHideFlags: 0
@@ -39661,8 +39661,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -44573,8 +44573,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e524056b0d6c4f0da3d536efd3680ae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _mode: 0
   _fadeOutRate: 100
@@ -44653,8 +44653,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
@@ -44716,8 +44716,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -49569,8 +49569,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: faddd484b7894e0788b12f145d49f469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &3976812072215679014
 GameObject:
   m_ObjectHideFlags: 0
@@ -49616,8 +49616,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: faddd484b7894e0788b12f145d49f469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &4046581941892319598
 GameObject:
   m_ObjectHideFlags: 0
@@ -49662,8 +49662,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -54517,8 +54517,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -59434,8 +59434,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: faddd484b7894e0788b12f145d49f469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &4545397094931258919
 GameObject:
   m_ObjectHideFlags: 0
@@ -59480,8 +59480,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 1
@@ -64410,8 +64410,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -69322,8 +69322,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -74234,8 +74234,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -79146,8 +79146,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f01d8819cdf41258c95bfde40a20e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _keepAlphaWhenColoring: 1
   _setEmissionWhenColoring: 0
@@ -84058,8 +84058,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e524056b0d6c4f0da3d536efd3680ae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 1
   _mode: 2
   _fadeOutRate: 0
@@ -84138,8 +84138,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
@@ -84201,8 +84201,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e524056b0d6c4f0da3d536efd3680ae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _mode: 0
   _fadeOutRate: 100
@@ -84281,8 +84281,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
@@ -84344,8 +84344,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: faddd484b7894e0788b12f145d49f469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &7962492821281859173
 GameObject:
   m_ObjectHideFlags: 0
@@ -84390,8 +84390,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e524056b0d6c4f0da3d536efd3680ae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _allowColoring: 0
   _mode: 0
   _fadeOutRate: 100
@@ -84470,8 +84470,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
@@ -84555,7 +84555,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 18e2c48307ac7cd44893db16dcdcf2d5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 8a7c7752558288947b08517fa49c6e49, type: 2}
     - target: {fileID: -2376602291754965933, guid: 18e2c48307ac7cd44893db16dcdcf2d5, type: 3}
       propertyPath: m_Layer
@@ -84567,11 +84567,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -721521515004317085, guid: 18e2c48307ac7cd44893db16dcdcf2d5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 02c9ed313e29b6641a8e0b394540a79c, type: 2}
     - target: {fileID: -721521515004317085, guid: 18e2c48307ac7cd44893db16dcdcf2d5, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 3392b1c3b8291c141ad63a91e75f07e1, type: 2}
     - target: {fileID: 919132149155446097, guid: 18e2c48307ac7cd44893db16dcdcf2d5, type: 3}
       propertyPath: m_Name

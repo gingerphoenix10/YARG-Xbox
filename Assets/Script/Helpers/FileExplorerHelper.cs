@@ -19,6 +19,8 @@ using UnityEngine;
 using YARG.Menu.Persistent;
 using System.IO;
 using System.Threading.Tasks;
+using SimpleFileBrowser;
+using System.Collections;
 
 namespace YARG.Helpers
 {

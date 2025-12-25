@@ -235,7 +235,7 @@ namespace YARG.Gameplay
 
         private void Update()
         {
-            if (UnityEngine.XR.XRSettings.enabled)
+            if (CrossPlatformXROrigin.VREnabled)
             {
                 Destroy(_renderCamera);
                 enabled = false;

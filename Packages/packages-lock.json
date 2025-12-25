@@ -161,7 +161,7 @@
       "dependencies": {
         "com.unity.xr.interaction.toolkit": "3.2.2",
         "com.unity.xr.oculus": "4.5.2",
-        "com.unity.xr.openxr": "1.16.0"
+        "com.unity.xr.openxr": "1.16.1"
       }
     },
     "com.unity.ide.rider": {

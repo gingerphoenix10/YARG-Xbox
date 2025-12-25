@@ -444,6 +444,8 @@ MonoBehaviour:
   m_CameraFloorOffsetObject: {fileID: 1043652610}
   m_RequestedTrackingOriginMode: 0
   m_CameraYOffset: 1.1176
+  replacementShaders: []
+  GlobalFadeDistance: 1
 --- !u!114 &228093055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5850,7 +5852,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1778719368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5858,7 +5860,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1778719367}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7266c994bf03f6f4581f73f6f1398724, type: 3}
   m_Name:

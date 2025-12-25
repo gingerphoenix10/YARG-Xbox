@@ -269,7 +269,7 @@ namespace YARG.Gameplay.Player
 
             TrackView.ShowPlayerName(player);
 
-            if (UnityEngine.XR.XRSettings.enabled)
+            if (CrossPlatformXROrigin.VREnabled)
             {
                 transform.position = new Vector3(transform.position.x, 0, transform.position.z);
                 //transform.eulerAngles = new Vector3(-10, 0, 0);

@@ -44,12 +44,12 @@ MonoBehaviour:
           m_BuildProfileEngineDiagnosticsState: 2
         m_CopyRefences: 0
         m_CopyPDBFiles: 0
-        m_BuildConfiguration: 1
+        m_BuildConfiguration: 2
         m_WsaArchitecture: 
         m_WsaUWPVisualStudioVersion: 
         m_WsaUWPSDK: 
         m_WsaMinUWPSDK: 10.0.19041.0
         m_WsaUWPBuildType: 1
-        m_WsaBuildAndRunDeployTarget: 0
-        m_WindowsDevicePortalAddress: 
-        m_WindowsDevicePortalUsername: 
+        m_WsaBuildAndRunDeployTarget: 2
+        m_WindowsDevicePortalAddress: https://192.168.1.58:11443
+        m_WindowsDevicePortalUsername: Z2luZ2VycGhvZW5peDEw

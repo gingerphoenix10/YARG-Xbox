@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XInput;
 using UnityEngine.UI;
+using UnityEngine.Android;
 using YARG.Core.Audio;
 using YARG.Core.Game;
 using YARG.Core.Logging;
@@ -148,8 +149,11 @@ namespace YARG.Menu.ProfileList
 
         public async UniTask<bool> PromptAddDevice()
         {
-            if (!Application.HasUserAuthorization(UserAuthorization.Microphone))
+            if (!Application.HasUserAuthorization(UserAuthorization.Microphone)) // iOS
                 await Application.RequestUserAuthorization(UserAuthorization.Microphone).ToUniTask();
+            if (!Permission.HasUserAuthorizedPermission(Permission.Microphone)) // Android
+                Permission.RequestUserPermission(Permission.Microphone);
+
             var dialog = DialogManager.Instance.ShowList("Add Device\n" +
                 "<alpha=#44><size=65%><line-height=50%>\nIf your device does not show up, try hitting a button/pad on " +
                 "it first, and then retry.</size>");

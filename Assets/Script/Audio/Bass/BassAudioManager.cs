@@ -233,6 +233,7 @@ namespace YARG.Audio.BASS
 
             for (int deviceIndex = 0; Bass.RecordGetDeviceInfo(deviceIndex, out var info); deviceIndex++)
             {
+                Debug.Log($"Microphone: {info.Name}");
                 // Ignore disabled/claimed devices
                 if (!info.IsEnabled || info.IsInitialized) continue;
 

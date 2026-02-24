@@ -663,9 +663,9 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "d5bcfc4337e049ba808cba670a1f73e1"
+                    "m_Id": "662831fb10d14dc3a3ce0f7925856b85"
                 },
-                "m_SlotId": 0
+                "m_SlotId": 1
             }
         },
         {
@@ -691,9 +691,9 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "2500b9e0eab340c0989643d268c0307e"
+                    "m_Id": "52c25231419244eaa86a0811fc789979"
                 },
-                "m_SlotId": 1
+                "m_SlotId": 0
             }
         },
         {
@@ -705,7 +705,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "52c25231419244eaa86a0811fc789979"
+                    "m_Id": "d5bcfc4337e049ba808cba670a1f73e1"
                 },
                 "m_SlotId": 0
             }
@@ -2259,7 +2259,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "662831fb10d14dc3a3ce0f7925856b85"
+                    "m_Id": "2500b9e0eab340c0989643d268c0307e"
                 },
                 "m_SlotId": 1
             }
@@ -3175,7 +3175,7 @@
     "m_Title": "Solo Layer",
     "m_Position": {
         "x": -769.0,
-        "y": -870.9998779296875
+        "y": -871.0
     }
 }
 
@@ -5165,8 +5165,8 @@
     "m_ObjectId": "29ae3e50323c48248de47ed71058df35",
     "m_Title": "Layer 2",
     "m_Position": {
-        "x": -2679.999755859375,
-        "y": -318.9999694824219
+        "x": -2680.0,
+        "y": -319.0
     }
 }
 
@@ -8034,7 +8034,7 @@
     "m_ObjectId": "5b461fd500ec48caad1a8911e2bd0cf2",
     "m_Title": "Layer 3",
     "m_Position": {
-        "x": -2723.999755859375,
+        "x": -2724.0,
         "y": 170.0
     }
 }
@@ -15470,10 +15470,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1300.0,
-            "y": 669.0,
-            "width": 208.0,
-            "height": 302.0
+            "x": 1001.0000610351563,
+            "y": 983.0000610351563,
+            "width": 208.00006103515626,
+            "height": 302.00006103515627
         }
     },
     "m_Slots": [
@@ -17058,7 +17058,7 @@
     "m_Title": "Color Fade",
     "m_Position": {
         "x": -1225.0,
-        "y": 1605.9998779296875
+        "y": 1606.0
     }
 }
 

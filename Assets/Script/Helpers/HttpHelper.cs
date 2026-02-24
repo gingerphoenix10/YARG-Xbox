@@ -31,12 +31,14 @@ namespace YARG.Assets.Script.Helpers
 
             return await response.Content.ReadAsStringAsync();
 #else
-            var request = (HttpWebRequest) WebRequest.Create(url);
-            request.UserAgent = "YARG";
-            request.Timeout = 10000;
-            using var response = await request.GetResponseAsync();
-            using var reader = new StreamReader(response.GetResponseStream()!, Encoding.UTF8);
-            return await reader.ReadToEndAsync();
+            var request = UnityWebRequest.Get(url);
+            request.SetRequestHeader("User-Agent", "YARG");
+            request.timeout = 10;
+            await request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+                return request.downloadHandler.text;
+            return null;
 #endif
         }
 

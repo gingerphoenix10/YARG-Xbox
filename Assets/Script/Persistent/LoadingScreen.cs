@@ -56,6 +56,16 @@ namespace YARG
                 YargLogger.LogException(ex);
             }
 
+            // Load (sub)genre mappings
+            try
+            {
+                await Genrelizer.LoadGenreMappings(context);
+            }
+            catch (Exception ex)
+            {
+                YargLogger.LogException(ex);
+            }
+
             // Auto connect profiles, using the same order that they were previously connected.
             if (SettingsManager.Settings.ReconnectProfiles.Value)
             {

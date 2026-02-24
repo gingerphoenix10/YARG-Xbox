@@ -38,6 +38,7 @@ namespace YARG.Menu
         private Dictionary<Menu, MenuObject> _menus;
 
         private readonly Stack<Menu> _openMenus = new();
+        private Coroutine _reactivateCoroutine;
 
         protected override void SingletonAwake()
         {
@@ -132,18 +133,53 @@ namespace YARG.Menu
             }
         }
 
+        // Disables the current menu without popping it from the stack
+        public void DisableCurrentMenu()
+        {
+            if (_openMenus.TryPeek(out var currentMenuEnum) && _menus.TryGetValue(currentMenuEnum, out var currentMenu))
+            {
+                currentMenu.gameObject.SetActive(false);
+            }
+        }
+
         public void ReactivateCurrentMenu()
         {
             // Show the under one
             if (_openMenus.TryPeek(out var menu) && _menus.TryGetValue(menu, out var newMenu))
             {
-                newMenu.gameObject.SetActive(false);
-                newMenu.gameObject.SetActive(true);
+                if (_reactivateCoroutine != null)
+                {
+                    StopCoroutine(_reactivateCoroutine);
+                    _reactivateCoroutine = null;
+                }
+
+                _reactivateCoroutine = StartCoroutine(ReactivateMenuCoroutine(newMenu.gameObject));
             }
             else
             {
                 throw new InvalidOperationException($"Failed to activate menu {menu}.");
             }
+        }
+
+        private System.Collections.IEnumerator ReactivateMenuCoroutine(GameObject menuObject)
+        {
+            if (menuObject == null)
+            {
+                _reactivateCoroutine = null;
+                yield break;
+            }
+
+            // Defer activation toggles to avoid SetActive during another object's OnEnable/OnDisable.
+            yield return null;
+
+            if (menuObject.activeSelf)
+            {
+                menuObject.SetActive(false);
+                yield return null;
+            }
+
+            menuObject.SetActive(true);
+            _reactivateCoroutine = null;
         }
     }
 }

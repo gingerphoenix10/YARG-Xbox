@@ -18,12 +18,12 @@ MonoBehaviour:
   m_GUID: 1fc303ae4b596034592a9c3d3864493f
   m_SerializeEntries:
   - m_GUID: 00be5b45e060bcc4ea7a4233ed157d47
-    m_Address: VocalNeedleTexture/1
+    m_Address: VocalNeedleTexture/4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 029be4c7f0bed9f4ea00ee2c26be53f2
-    m_Address: VocalNeedleTexture/5
+    m_Address: VocalNeedleTexture/3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -82,6 +82,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47970bda16e44c543b7f1b72e04335f7
+    m_Address: MusicLibraryUpIcon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4b42c3eb19b10a14d8b5ff4f6afd4b62
     m_Address: VocalNeedle/2
     m_ReadOnly: 0
@@ -98,7 +103,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5c946b527f23cbe438e258cadbf6542e
-    m_Address: VocalNeedleTexture/2
+    m_Address: VocalNeedleTexture/5
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -133,7 +138,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6c4556492c4d6da49ac6ae4204f6d10a
-    m_Address: VocalNeedleTexture/4
+    m_Address: VocalNeedleTexture/2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -158,7 +163,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8b68a573841c0df43b615b07a9fa8a80
-    m_Address: VocalNeedleTexture/3
+    m_Address: VocalNeedleTexture/1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -169,6 +174,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9d036fb0b1366674c947c508eacbef3b
     m_Address: SettingTab/SettingCategoryView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fe3f03b859cb4846bfe733521bdbe70
+    m_Address: SettingPreviews/CharacterPreviewUI
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -234,6 +244,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eda8fcec479d4324eb4bd1d7624e1edc
     m_Address: SettingTab/Header
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edae7e06bc0cb23478dcea1b38796c5d
+    m_Address: SettingPreviews/CharacterPreview
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

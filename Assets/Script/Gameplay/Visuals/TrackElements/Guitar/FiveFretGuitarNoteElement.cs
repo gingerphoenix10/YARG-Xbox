@@ -55,9 +55,10 @@ namespace YARG.Gameplay.Visuals
             if (NoteRef.Fret != (int) FiveFretGuitarFret.Open)
             {
                 // Deal with non-open notes
+                var lane = Player.GetLanePosition((FiveFretGuitarFret)NoteRef.Fret);
 
                 // Set the position
-                transform.localPosition = new Vector3(GetElementX(NoteRef.Fret, 5), 0f, 0f) * LeftyFlipMultiplier;
+                transform.localPosition = new Vector3(GetElementX(lane, FiveFretGuitarPlayer.LANE_COUNT), 0f, 0f);
 
                 // Get which note model to use
                 NoteGroup = NoteRef.Type switch
@@ -178,11 +179,14 @@ namespace YARG.Gameplay.Visuals
                 color = colors.Miss;
             }
 
-            // Set the note color
-            NoteGroup.SetColorWithEmission(color.ToUnityColor(), colorNoStarPower.ToUnityColor());
+            // Set the note color if not hidden
+            if (!NoteRef.WasHit)
+            {
+                NoteGroup.SetColorWithEmission(color.ToUnityColor(), colorNoStarPower.ToUnityColor());
 
-            // Set the metal color
-            NoteGroup.SetMetalColor(colors.GetMetalColor(IsStarPowerVisible).ToUnityColor());
+                // Set the metal color
+                NoteGroup.SetMetalColor(colors.GetMetalColor(IsStarPowerVisible).ToUnityColor());
+            }
 
             // The rest of this method is for sustain only
             if (!NoteRef.IsSustain) return;

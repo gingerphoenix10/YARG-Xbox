@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.UI;
 using YARG.Core.Chart;
-using YARG.Core.Extensions;
 using YARG.Core.Logging;
 using YARG.Gameplay;
 using YARG.Helpers.Extensions;
+using YARG.Playback;
 using YARG.Settings;
 using YARG.Venue.VolumeComponents;
 using Random = UnityEngine.Random;
@@ -78,18 +74,17 @@ namespace YARG.Venue.VenueCamera
             { CameraCutEvent.CameraCutSubject.Vocals, CameraLocation.Vocals },
             { CameraCutEvent.CameraCutSubject.AllBehind, CameraLocation.Behind },
             { CameraCutEvent.CameraCutSubject.BehindNoDrum, CameraLocation.Behind },
-            // For testing
-            { CameraCutEvent.CameraCutSubject.BassBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.GuitarBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.DrumsBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.KeysBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.VocalsBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.BassGuitarBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.BassVocalsBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.GuitarVocalsBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.KeysVocalsBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.BassKeysBehind, CameraLocation.Behind },
-            { CameraCutEvent.CameraCutSubject.GuitarKeysBehind, CameraLocation.Behind },
+            { CameraCutEvent.CameraCutSubject.BassBehind, CameraLocation.BassBehind },
+            { CameraCutEvent.CameraCutSubject.GuitarBehind, CameraLocation.GuitarBehind },
+            { CameraCutEvent.CameraCutSubject.DrumsBehind, CameraLocation.DrumsBehind },
+            { CameraCutEvent.CameraCutSubject.KeysBehind, CameraLocation.KeysBehind },
+            { CameraCutEvent.CameraCutSubject.VocalsBehind, CameraLocation.VocalsBehind },
+            { CameraCutEvent.CameraCutSubject.BassGuitarBehind, CameraLocation.BassGuitarBehind },
+            { CameraCutEvent.CameraCutSubject.BassVocalsBehind, CameraLocation.BassVocalsBehind },
+            { CameraCutEvent.CameraCutSubject.GuitarVocalsBehind, CameraLocation.GuitarVocalsBehind },
+            { CameraCutEvent.CameraCutSubject.KeysVocalsBehind, CameraLocation.KeysVocalsBehind },
+            { CameraCutEvent.CameraCutSubject.BassKeysBehind, CameraLocation.BassKeysBehind },
+            { CameraCutEvent.CameraCutSubject.GuitarKeysBehind, CameraLocation.GuitarKeysBehind },
 
             { CameraCutEvent.CameraCutSubject.AllFar, CameraLocation.Stage },
             { CameraCutEvent.CameraCutSubject.AllNear, CameraLocation.Stage },
@@ -100,8 +95,9 @@ namespace YARG.Venue.VenueCamera
         [SerializeField]
         private GameObject _venue;
 
+        public Camera CurrentCamera { get; private set; }
+
         private List<Camera>  _cameras;
-        private Camera        _currentCamera;
 
         private List<CameraCutEvent> _cameraCuts;
         private int                  _currentCutIndex;
@@ -177,7 +173,7 @@ namespace YARG.Venue.VenueCamera
                 if (vc.CameraLocation == CameraLocation.Stage && !foundStage)
                 {
                     // We're setting _currentCamera here so we can avoid checking for null in SwitchCamera
-                    _currentCamera = camera;
+                    CurrentCamera = camera;
                     _cameraTimer = GetRandomCameraTimer();
                     _cameraIndex = _cameras.IndexOf(camera);
                     foundStage = true;
@@ -207,6 +203,7 @@ namespace YARG.Venue.VenueCamera
             // Make up a PostProcessingEvent of type default to start us off
             var firstEffect = new PostProcessingEvent(PostProcessingType.Default, -2f, 0);
             CurrentEffect = firstEffect;
+            PreviousEffect = firstEffect;
 
             if (_cameraCuts.Count > 0)
             {
@@ -218,7 +215,13 @@ namespace YARG.Venue.VenueCamera
 
             _useCameraTimer = _cameraCuts.Count < 1;
 
-            SwitchCamera(_currentCamera, _useCameraTimer);
+            SwitchCamera(CurrentCamera, _useCameraTimer);
+
+            if (_useCameraTimer)
+            {
+                // Subscribe to beat handler for camera cut timing
+                GameManager.BeatEventHandler?.Audio.Subscribe(BeatHandler, BeatEventType.StrongBeat);
+            }
 
             GameManager.SetVenueCameraManager(this);
         }
@@ -284,6 +287,15 @@ namespace YARG.Venue.VenueCamera
 
             // Update the camera timer
             _cameraTimer -= Time.deltaTime;
+        }
+
+        private void BeatHandler()
+        {
+            if (!_useCameraTimer)
+            {
+                return;
+            }
+
             if (_cameraTimer <= 0f)
             {
                 YargLogger.LogDebug("Changing camera due to timer expiry");
@@ -311,25 +323,25 @@ namespace YARG.Venue.VenueCamera
         private void SwitchCamera(Camera newCamera, bool random = false)
         {
             // _currentCamera.enabled = false;
-            _currentCamera.gameObject.SetActive(false);
+            CurrentCamera.gameObject.SetActive(false);
 
             if (random)
             {
                 _cameraTimer = GetRandomCameraTimer();
-                _currentCamera = GetRandomCamera();
+                CurrentCamera = GetRandomCamera();
             }
             else
             {
-                _currentCamera = newCamera;
+                CurrentCamera = newCamera;
                 _cameraTimer = _cameraTimer = Mathf.Max(11f, (float) _cameraCuts[_currentCutIndex].TimeLength);
             }
-            _currentCamera.gameObject.SetActive(true);
-            _cameraIndex = _cameras.IndexOf(_currentCamera);
+            CurrentCamera.gameObject.SetActive(true);
+            _cameraIndex = _cameras.IndexOf(CurrentCamera);
         }
 
         private float GetRandomCameraTimer()
         {
-            return Random.Range(3f, 8f);
+            return Random.Range(1f, 4f);
         }
 
         private Camera GetRandomCamera()
@@ -506,10 +518,17 @@ namespace YARG.Venue.VenueCamera
 
         protected override void GameplayDestroy()
         {
+            // These need to be explicitly released
+            _invertCurveParam.Release();
+            _defaultCurveParam.Release();
+            _brightCurveParam.Release();
+            _copierCurveParam.Release();
+
             // Enable the camera in case it happens to be disabled
-            _currentCamera.enabled = true;
+            CurrentCamera.enabled = true;
 
             SettingsManager.Settings.VenuePostProcessing.OnChange -= SetPostProcessingEnabled;
+            GameManager.BeatEventHandler?.Audio.Unsubscribe(BeatHandler);
             base.GameplayDestroy();
         }
 

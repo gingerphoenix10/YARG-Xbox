@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using YARG.Core;
 using YARG.Core.Extensions;
+using YARG.Helpers.Extensions;
 using YARG.Song;
 
 namespace YARG.Menu.MusicLibrary
@@ -46,8 +47,8 @@ namespace YARG.Menu.MusicLibrary
 
         public bool IsSearching => !string.IsNullOrEmpty(_fullSearchQuery);
         public bool IsCurrentSearchInField => _searchQueries[_currentSearchFilter] == _searchField.text;
-        public bool IsUpdatedSearchLonger => _searchField.text.Length > _currentSearchText.Length;
         public bool IsUnspecified => _searchContext.IsUnspecified();
+        public string FullSearchQuery => _fullSearchQuery;
 
         public event Action<bool> OnSearchQueryUpdated;
 
@@ -192,14 +193,15 @@ namespace YARG.Menu.MusicLibrary
 
             _currentSearchFilter = button.Text.text.ToLowerInvariant() switch
             {
-                "track"   => SortAttribute.Name,
-                "artist"  => SortAttribute.Artist,
-                "album"   => SortAttribute.Album,
-                "genre"   => SortAttribute.Genre,
-                "source"  => SortAttribute.Source,
-                "charter" => SortAttribute.Charter,
-                "year"    => SortAttribute.Year,
-                _         => SortAttribute.Unspecified
+                "track"     => SortAttribute.Name,
+                "artist"    => SortAttribute.Artist,
+                "album"     => SortAttribute.Album,
+                "genre"     => SortAttribute.Genre,
+                "subgenre"  => SortAttribute.Subgenre,
+                "source"    => SortAttribute.Source,
+                "charter"   => SortAttribute.Charter,
+                "year"      => SortAttribute.Year,
+                _           => SortAttribute.Unspecified
             };
 
             if (previousSearchFilter == SortAttribute.Unspecified)
@@ -220,14 +222,15 @@ namespace YARG.Menu.MusicLibrary
         {
             var toggleName = attribute switch
             {
-                SortAttribute.Name    => "track",
-                SortAttribute.Artist  => "artist",
-                SortAttribute.Album   => "album",
-                SortAttribute.Genre   => "genre",
-                SortAttribute.Source  => "source",
-                SortAttribute.Charter => "charter",
-                SortAttribute.Year    => "year",
-                _                     => string.Empty,
+                SortAttribute.Name      => "track",
+                SortAttribute.Artist    => "artist",
+                SortAttribute.Album     => "album",
+                SortAttribute.Genre     => "genre",
+                SortAttribute.Subgenre  => "subgenre",
+                SortAttribute.Source    => "source",
+                SortAttribute.Charter   => "charter",
+                SortAttribute.Year      => "year",
+                _                       => string.Empty,
             };
 
             if (!string.IsNullOrEmpty(toggleName))
@@ -280,6 +283,13 @@ namespace YARG.Menu.MusicLibrary
         private void OnDisable()
         {
             _searchFilters.ClickedButton -= OnClickedSearchFilter;
+        }
+
+        public bool HasInstrumentFilter(Instrument instrument)
+        {
+            // Messy, but SongSearchingField uses _fullSearchQuery as the source of truth for filters
+            var filter = instrument.ToSortAttribute().ToString().ToLowerInvariant() + ":";
+            return _fullSearchQuery.StartsWith(filter) || _fullSearchQuery.Contains(";" + filter);
         }
     }
 }

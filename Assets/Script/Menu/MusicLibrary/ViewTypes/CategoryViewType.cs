@@ -9,45 +9,57 @@ namespace YARG.Menu.MusicLibrary
     public class CategoryViewType : ViewType
     {
         public override BackgroundType Background => BackgroundType.Category;
+        public override string StableId => _stableId;
 
         public readonly string SourceCountText;
         public readonly string CharterCountText;
         public readonly string GenreCountText;
+        public readonly string SubgenreCountText;
 
-        private readonly string _primary;
+        protected readonly string Primary;
 
-        private readonly int _songCount;
+        protected readonly int SongCount;
         private readonly Action _clickAction;
+        private readonly string _stableId;
 
         private static readonly HashSet<string> SourceCounter  = new();
         private static readonly HashSet<string> CharterCounter = new();
         private static readonly HashSet<string> GenreCounter   = new();
+        private static readonly HashSet<string> SubgenreCounter = new();
         public CategoryViewType(string primary, int songCount, SongEntry[] songsUnderCategory,
-            Action clickAction = null)
+            Action clickAction = null, string stableId = null)
         {
-            _primary = primary;
-            _songCount = songCount;
+            Primary = primary;
+            SongCount = songCount;
             _clickAction = clickAction;
+            _stableId = stableId ?? $"Category:{primary}";
 
             foreach (var song in songsUnderCategory)
             {
                 SourceCounter.Add(song.Source);
                 CharterCounter.Add(song.Charter);
                 GenreCounter.Add(song.Genre);
+                if (!string.IsNullOrEmpty(song.Subgenre))
+                {
+                    SubgenreCounter.Add(song.Subgenre);
+                }
             }
 
             SourceCountText = $"{SourceCounter.Count} sources";
             CharterCountText = $"{CharterCounter.Count} charters";
             GenreCountText = $"{GenreCounter.Count} genres";
+            SubgenreCountText = $"{SubgenreCounter.Count} subgenres";
             SourceCounter.Clear();
             CharterCounter.Clear();
             GenreCounter.Clear();
+            SubgenreCounter.Clear();
         }
 
-        public CategoryViewType(string primary, int songCount, SongCategory[] songsUnderCategory)
+        public CategoryViewType(string primary, int songCount, SongCategory[] songsUnderCategory, string stableId = null)
         {
-            _primary = primary;
-            _songCount = songCount;
+            Primary = primary;
+            SongCount = songCount;
+            _stableId = stableId ?? $"Category:{primary}";
 
             foreach (var category in songsUnderCategory)
             {
@@ -56,25 +68,30 @@ namespace YARG.Menu.MusicLibrary
                     SourceCounter.Add(song.Source);
                     CharterCounter.Add(song.Charter);
                     GenreCounter.Add(song.Genre);
+                    if (!string.IsNullOrEmpty(song.Subgenre)) {
+                        SubgenreCounter.Add(song.Subgenre);
+                    }
                 }
             }
 
             SourceCountText = $"{SourceCounter.Count} sources";
             CharterCountText = $"{CharterCounter.Count} charters";
             GenreCountText = $"{GenreCounter.Count} genres";
+            SubgenreCountText = $"{SubgenreCounter.Count} subgenres";
             SourceCounter.Clear();
             CharterCounter.Clear();
             GenreCounter.Clear();
+            SubgenreCounter.Clear();
         }
 
         public override string GetPrimaryText(bool selected)
         {
-            return FormatAs(_primary, TextType.Bright, selected);
+            return FormatAs(Primary, TextType.Bright, selected);
         }
 
         public override string GetSideText(bool selected)
         {
-            return CreateSongCountString(_songCount);
+            return CreateSongCountString(SongCount);
         }
 
         public override void PrimaryButtonClick()

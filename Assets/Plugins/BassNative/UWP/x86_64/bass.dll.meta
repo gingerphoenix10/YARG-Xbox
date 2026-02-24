@@ -1,4 +1,4 @@
-fileFormatVersion: 2
+﻿fileFormatVersion: 2
 guid: 4c12dc5f6a16479439f8abb2fe429631
 PluginImporter:
   externalObjects: {}
@@ -23,7 +23,7 @@ PluginImporter:
         Exclude Win64: 1
         Exclude WindowsStoreApps: 0
   - first:
-      Any: 
+      Any:
     second:
       enabled: 0
       settings: {}
@@ -66,9 +66,9 @@ PluginImporter:
       settings:
         CPU: X64
         DontProcess: false
-        PlaceholderPath: 
+        PlaceholderPath:
         SDK: UWP
         ScriptingBackend: AnyScriptingBackend
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+  userData:
+  assetBundleName:
+  assetBundleVariant:

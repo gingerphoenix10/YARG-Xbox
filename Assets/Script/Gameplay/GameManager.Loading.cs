@@ -9,6 +9,7 @@ using YARG.Core.Chart;
 using YARG.Core.Logging;
 using YARG.Core.Replays;
 using YARG.Gameplay.Player;
+using YARG.Menu;
 using YARG.Menu.Navigation;
 using YARG.Menu.Persistent;
 using YARG.Menu.Settings;
@@ -164,6 +165,7 @@ namespace YARG.Gameplay
             {
                 ToastManager.ToastWarning("Chart requires a rescan!", () =>
                 {
+                    MenuManager.Instance.DisableCurrentMenu();
                     SettingsMenu.Instance.gameObject.SetActive(true);
                     SettingsMenu.Instance.SelectTabByName("SongManager");
                 });
@@ -183,19 +185,12 @@ namespace YARG.Gameplay
 
             FinalizeChart();
 
-            // Get audio calibration
-            int audioCalibration = SettingsManager.Settings.AudioCalibration.Value;
-            if (SettingsManager.Settings.AccountForHardwareLatency.Value)
-                audioCalibration += GlobalAudioHandler.PlaybackLatency;
-
             // Initialize song runner
             _songRunner = new SongRunner(
                 _mixer,
                 startTime: 0,
                 SONG_START_DELAY,
                 GlobalVariables.State.SongSpeed,
-                audioCalibration,
-                SettingsManager.Settings.VideoCalibration.Value,
                 Song.SongOffsetSeconds);
 
             // Spawn players
@@ -251,6 +246,8 @@ namespace YARG.Gameplay
                 EngineManager.InitializeHappiness();
 
                 SettingsManager.Settings.NoFailMode.OnChange += OnNoFailModeChanged;
+                SettingsManager.Settings.AutoCalibrateAudio.Value = false;
+                SettingsManager.Settings.AutoCalibrateVideo.Value = false;
             }
 
             // Log constant values
@@ -293,6 +290,7 @@ namespace YARG.Gameplay
                 if (Chart != null)
                 {
                     GenerateVenueTrack();
+                    GenerateLipsyncTrack();
                 }
                 else
                 {
@@ -314,7 +312,7 @@ namespace YARG.Gameplay
             {
                     SongChart.LoadVenueFromMilo(Chart, Song);
 
-                    YargLogger.LogFormatWarning("Loaded {0} lighting events from milo", Chart.VenueTrack.Lighting.Count);
+                    YargLogger.LogFormatDebug("Loaded {0} lighting events from milo", Chart.VenueTrack.Lighting.Count);
             }
 
             if (File.Exists(VenueAutoGenerationPreset.DefaultPath))
@@ -330,6 +328,13 @@ namespace YARG.Gameplay
                     Chart = preset.GenerateLightingEvents(Chart);
                 }
             }
+        }
+
+        private void GenerateLipsyncTrack()
+        {
+            SongChart.LoadLipsyncFromMilo(Chart, Song);
+
+            YargLogger.LogFormatDebug("Loaded {0} lipsync events from milo", Chart.LipsyncEvents.Count);
         }
 
         private void FinalizeChart()
@@ -383,6 +388,8 @@ namespace YARG.Gameplay
                 int vocalIndex = -1;
                 foreach (var player in YargPlayers)
                 {
+                    player.IsScoreValid = true;
+
                     if (!player.IsReplay)
                     {
                         // Reset microphone (resets channel buffers)

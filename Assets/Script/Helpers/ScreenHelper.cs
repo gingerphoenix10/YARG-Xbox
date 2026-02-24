@@ -53,37 +53,27 @@ namespace YARG.Helpers
         /// </summary>
         public static Resolution GetScreenResolution()
         {
+            var screenInfo = Screen.currentResolution;
 #if UNITY_STANDALONE
-            var screenInfo = Screen.mainWindowDisplayInfo;
-
             return new Resolution()
-
             {
-
                 width = screenInfo.width,
-
                 height = screenInfo.height,
-
-                refreshRateRatio = new()
-                {
-                    numerator = (uint)Math.Round(screenInfo.refreshRate.value),
-                    denominator = 1u
-                }
-
+                refreshRateRatio = screenInfo.refreshRateRatio,
             };
 #elif !UNITY_STANDALONE && VR_BUILD
             return new Resolution()
             {
                 width = 1920,
                 height = 1080,
-                refreshRateRatio = Screen.currentResolution.refreshRateRatio,
+                refreshRateRatio = screenInfo.refreshRateRatio,
             };
 #else
             return new Resolution()
             {
                 width = Screen.width,
                 height = Screen.height,
-                refreshRateRatio = Screen.currentResolution.refreshRateRatio,
+                refreshRateRatio = screenInfo.refreshRateRatio,
             };
 #endif
         }

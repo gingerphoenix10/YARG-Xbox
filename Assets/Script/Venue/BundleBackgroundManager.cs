@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using YARG.Gameplay;
 using YARG.Venue.VenueCamera;
+using YARG.Venue.Characters;
 
 #if UNITY_EDITOR
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
-using YARG.Venue.Characters;
 #endif
 
 namespace YARG.Venue
@@ -17,8 +18,14 @@ namespace YARG.Venue
     {
         // DO NOT CHANGE THIS! It will break existing venues
         public const string BACKGROUND_PREFAB_PATH = "Assets/_Background.prefab";
+        public const string CHARACTER_PREFAB_PATH = "Assets/_Character.prefab";
         public const string BACKGROUND_SHADER_BUNDLE_NAME = "_metal_shaders.bytes";
+        public const string CHARACTER_SHADER_BUNDLE_NAME = "_character_metal_shaders.bytes";
         public const string BACKGOUND_OSX_MATERIAL_PREFIX = "_metal_";
+
+        private const string VENUE_LAYER_NAME = "Venue";
+
+        private int _venueLayerNumber = -1;
 
         // DO NOT CHANGE the name of this! I *know* it doesn't follow naming conventions, but it will also break existing
         // venues if we do change it.
@@ -27,13 +34,19 @@ namespace YARG.Venue
         [SerializeField]
         private Camera mainCamera;
 
-        public AssetBundle Bundle { get; set; }
-        public AssetBundle ShaderBundle { get; set; }
+        [Space]
+        [SerializeField]
+        private VenueCharacter _replaceableVocalist;
+
+        public AssetBundle       Bundle        { get; set; }
+        public List<AssetBundle> ShaderBundles { get; set; } = new();
+        public List<AssetBundle> CharacterBundles { get; set; } = new();
 
         private void Awake()
         {
             // Move object out of the way, so its effects don't collide with the tracks
             transform.position += Vector3.forward * 10_000f;
+            _venueLayerNumber = LayerMask.NameToLayer(VENUE_LAYER_NAME);
         }
 
         public void SetupVenueCamera(GameObject bgInstance)
@@ -43,23 +56,56 @@ namespace YARG.Venue
             {
                 mainCamera.gameObject.AddComponent<VenueCameraRenderer>();
             }
+        }
 
-            // TODO: This will not actually work with multi-camera venues
-            var fsrManager = mainCamera.GetComponent<FSRCameraManager>();
-            if (fsrManager != null)
+        public void LimitVenueLights(GameObject bgInstance)
+        {
+            if (_venueLayerNumber == -1)
             {
-                fsrManager.enabled = false;
-                fsrManager.textureParentObject = bgInstance;
-                fsrManager.enabled = true;
+                return;
+            }
+
+            int venueLayer = 1 << _venueLayerNumber;
+
+            Light[] lights = bgInstance.GetComponentsInChildren<Light>(true);
+
+            foreach (var light in lights)
+            {
+                light.cullingMask = venueLayer;
             }
         }
 
         private void OnDestroy()
         {
-            Bundle.Unload(true);
-            if (ShaderBundle != null)
+            if (Bundle != null)
             {
-                ShaderBundle.Unload(true);
+                Bundle.Unload(true);
+            }
+
+            if (ShaderBundles.Count > 0)
+            {
+                foreach (var bundle in ShaderBundles)
+                {
+                    if (bundle != null)
+                    {
+                        bundle.Unload(true);
+                    }
+                }
+
+                ShaderBundles.Clear();
+            }
+
+            if (CharacterBundles.Count > 0)
+            {
+                foreach (var bundle in CharacterBundles)
+                {
+                    if (bundle != null)
+                    {
+                        bundle.Unload(true);
+                    }
+                }
+
+                CharacterBundles.Clear();
             }
         }
 
@@ -74,337 +120,216 @@ namespace YARG.Venue
 
         private GameObject _backgroundReference;
 
+        private void Export(GameObject root, ExportType type, BuildTarget buildTarget = BuildTarget.StandaloneWindows)
+        {
+            _backgroundReference = root;
+            string defaultName = type == ExportType.Character ? "character" : "bg";
+            string extension = type == ExportType.Character ? "yargchar" : "yarground";
+            string path = EditorUtility.SaveFilePanel("Save Background", string.Empty, defaultName, extension);
+
+            GameObject clonedBackground = null;
+
+            AssetDatabase.DisallowAutoRefresh();
+
+            try
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    return;
+                }
+
+                // First we'll collect all shaders and build a separate bundle out of them
+                // for Mac as no other build target will include Metal shaders
+                // And we want our background to work everywhere
+
+                // We use materials as "anchors" to make sure all required
+                // shader variants are included
+                var metalAssetBundleName = type == ExportType.Background ? BACKGROUND_SHADER_BUNDLE_NAME : CHARACTER_SHADER_BUNDLE_NAME;
+                var materialAssets = EditorUtility.CollectDependencies(new[] { gameObject })
+                    .OfType<Material>() // Only material dependencices
+                    .Select((mat, i) =>
+                    {
+                        // Create a clone
+                        var matClone = new Material(mat);
+                        // Avoid name collision
+                        matClone.name = BACKGOUND_OSX_MATERIAL_PREFIX + i.ToString() + mat.name;
+                        // Drop all textures to not double resulting yarground in size
+                        if (matClone.mainTexture != null)
+                        {
+                            matClone.mainTexture = Texture2D.whiteTexture;
+                        }
+                        foreach (var id in matClone.GetTexturePropertyNameIDs())
+                        {
+                            if (matClone.GetTexture(id) != null)
+                            {
+                                matClone.SetTexture(id, Texture2D.whiteTexture);
+                            }
+                        }
+                        var assetPath = Path.Combine("Assets", matClone.name + ".mat");
+                        AssetDatabase.CreateAsset(matClone, assetPath);
+
+                        return assetPath;
+                    })
+                    .ToArray();
+
+                var shaderAssets = EditorUtility.CollectDependencies(new[] { gameObject })
+                    .OfType<Shader>().Select(AssetDatabase.GetAssetPath);
+
+                if (materialAssets.Length > 0)
+                {
+                    var metalAssetBundleBuild = default(AssetBundleBuild);
+                    metalAssetBundleBuild.assetBundleName = metalAssetBundleName;
+                    metalAssetBundleBuild.assetNames = materialAssets.Concat(shaderAssets).ToArray();
+
+                    BuildPipeline.BuildAssetBundles(Application.temporaryCachePath,
+                        new[]
+                        {
+                            metalAssetBundleBuild
+                        }, BuildAssetBundleOptions.ForceRebuildAssetBundle,
+                        BuildTarget.StandaloneOSX);
+
+                    var filePath = Path.Combine(Application.temporaryCachePath, metalAssetBundleName);
+
+                    if (!File.Exists(filePath))
+                    {
+                        EditorUtility.DisplayDialog("Export Unsuccessful", "Failed to build MacOS Shader bundle. See console for more info.", "OK");
+                        throw new FileNotFoundException("MacOS Shader bundle failed to build. <a href=\"https://wiki.yarg.in/wiki/Venue_Creation\">Please ensure you have the \"MacOS Build Support (Mono)\" module installed.</a>");
+                    }
+
+                    var assetPath = Path.Combine(Application.dataPath, metalAssetBundleName);
+                    File.Move(filePath, assetPath);
+                    AssetDatabase.ImportAsset(Path.Combine("Assets", metalAssetBundleName));
+                }
+                // Now delete our material clones
+                foreach (var assetPath in materialAssets)
+                {
+                    AssetDatabase.DeleteAsset(assetPath);
+                }
+
+                clonedBackground = Instantiate(_backgroundReference.gameObject);
+
+                string fileName = Path.GetFileName(path);
+                string folderPath = Path.GetDirectoryName(path);
+
+                var backgroundPath = ExportType.Character == type ? CHARACTER_PREFAB_PATH : BACKGROUND_PREFAB_PATH;
+
+                var assetPaths = new[]
+                {
+                    Path.Combine("Assets/", metalAssetBundleName),
+                    backgroundPath
+                };
+
+                AssetBundleBuild assetBundleBuild = default;
+                assetBundleBuild.assetBundleName = fileName;
+                assetBundleBuild.assetNames = assetPaths;
+
+                // We must examine anything that has the VenueCharacter component so we can deal with animations
+                // properly. First we find them, then check for an AnimatorController and extract the layers and
+                // animation states contained within. Then we assign them to a SerializedField on the VenueCharacter,
+                // which will hopefully end up on the character when the AssetBundle is built.
+
+                var characterComponents = clonedBackground.GetComponentsInChildren<VenueCharacter>();
+
+                foreach (var character in characterComponents)
+                {
+                    var animator = character.GetComponent<Animator>();
+                    if (animator == null)
+                    {
+                        continue;
+                    }
+
+                    // This should work since we're in the editor
+                    var controller = animator.runtimeAnimatorController as AnimatorController;
+                    if (controller == null)
+                    {
+                        continue;
+                    }
+
+                    var layerStates = new AnimationDictionary();
+                    foreach (var layer in controller.layers)
+                    {
+                        var layerName = layer.name;
+                        foreach (var state in layer.stateMachine.states)
+                        {
+                            layerStates.Add(layerName, state.state.name);
+                        }
+                    }
+
+                    character.LayerStates = layerStates;
+                }
+
+                PrefabUtility.SaveAsPrefabAsset(clonedBackground.gameObject, backgroundPath);
+
+                BuildPipeline.BuildAssetBundles(Application.temporaryCachePath,
+                    new[]
+                    {
+                        assetBundleBuild
+                    }, BuildAssetBundleOptions.ForceRebuildAssetBundle,
+                    buildTarget);
+
+                foreach (var asset in assetPaths)
+                {
+                    AssetDatabase.DeleteAsset(asset);
+                }
+
+                // If the file exists, delete it (to replace it)
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+
+                // Unity seems to save the file in lower case, which is a problem on Linux, as file systems are case sensitive there
+                File.Move(Path.Combine(Application.temporaryCachePath, fileName.ToLowerInvariant()), path);
+
+                EditorUtility.DisplayDialog("Export Successful!", "Export Successful!", "OK");
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            finally
+            {
+                AssetDatabase.AllowAutoRefresh();
+                if (clonedBackground != null)
+                {
+                    DestroyImmediate(clonedBackground);
+                }
+            }
+        }
+
+        [ContextMenu("Export Vocalist")]
+        public void ExportCharacter()
+        {
+            var vocalist = _replaceableVocalist.gameObject;
+
+            Export(vocalist, ExportType.Character);
+        }
+
         [ContextMenu("Export Background")]
         public void ExportBackground()
         {
-            _backgroundReference = gameObject;
-            string path = EditorUtility.SaveFilePanel("Save Background", string.Empty, "bg", "yarground");
-
-            GameObject clonedBackground = null;
-
-            AssetDatabase.DisallowAutoRefresh();
-
-            try
-            {
-                if (string.IsNullOrEmpty(path))
-                {
-                    return;
-                }
-
-                // First we'll collect all shaders and build a separate bundle out of them
-                // for Mac as no other build target will include Metal shaders
-                // And we want our background to work everywhere
-
-                // We use materials as "anchors" to make sure all required
-                // shader variants are included
-                var materialAssets = EditorUtility.CollectDependencies(new[] { gameObject })
-                    .OfType<Material>() // Only material dependencices
-                    .Select((mat, i) =>
-                    {
-                        // Create a clone
-                        var matClone = new Material(mat);
-                        // Avoid name collision
-                        matClone.name = BACKGOUND_OSX_MATERIAL_PREFIX + i.ToString() + mat.name;
-                        // Drop all textures to not double resulting yarground in size
-                        if (matClone.mainTexture != null)
-                        {
-                            matClone.mainTexture = Texture2D.whiteTexture;
-                        }
-                        foreach (var id in matClone.GetTexturePropertyNameIDs())
-                        {
-                            if (matClone.GetTexture(id) != null)
-                            {
-                                matClone.SetTexture(id, Texture2D.whiteTexture);
-                            }
-                        }
-                        var assetPath = Path.Combine("Assets", matClone.name + ".mat");
-                        AssetDatabase.CreateAsset(matClone, assetPath);
-
-                        return assetPath;
-                    })
-                    .ToArray();
-
-                var shaderAssets = EditorUtility.CollectDependencies(new[] { gameObject })
-                    .OfType<Shader>().Select(AssetDatabase.GetAssetPath);
-
-                if (materialAssets.Length > 0)
-                {
-                    var metalAssetBundleBuild = default(AssetBundleBuild);
-                    metalAssetBundleBuild.assetBundleName = BACKGROUND_SHADER_BUNDLE_NAME;
-                    metalAssetBundleBuild.assetNames = materialAssets.Concat(shaderAssets).ToArray();
-
-                    BuildPipeline.BuildAssetBundles(Application.temporaryCachePath,
-                        new[]
-                        {
-                            metalAssetBundleBuild
-                        }, BuildAssetBundleOptions.ForceRebuildAssetBundle,
-                        BuildTarget.StandaloneOSX);
-
-                    var filePath = Path.Combine(Application.temporaryCachePath, BACKGROUND_SHADER_BUNDLE_NAME);
-                    var assetPath = Path.Combine(Application.dataPath, BACKGROUND_SHADER_BUNDLE_NAME);
-                    File.Move(filePath, assetPath);
-                    AssetDatabase.ImportAsset(Path.Combine("Assets", BACKGROUND_SHADER_BUNDLE_NAME));
-                }
-                // Now delete our material clones
-                foreach (var assetPath in materialAssets)
-                {
-                    AssetDatabase.DeleteAsset(assetPath);
-                }
-
-                clonedBackground = Instantiate(_backgroundReference.gameObject);
-
-                string fileName = Path.GetFileName(path);
-                string folderPath = Path.GetDirectoryName(path);
-
-                var assetPaths = new[]
-                {
-                    Path.Combine("Assets/", BACKGROUND_SHADER_BUNDLE_NAME),
-                    BACKGROUND_PREFAB_PATH
-                };
-
-                AssetBundleBuild assetBundleBuild = default;
-                assetBundleBuild.assetBundleName = fileName;
-                assetBundleBuild.assetNames = assetPaths;
-
-                // We must examine anything that has the VenueCharacter component so we can deal with animations
-                // properly. First we find them, then check for an AnimatorController and extract the layers and
-                // animation states contained within. Then we assign them to a SerializedField on the VenueCharacter,
-                // which will hopefully end up on the character when the AssetBundle is built.
-
-                var characterComponents = clonedBackground.GetComponentsInChildren<VenueCharacter>();
-
-                foreach (var character in characterComponents)
-                {
-                    var animator = character.GetComponent<Animator>();
-                    if (animator == null)
-                    {
-                        continue;
-                    }
-
-                    // This should work since we're in the editor
-                    var controller = animator.runtimeAnimatorController as AnimatorController;
-                    if (controller == null)
-                    {
-                        continue;
-                    }
-
-                    var layerStates = new AnimationDictionary();
-                    foreach (var layer in controller.layers)
-                    {
-                        var layerName = layer.name;
-                        foreach (var state in layer.stateMachine.states)
-                        {
-                            layerStates.Add(layerName, state.state.name);
-                        }
-                    }
-
-                    character.LayerStates = layerStates;
-                }
-
-                PrefabUtility.SaveAsPrefabAsset(clonedBackground.gameObject, BACKGROUND_PREFAB_PATH);
-
-                BuildPipeline.BuildAssetBundles(Application.temporaryCachePath,
-                    new[]
-                    {
-                        assetBundleBuild
-                    }, BuildAssetBundleOptions.ForceRebuildAssetBundle,
-                    BuildTarget.StandaloneWindows);
-
-                foreach (var asset in assetPaths)
-                {
-                    AssetDatabase.DeleteAsset(asset);
-                }
-
-                // If the file exists, delete it (to replace it)
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-
-                // Unity seems to save the file in lower case, which is a problem on Linux, as file systems are case sensitive there
-                File.Move(Path.Combine(Application.temporaryCachePath, fileName.ToLowerInvariant()), path);
-
-                EditorUtility.DisplayDialog("Export Successful!", "Export Successful!", "OK");
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-            finally
-            {
-                AssetDatabase.AllowAutoRefresh();
-                if (clonedBackground != null)
-                {
-                    DestroyImmediate(clonedBackground);
-                }
-            }
+            Export(gameObject, ExportType.Background);
         }
 
-        [ContextMenu("Export Background for UWP")]
+        [ContextMenu("Export Vocalist UWP")]
+        public void ExportCharacterUWP()
+        {
+            var vocalist = _replaceableVocalist.gameObject;
+
+            Export(vocalist, ExportType.Character, BuildTarget.WSAPlayer);
+        }
+
+        [ContextMenu("Export Background UWP")]
         public void ExportBackgroundUWP()
         {
-            _backgroundReference = gameObject;
-            string path = EditorUtility.SaveFilePanel("Save Background", string.Empty, "bg", "yarground");
-
-            GameObject clonedBackground = null;
-
-            AssetDatabase.DisallowAutoRefresh();
-
-            try
-            {
-                if (string.IsNullOrEmpty(path))
-                {
-                    return;
-                }
-
-                // First we'll collect all shaders and build a separate bundle out of them
-                // for Mac as no other build target will include Metal shaders
-                // And we want our background to work everywhere
-
-                // We use materials as "anchors" to make sure all required
-                // shader variants are included
-                var materialAssets = EditorUtility.CollectDependencies(new[] { gameObject })
-                    .OfType<Material>() // Only material dependencices
-                    .Select((mat, i) =>
-                    {
-                        // Create a clone
-                        var matClone = new Material(mat);
-                        // Avoid name collision
-                        matClone.name = BACKGOUND_OSX_MATERIAL_PREFIX + i.ToString() + mat.name;
-                        // Drop all textures to not double resulting yarground in size
-                        if (matClone.mainTexture != null)
-                        {
-                            matClone.mainTexture = Texture2D.whiteTexture;
-                        }
-                        foreach (var id in matClone.GetTexturePropertyNameIDs())
-                        {
-                            if (matClone.GetTexture(id) != null)
-                            {
-                                matClone.SetTexture(id, Texture2D.whiteTexture);
-                            }
-                        }
-                        var assetPath = Path.Combine("Assets", matClone.name + ".mat");
-                        AssetDatabase.CreateAsset(matClone, assetPath);
-
-                        return assetPath;
-                    })
-                    .ToArray();
-
-                var shaderAssets = EditorUtility.CollectDependencies(new[] { gameObject })
-                    .OfType<Shader>().Select(AssetDatabase.GetAssetPath);
-
-                if (materialAssets.Length > 0)
-                {
-                    var metalAssetBundleBuild = default(AssetBundleBuild);
-                    metalAssetBundleBuild.assetBundleName = BACKGROUND_SHADER_BUNDLE_NAME;
-                    metalAssetBundleBuild.assetNames = materialAssets.Concat(shaderAssets).ToArray();
-
-                    BuildPipeline.BuildAssetBundles(Application.temporaryCachePath,
-                        new[]
-                        {
-                            metalAssetBundleBuild
-                        }, BuildAssetBundleOptions.ForceRebuildAssetBundle,
-                        BuildTarget.StandaloneOSX);
-
-                    var filePath = Path.Combine(Application.temporaryCachePath, BACKGROUND_SHADER_BUNDLE_NAME);
-                    var assetPath = Path.Combine(Application.dataPath, BACKGROUND_SHADER_BUNDLE_NAME);
-                    File.Move(filePath, assetPath);
-                    AssetDatabase.ImportAsset(Path.Combine("Assets", BACKGROUND_SHADER_BUNDLE_NAME));
-                }
-                // Now delete our material clones
-                foreach (var assetPath in materialAssets)
-                {
-                    AssetDatabase.DeleteAsset(assetPath);
-                }
-
-                clonedBackground = Instantiate(_backgroundReference.gameObject);
-
-                string fileName = Path.GetFileName(path);
-                string folderPath = Path.GetDirectoryName(path);
-
-                var assetPaths = new[]
-                {
-                    Path.Combine("Assets/", BACKGROUND_SHADER_BUNDLE_NAME),
-                    BACKGROUND_PREFAB_PATH
-                };
-
-                AssetBundleBuild assetBundleBuild = default;
-                assetBundleBuild.assetBundleName = fileName;
-                assetBundleBuild.assetNames = assetPaths;
-
-                // We must examine anything that has the VenueCharacter component so we can deal with animations
-                // properly. First we find them, then check for an AnimatorController and extract the layers and
-                // animation states contained within. Then we assign them to a SerializedField on the VenueCharacter,
-                // which will hopefully end up on the character when the AssetBundle is built.
-
-                var characterComponents = clonedBackground.GetComponentsInChildren<VenueCharacter>();
-
-                foreach (var character in characterComponents)
-                {
-                    var animator = character.GetComponent<Animator>();
-                    if (animator == null)
-                    {
-                        continue;
-                    }
-
-                    // This should work since we're in the editor
-                    var controller = animator.runtimeAnimatorController as AnimatorController;
-                    if (controller == null)
-                    {
-                        continue;
-                    }
-
-                    var layerStates = new AnimationDictionary();
-                    foreach (var layer in controller.layers)
-                    {
-                        var layerName = layer.name;
-                        foreach (var state in layer.stateMachine.states)
-                        {
-                            layerStates.Add(layerName, state.state.name);
-                        }
-                    }
-
-                    character.LayerStates = layerStates;
-                }
-
-                PrefabUtility.SaveAsPrefabAsset(clonedBackground.gameObject, BACKGROUND_PREFAB_PATH);
-
-                BuildPipeline.BuildAssetBundles(Application.temporaryCachePath,
-                    new[]
-                    {
-                        assetBundleBuild
-                    }, BuildAssetBundleOptions.ForceRebuildAssetBundle,
-                    BuildTarget.WSAPlayer);
-
-                foreach (var asset in assetPaths)
-                {
-                    AssetDatabase.DeleteAsset(asset);
-                }
-
-                // If the file exists, delete it (to replace it)
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-
-                // Unity seems to save the file in lower case, which is a problem on Linux, as file systems are case sensitive there
-                File.Move(Path.Combine(Application.temporaryCachePath, fileName.ToLowerInvariant()), path);
-
-                EditorUtility.DisplayDialog("Export Successful!", "Export Successful!", "OK");
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-            finally
-            {
-                AssetDatabase.AllowAutoRefresh();
-                if (clonedBackground != null)
-                {
-                    DestroyImmediate(clonedBackground);
-                }
-            }
+            Export(gameObject, ExportType.Background, BuildTarget.WSAPlayer);
         }
 #endif
+
+        public enum ExportType
+        {
+            Character,
+            Background
+        }
     }
 }

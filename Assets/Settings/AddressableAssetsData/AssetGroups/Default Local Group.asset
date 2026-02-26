@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Default Local Group
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
-  m_Data:
-    m_SerializedData: []
   m_GUID: 1fc303ae4b596034592a9c3d3864493f
   m_SerializeEntries:
   - m_GUID: 00be5b45e060bcc4ea7a4233ed157d47
@@ -279,16 +277,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fbe7667745907d3458091809adbc80a8
     m_Address: SettingPreviews/DMXInformationPanelUI
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 66c73cd46143f5e44a0964ef909e0244
-    m_Address: MarketplaceTab/Setlist
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 23b94837fb849574ebf1ad7d180706e3
-    m_Address: Assets/Prefabs/Menu/Common/Buttons/RoundButton.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

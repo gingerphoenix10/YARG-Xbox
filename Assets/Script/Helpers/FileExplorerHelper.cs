@@ -1,7 +1,4 @@
 ﻿using System;
-#if UNITY_STANDALONE
-using SFB;
-#endif
 using YARG.Core.Logging;
 
 using System.Diagnostics;

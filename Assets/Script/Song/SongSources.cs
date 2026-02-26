@@ -209,7 +209,7 @@ namespace YARG.Song
                 string versionText = await HttpHelper.GetURL(SOURCE_COMMIT_URL);
                 if (versionText != null)
                 {
-                    var json = JArray.Parse();
+                    var json = JArray.Parse(versionText);
                     newestVersion = json[0]["sha"]!.ToString();
                 }
             }

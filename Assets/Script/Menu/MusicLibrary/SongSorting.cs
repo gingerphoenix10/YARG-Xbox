@@ -153,11 +153,11 @@ namespace YARG.Menu.MusicLibrary
             }
         }
 
-        private static readonly unsafe delegate*<SongCache, SortedSongs, void>[] SORTERS =
+        private static readonly Action<SongCache, SortedSongs>[] SORTERS =
         {
-            &SortByTitle,    &SortByArtist,   &SortByAlbum,  &SortByGenre,       &SortBySubgenre,   &SortByYear,
-            &SortByCharter,  &SortByPlaylist, &SortBySource, &SortByArtistAlbum, &SortByLength,     &SortByDateAdded,
-            &SortByInstruments
+            SortByTitle,    SortByArtist,    SortByAlbum,       SortByGenre,  SortBySubgenre, SortByYear,
+            SortByCharter, SortByPlaylist, SortBySource, SortByArtistAlbum, SortByLength, SortByDateAdded,
+            SortByInstruments
         };
 
         internal static unsafe void SortEntries(SongCache cache, SortedSongs sorted)

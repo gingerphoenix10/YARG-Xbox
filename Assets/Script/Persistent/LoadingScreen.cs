@@ -67,6 +67,7 @@ namespace YARG
             }
 
             // Auto connect profiles, using the same order that they were previously connected.
+#if !UNITY_IOS // idk, i'll fix this some other time
             if (SettingsManager.Settings.ReconnectProfiles.Value)
             {
                 PlayerContainer.AutoConnectProfiles();
@@ -75,6 +76,7 @@ namespace YARG
             {
                 PlayerContainer.ClearProfileOrder();
             }
+#endif
 
             // Fast scan (cache read) on startup
             await SongContainer.RunRefresh(true, context);

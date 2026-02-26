@@ -1,4 +1,4 @@
-﻿%YAML 1.1
+%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   m_DefaultGroup: 1fc303ae4b596034592a9c3d3864493f
   m_currentHash:
     serializedVersion: 2
@@ -46,17 +46,17 @@ MonoBehaviour:
   m_StripUnityVersionFromBundleBuild: 0
   m_DisableVisibleSubAssetRepresentations: 0
   m_BuiltInBundleNaming: 0
-  mBuiltInBundleCustomNaming:
+  mBuiltInBundleCustomNaming: 
   m_MonoScriptBundleNaming: 0
   m_CheckForContentUpdateRestrictionsOption: 0
-  m_MonoScriptBundleCustomNaming:
+  m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
     m_Id: 0ca22c0527d405749bb64a57832bf7f4
   m_RemoteCatalogLoadPath:
     m_Id: deea092b8e0b50545a809a66a5d8d6cf
   m_ContentStateBuildPathProfileVariableName: <default settings path>
-  m_CustomContentStateBuildPath:
-  m_ContentStateBuildPath:
+  m_CustomContentStateBuildPath: 
+  m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
@@ -67,7 +67,7 @@ MonoBehaviour:
     m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
   m_ProfileSettings:
     m_Profiles:
-    - m_InheritedParent:
+    - m_InheritedParent: 
       m_Id: 5739582a59c376d489dfb78f5dd83642
       m_ProfileName: Default
       m_Values:
@@ -109,8 +109,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6539381e9f0415a439edb02a42aca1b4, type: 2}
   m_InitializationObjects: []
   m_CertificateHandlerType:
-    m_AssemblyName:
-    m_ClassName:
+    m_AssemblyName: 
+    m_ClassName: 
   m_ActivePlayerDataBuilderIndex: 3
   m_DataBuilders:
   - {fileID: 11400000, guid: f8e3a58361eb67e4b859a8fe94e2e27f, type: 2}

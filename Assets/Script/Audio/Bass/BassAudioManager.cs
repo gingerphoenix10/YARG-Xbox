@@ -187,7 +187,7 @@ namespace YARG.Audio.BASS
             YargLogger.LogFormatInfo("Current Device: {0}", Bass.GetDeviceInfo(Bass.CurrentDevice).Name);
         }
 
-        protected override bool SetOutputDevice(string name)
+        protected internal override bool SetOutputDevice(string name)
         {
             int currentDevice = Bass.CurrentDevice;
 
@@ -216,7 +216,7 @@ namespace YARG.Audio.BASS
         }
 
 #nullable enable
-        protected override StemMixer? CreateMixer(string name, float speed, double mixerVolume, bool clampStemVolume, bool normalize)
+        protected internal override StemMixer? CreateMixer(string name, float speed, double mixerVolume, bool clampStemVolume, bool normalize)
         {
             if (GlobalAudioHandler.LogMixerStatus)
             {
@@ -308,7 +308,7 @@ namespace YARG.Audio.BASS
         }
 
 #nullable enable
-        protected override MicDevice? CreateInputDevice(int deviceId, string name)
+        protected internal override MicDevice? CreateInputDevice(int deviceId, string name)
 #nullable disable
         {
             var device = BassMicDevice.Create(deviceId, name);
@@ -317,20 +317,20 @@ namespace YARG.Audio.BASS
         }
 
 #nullable enable
-        protected override OutputChannel? CreateOutputChannel(int channelId)
+        protected internal override OutputChannel? CreateOutputChannel(int channelId)
 #nullable disable
         {
             return BassOutputChannel.Create(channelId);
         }
 
 #nullable enable
-        protected override OutputDevice? CreateOutputDevice(int deviceId, string name)
+        protected internal override OutputDevice? CreateOutputDevice(int deviceId, string name)
 #nullable disable
         {
             return BassOutputDevice.Create(deviceId, name);
         }
 
-        protected override List<(int id, string name)> GetAllOutputDevices()
+        protected internal override List<(int id, string name)> GetAllOutputDevices()
         {
             var devices = new List<(int id, string name)>();
 
@@ -354,13 +354,13 @@ namespace YARG.Audio.BASS
             return devices;
         }
 
-        protected override int GetOutputChannelCount()
+        protected internal override int GetOutputChannelCount()
         {
             return BassHelpers.GetOutputChannelCount();
         }
 
 #nullable enable
-        protected override OutputDevice? GetOutputDevice(string name)
+        protected internal override OutputDevice? GetOutputDevice(string name)
 #nullable disable
         {
             for (int deviceIndex = 0; Bass.GetDeviceInfo(deviceIndex, out var info); deviceIndex++)
@@ -558,7 +558,7 @@ namespace YARG.Audio.BASS
             YargLogger.LogInfo("Finished loading Metronome");
         }
 
-        protected override void SetMasterVolume(double volume)
+        protected internal override void SetMasterVolume(double volume)
         {
 #if UNITY_EDITOR
             if (EditorUtility.audioMasterMute)

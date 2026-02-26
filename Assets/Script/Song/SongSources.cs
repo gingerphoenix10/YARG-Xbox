@@ -199,8 +199,12 @@ namespace YARG.Song
             string newestVersion = null;
             try
             {
-                var json = JArray.Parse(await HttpHelper.GetURL(SOURCE_COMMIT_URL));
-                newestVersion = json[0]["sha"]!.ToString();
+                string versionText = await HttpHelper.GetURL(SOURCE_COMMIT_URL);
+                if (versionText != null)
+                {
+                    var json = JArray.Parse(versionText);
+                    newestVersion = json[0]["sha"]!.ToString();
+                }
             }
             catch (Exception e)
             {

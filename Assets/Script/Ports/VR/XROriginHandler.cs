@@ -13,7 +13,7 @@ namespace YARG
     {
         public static bool VREnabled { get
             {
-                return XRSettings.enabled || true;
+                return XRSettings.enabled;
             } }
         public List<Shader> replacementShaders;
         public float GlobalFadeDistance = 1;

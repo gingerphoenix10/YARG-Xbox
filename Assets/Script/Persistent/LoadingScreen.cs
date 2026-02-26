@@ -63,6 +63,7 @@ namespace YARG
             await UpdateSourcesAndGenres(context);
 
             // Auto connect profiles, using the same order that they were previously connected.
+#if !UNITY_IOS // idk, i'll fix this some other time
             if (SettingsManager.Settings.ReconnectProfiles.Value)
             {
                 PlayerContainer.AutoConnectProfiles();
@@ -72,6 +73,7 @@ namespace YARG
             {
                 PlayerContainer.ClearProfileOrder();
             }
+#endif
 
             // Initialize phoneme dictionary (must load on main thread, parse on thread pool)
             var cmudictAsset = Resources.Load<TextAsset>("cmudict");

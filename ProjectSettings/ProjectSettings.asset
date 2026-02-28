@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!129 &1
 PlayerSettings:
@@ -147,6 +147,7 @@ PlayerSettings:
   preloadedAssets:
   - {fileID: 11400000, guid: 8efbce013f4e1c34895851b7038c76e9, type: 2}
   - {fileID: 11400000, guid: 5648eaf53fdf5d3498e90964ba167cd9, type: 2}
+  - {fileID: 6404099403363447038, guid: da89788aeb289294c8b45f9c2e085660, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -930,7 +931,8 @@ PlayerSettings:
   scriptingBackend:
     Android: 1
   il2cppCompilerConfiguration: {}
-  il2cppCodeGeneration: {}
+  il2cppCodeGeneration:
+    iPhone: 1
   il2cppStacktraceInformation: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}

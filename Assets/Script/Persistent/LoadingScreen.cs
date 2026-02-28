@@ -26,6 +26,10 @@ namespace YARG
 
         private async void Start()
         {
+            await Task.Delay(1000);
+            if (SettingsManager.Settings == null)
+                SettingsManager.LoadSettings();
+
             using var context = new LoadingContext();
 
             // Load language

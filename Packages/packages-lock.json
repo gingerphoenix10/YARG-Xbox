@@ -1,4 +1,4 @@
-{
+﻿{
   "dependencies": {
     "com.alexeyperov.unity-dependencies-hunter": {
       "version": "https://github.com/AlexeyPerov/Unity-Dependencies-Hunter.git#upm",

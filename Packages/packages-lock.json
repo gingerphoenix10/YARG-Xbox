@@ -109,7 +109,7 @@
     },
     "com.unity.burst": {
       "version": "1.8.27",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
@@ -437,17 +437,19 @@
       "hash": "e24fa529103603043f6dad1b66192ff72954ef6e"
     },
     "jp.keijiro.minis": {
-      "version": "https://github.com/TheNathannator/Minis.git?path=/Packages/jp.keijiro.minis#yarg",
+      "version": "1.3.2",
       "depth": 0,
-      "source": "git",
+      "source": "registry",
       "dependencies": {
-        "jp.keijiro.rtmidi": "1.0.4",
-        "com.unity.inputsystem": "1.0.1"
+        "jp.keijiro.rtmidi": "2.2.0",
+        "com.unity.inputsystem": "1.0.1",
+        "com.unity.mathematics": "1.3.2",
+        "com.unity.burst": "1.8.21"
       },
-      "hash": "29dee9f786d99cfae145d1972a39fb79117c1b8f"
+      "url": "https://registry.npmjs.com"
     },
     "jp.keijiro.rtmidi": {
-      "version": "1.0.4",
+      "version": "2.2.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {},

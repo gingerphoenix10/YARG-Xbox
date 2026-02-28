@@ -80,6 +80,8 @@ namespace YARG.Song
         // The editor does not track the contents of folders that end in ~,
         // so use this to prevent Unity from stalling due to importing freshly-downloaded mappings
         private static readonly string GenresFolder = Path.Combine(PathHelper.StreamingAssetsPath, "genres~");
+#elif UNITY_WSA || UNITY_ANDROID || UNITY_IOS
+        private static readonly string GenresFolder = Path.Combine(PathHelper.PersistentDataPath, "genres");
 #else
         public static readonly string GenresFolder = Path.Combine(PathHelper.StreamingAssetsPath, "genres");
 #endif

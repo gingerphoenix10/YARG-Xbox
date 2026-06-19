@@ -139,7 +139,7 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 1
     m_Colors:
-    - FadeDistance: {r: 14.630539, g: 21.475725, b: 0, a: 0}
+    - FadeDistance: {r: 11.436119, g: 15.999577, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

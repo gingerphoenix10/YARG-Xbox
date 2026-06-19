@@ -16,8 +16,10 @@ namespace YARG.Scores
 {
     public enum HighScoreHistoryMode
     {
-        HighestOverall,
-        HighestDifficulty,
+        HighestPercentageOverall = 0,
+        HighestPercentageDifficulty = 1,
+        HighestScoreOverall = 2,
+        HighestScoreDifficulty = 3,
     }
 
     public static partial class ScoreContainer
@@ -38,7 +40,14 @@ namespace YARG.Scores
         private static bool       _scoresWereFetched;
 
         private static bool HighestDifficultyOnly
-            => SettingsManager.Settings.HighScoreHistory.Value == HighScoreHistoryMode.HighestDifficulty;
+            => SettingsManager.Settings.HighScoreHistory.Value is
+                HighScoreHistoryMode.HighestPercentageDifficulty or
+                HighScoreHistoryMode.HighestScoreDifficulty;
+
+        private static bool UseHighestScore
+            => SettingsManager.Settings.HighScoreHistory.Value is
+                HighScoreHistoryMode.HighestScoreOverall or
+                HighScoreHistoryMode.HighestScoreDifficulty;
 
         private static bool AllowScoresWithBots => SettingsManager.Settings.SaveScoresWithBots.Value;
 
@@ -192,7 +201,21 @@ namespace YARG.Scores
             return null;
         }
 
-        public static List<PlayerScoreRecord> GetAllPlayerScores(Guid id)
+        public static List<PlayerScoreRecord> GetAllPlayerScoreRecords()
+        {
+            try
+            {
+                return _db.QueryAllPlayerScoreRecords();
+            }
+            catch (Exception e)
+            {
+                YargLogger.LogException(e, "Failed to load all PlayerScoreRecords from database.");
+            }
+
+            return null;
+        }
+
+        public static List<PlayerScoreRecord> GetAllScoresByPlayerId(Guid id)
         {
             try
             {
@@ -234,6 +257,13 @@ namespace YARG.Scores
         public static GameRecord GetBandHighScore(HashWrapper songChecksum)
         {
             return BandHighScores.GetValueOrDefault(songChecksum);
+        }
+
+        public static PlayerScoreRecord GetPreferredHighScore(HashWrapper songChecksum, Guid playerId, Instrument instrument, bool allowCacheUpdate = true)
+        {
+            return UseHighestScore
+                ? GetHighScore(songChecksum, playerId, instrument, allowCacheUpdate)
+                : GetBestPercentageScore(songChecksum, playerId, instrument, allowCacheUpdate);
         }
 
         private static PlayerScoreRecord GetHighScoreFromDatabase(HashWrapper songChecksum, Guid playerId, Instrument instrument)

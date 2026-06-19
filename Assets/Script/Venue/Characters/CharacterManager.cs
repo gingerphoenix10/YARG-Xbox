@@ -20,6 +20,9 @@ namespace YARG.Venue.Characters
         private GameObject _venue;
 
         private readonly Dictionary<VenueCharacter.CharacterType, VenueCharacter> _characters = new();
+        public Dictionary<VenueCharacter.CharacterType, VenueCharacter> Characters => _characters;
+
+        private DrumCharacterHelper _drumCharacterHelper = new();
 
         // Ugh, the different note types ruin me again
         private List<VocalNote>    _vocalNotes;
@@ -172,6 +175,8 @@ namespace YARG.Venue.Characters
                 character.Initialize(this);
                 _characters.Add(character.Type, character);
             }
+
+            GameManager.SetVenueCharacterManager(this);
         }
 
         private void Update()
@@ -480,7 +485,7 @@ namespace YARG.Venue.Characters
                 if (!character.IsAnimating())
                 {
                     character.StartAnimation(_currentTempo.SecondsPerBeat);
-                    return;
+                    break;
                 }
 
                 // If next note is more than secondsPerBeat away, stop animating
@@ -488,20 +493,29 @@ namespace YARG.Venue.Characters
                 {
                     character.StopAnimation();
                 }
+            }
 
-                while (_drumAnimationEvents.Count > 0 && _drumAnimationIndex < _drumAnimationEvents.Count &&
-                    _drumAnimationEvents[_drumAnimationIndex].Time - character.TimeToFirstHit <= GameManager.SongTime)
+            // Process animation events separately so they don't get skipped when StartAnimation exits early
+            var hasAnimationEvents = _drumAnimationIndex < _drumAnimationEvents.Count;
+            while (hasAnimationEvents)
+            {
+                var animEvent = _drumAnimationEvents[_drumAnimationIndex];
+                var animationIsReady = animEvent.Time - character.TimeToFirstHit <= GameManager.SongTime;
+                if (!animationIsReady)
                 {
-                    var animEvent = _drumAnimationEvents[_drumAnimationIndex];
-                    _drumAnimationIndex++;
-
-                    character.OnDrumAnimation(animEvent.Type);
-
-                    if (animEvent.Type == AnimationEvent.AnimationType.OpenHiHat)
-                    {
-                        _hatTimer = animEvent.TimeLength;
-                    }
+                    break;
                 }
+
+                _drumAnimationIndex++;
+
+                character.OnDrumAnimation(animEvent.Type);
+
+                if (animEvent.Type == AnimationEvent.AnimationType.OpenHiHat)
+                {
+                    _hatTimer = animEvent.TimeLength;
+                }
+
+                hasAnimationEvents = _drumAnimationIndex < _drumAnimationEvents.Count;
             }
         }
 
@@ -509,17 +523,8 @@ namespace YARG.Venue.Characters
         {
             YargLogger.LogDebug("Auto-generating missing drum animations");
             _drumAnimationEvents.Clear();
-
-            // Create a drum animation event for each note, using GetDrumAnimationForNote
-            foreach (var parent in _drumNotes)
-            {
-                foreach (var note in parent.AllNotes)
-                {
-                    var anim = GetDrumAnimationForNote(note);
-
-                    _drumAnimationEvents.Add(new AnimationEvent(anim, note.Time, note.TimeLength, note.Tick, note.TickLength));
-                }
-            }
+            var animationEvents = _drumCharacterHelper.GetDrumAnimations(_drumNotes);
+            _drumAnimationEvents.AddRange(animationEvents);
         }
 
         private static List<AnimationTrigger> GenerateMap<T>(List<T> notes) where T : Note<T>
@@ -628,23 +633,6 @@ namespace YARG.Venue.Characters
             triggers.Sort((a, b) => a.Time.CompareTo(b.Time));
 
             return triggers;
-        }
-
-        public static AnimationEvent.AnimationType GetDrumAnimationForNote(DrumNote child)
-        {
-            var pad = (FourLaneDrumPad) child.Pad;
-            return pad switch
-            {
-                FourLaneDrumPad.Kick => AnimationEvent.AnimationType.Kick,
-                FourLaneDrumPad.YellowCymbal => AnimationEvent.AnimationType.HihatRightHand,
-                FourLaneDrumPad.BlueCymbal => AnimationEvent.AnimationType.RideRh,
-                FourLaneDrumPad.GreenCymbal => AnimationEvent.AnimationType.Crash1RhHard,
-                FourLaneDrumPad.GreenDrum => AnimationEvent.AnimationType.FloorTomRightHand,
-                FourLaneDrumPad.BlueDrum => AnimationEvent.AnimationType.Tom2RightHand,
-                FourLaneDrumPad.YellowDrum => AnimationEvent.AnimationType.Tom1RightHand,
-                FourLaneDrumPad.RedDrum => AnimationEvent.AnimationType.SnareLhHard,
-                _ => throw new ArgumentOutOfRangeException(nameof(pad), pad, "Bad drum pad how?")
-            };
         }
 
         public enum TriggerType

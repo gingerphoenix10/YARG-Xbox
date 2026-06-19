@@ -31,13 +31,14 @@ namespace YARG.Song
         Subgenre,
         Year,
         Charter,
-        Playlist,
+        Folder,
         Source,
         SongLength,
         DateAdded,
         Playcount,
         Stars,
         Playable,
+        Random,
 
         Instrument,
         FiveFretGuitar,
@@ -68,12 +69,14 @@ namespace YARG.Song
         public string      Category      { get; }
         public string      CategoryGroup { get; }
         public SongEntry[] Songs         { get; }
+        public bool Collapsed { get; }
 
-        public SongCategory(string category, SongEntry[] songs, string categoryGroupName)
+        public SongCategory(string category, SongEntry[] songs, string categoryGroupName, bool collapsed = false)
         {
             Category = category;
             Songs = songs;
             CategoryGroup = categoryGroupName;
+            Collapsed = collapsed;
         }
 
         public void Deconstruct(out string category, out SongEntry[] songs)
@@ -88,6 +91,7 @@ namespace YARG.Song
         private static SongCache _songCache = new();
         private static SortedSongs _sortedSongs = new();
         private static SongEntry[] _songs = Array.Empty<SongEntry>();
+        private static Dictionary<HashWrapper, List<SongEntry>> _songsByHash = new();
 
         private static SongCategory[] _sortTitles = Array.Empty<SongCategory>();
         private static SongCategory[] _sortArtists = Array.Empty<SongCategory>();
@@ -126,8 +130,13 @@ namespace YARG.Song
         public static IReadOnlyDictionary<Instrument, SortedDictionary<int, List<SongEntry>>> Instruments => _sortedSongs.Instruments;
 
         public static int Count => _songs.Length;
-        public static IReadOnlyDictionary<HashWrapper, List<SongEntry>> SongsByHash => _songCache.Entries;
-        public static SongEntry[] Songs => _songs;
+        // public static IReadOnlyDictionary<HashWrapper, List<SongEntry>> SongsByHash => _songCache.Entries;
+        public static IReadOnlyDictionary<HashWrapper, List<SongEntry>> SongsByHash => _songsByHash;
+        public static SongEntry[]                                       Songs       => _songs;
+
+        public static SongEntry[] UnfilteredSongs => _songCache.Entries.Values.SelectMany(e => e).ToArray();
+
+        private static bool AllowedByRating(SongRating rating) => rating <= SettingsManager.Settings.MaxSongRating.Value;
 
         public static string internalSongsPath;
 
@@ -170,9 +179,13 @@ namespace YARG.Song
                 await UniTask.NextFrame();
             }
 
-            if (SettingsManager.Settings.StandardizeGenres.Value && !GlobalVariables.OfflineMode)
+            if (SettingsManager.Settings.Genrelizer.Value is GenrelizerMode.Genrelize && !GlobalVariables.OfflineMode)
             {
-                Genrelizer.GenrelizeAll(_songCache);
+                Genrelizer.GenrelizeAll(_songCache, false);
+            }
+            else if (SettingsManager.Settings.Genrelizer.Value is GenrelizerMode.Overgenrelize && !GlobalVariables.OfflineMode)
+            {
+                Genrelizer.GenrelizeAll(_songCache, true);
             }
             else
             {
@@ -198,7 +211,7 @@ namespace YARG.Song
                 SortAttribute.Subgenre => _sortSubgenres,
                 SortAttribute.Year => _sortYears,
                 SortAttribute.Charter => _sortCharters,
-                SortAttribute.Playlist => _sortPlaylists,
+                SortAttribute.Folder => _sortPlaylists,
                 SortAttribute.Source => _sortSources,
                 SortAttribute.Artist_Album => _sortArtistAlbums,
                 SortAttribute.SongLength => _sortSongLengths,
@@ -206,6 +219,7 @@ namespace YARG.Song
                 SortAttribute.Playcount => GetPlaycounts(),
                 SortAttribute.Playable => GetPlayableSongs(),
                 SortAttribute.Stars => GetStars(),
+                SortAttribute.Random => GetRandomSort(),
 
                 SortAttribute.FiveFretGuitar => _sortInstruments[Instrument.FiveFretGuitar],
                 SortAttribute.FiveFretBass   => _sortInstruments[Instrument.FiveFretBass],
@@ -536,6 +550,13 @@ namespace YARG.Song
             return _sortStars;
         }
 
+        private static SongCategory[] GetRandomSort()
+        {
+            var shuffled = new List<SongEntry>(_songs);
+            shuffled.Shuffle();
+            return new[] { new SongCategory(string.Empty, shuffled.ToArray(), null) };
+        }
+
         private static void UpdateSongUi(LoadingContext context)
         {
             var tracker = CacheHandler.Progress;
@@ -622,10 +643,19 @@ namespace YARG.Song
 
             static SongEntry[] SetAllSongs(Dictionary<HashWrapper, List<SongEntry>> entries)
             {
+                _songsByHash.Clear();
+
                 int songCount = 0;
                 foreach (var node in entries)
                 {
-                    songCount += node.Value.Count;
+                    var count = node.Value.Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (AllowedByRating(node.Value[i].SongRating))
+                        {
+                            songCount++;
+                        }
+                    }
                 }
 
                 SongEntry[] songs = new SongEntry[songCount];
@@ -635,7 +665,19 @@ namespace YARG.Song
                 {
                     for (int i = 0; i < node.Value.Count; i++)
                     {
-                        songs[index++] = node.Value[i];
+                        if (AllowedByRating(node.Value[i].SongRating))
+                        {
+                            if (_songsByHash.ContainsKey(node.Key))
+                            {
+                                _songsByHash[node.Key].Add(node.Value[i]);
+                            }
+                            else
+                            {
+                                _songsByHash.Add(node.Key, new List<SongEntry> { node.Value[i] });
+                            }
+
+                            songs[index++] = node.Value[i];
+                        }
                     }
                 }
                 return songs;
@@ -760,6 +802,12 @@ namespace YARG.Song
                 }
                 return sort;
             }
+        }
+
+        public static void RequestContainerRefresh()
+        {
+            SongSorting.SortEntries(_songCache, _sortedSongs);
+            FillContainers();
         }
 
         readonly struct IntensityComparer : IComparer<SongEntry>
